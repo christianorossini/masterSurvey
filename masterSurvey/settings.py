@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'questionnaire.apps.QuestionnaireConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,8 +85,8 @@ WSGI_APPLICATION = 'masterSurvey.wsgi.application'
 DATABASES = {   
     'default': {     
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "masterquest",
-        'USER': 'root',
+        'NAME': "masterquestdb",
+        'USER': 'masterquestuser',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
     }
