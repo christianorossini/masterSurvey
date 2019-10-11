@@ -1,0 +1,63 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+0001_initial.py	../questionnaire/migrations/0001_initial.py	1;"	kind:file	line:1
+ALLOWED_HOSTS	../masterSurvey/settings.py	/^ALLOWED_HOSTS = []$/;"	kind:variable	line:28
+AUTH_PASSWORD_VALIDATORS	../masterSurvey/settings.py	/^AUTH_PASSWORD_VALIDATORS = [$/;"	kind:variable	line:99
+BASE_DIR	../masterSurvey/settings.py	/^BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))$/;"	kind:variable	line:16
+Choice	../questionnaire/models.py	/^class Choice(models.Model):$/;"	kind:class	line:13
+DATABASES	../masterSurvey/settings.py	/^DATABASES = {   $/;"	kind:variable	line:85
+DEBUG	../masterSurvey/settings.py	/^DEBUG = True$/;"	kind:variable	line:26
+INSTALLED_APPS	../masterSurvey/settings.py	/^INSTALLED_APPS = [$/;"	kind:variable	line:33
+LANGUAGE_CODE	../masterSurvey/settings.py	/^LANGUAGE_CODE = 'en-us'$/;"	kind:variable	line:118
+MIDDLEWARE	../masterSurvey/settings.py	/^MIDDLEWARE = [$/;"	kind:variable	line:43
+Migration	../questionnaire/migrations/0001_initial.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:7
+Question	../questionnaire/models.py	/^class Question(models.Model):$/;"	kind:class	line:4
+QuestionnaireConfig	../questionnaire/apps.py	/^class QuestionnaireConfig(AppConfig):$/;"	kind:class	line:4
+ROOT_URLCONF	../masterSurvey/settings.py	/^ROOT_URLCONF = 'masterSurvey.urls'$/;"	kind:variable	line:53
+STATIC_URL	../masterSurvey/settings.py	/^STATIC_URL = '\/static\/'$/;"	kind:variable	line:132
+TEMPLATES	../masterSurvey/settings.py	/^TEMPLATES = [$/;"	kind:variable	line:55
+TIME_ZONE	../masterSurvey/settings.py	/^TIME_ZONE = 'UTC'$/;"	kind:variable	line:120
+USE_I18N	../masterSurvey/settings.py	/^USE_I18N = True$/;"	kind:variable	line:122
+USE_L10N	../masterSurvey/settings.py	/^USE_L10N = True$/;"	kind:variable	line:124
+USE_TZ	../masterSurvey/settings.py	/^USE_TZ = True$/;"	kind:variable	line:126
+WSGI_APPLICATION	../masterSurvey/settings.py	/^WSGI_APPLICATION = 'masterSurvey.wsgi.application'$/;"	kind:variable	line:71
+__init__.py	../masterSurvey/__init__.py	1;"	kind:file	line:1
+__init__.py	../questionnaire/__init__.py	1;"	kind:file	line:1
+__init__.py	../questionnaire/migrations/__init__.py	1;"	kind:file	line:1
+__str__	../questionnaire/models.py	/^    def __str__(self):$/;"	kind:member	line:18
+__str__	../questionnaire/models.py	/^    def __str__(self):$/;"	kind:member	line:8
+admin.py	../questionnaire/admin.py	1;"	kind:file	line:1
+application	../masterSurvey/wsgi.py	/^application = get_wsgi_application()$/;"	kind:variable	line:16
+apps.py	../questionnaire/apps.py	1;"	kind:file	line:1
+choice_text	../questionnaire/models.py	/^    choice_text = models.CharField(max_length=200)$/;"	kind:variable	line:15
+dependencies	../questionnaire/migrations/0001_initial.py	/^    dependencies = [$/;"	kind:variable	line:11
+detail	../questionnaire/views.py	/^def detail(request, question_id):$/;"	kind:function	line:15
+fields	../questionnaire/migrations/0001_initial.py	/^            fields=[$/;"	kind:variable	line:17
+fields	../questionnaire/migrations/0001_initial.py	/^            fields=[$/;"	kind:variable	line:25
+index	../questionnaire/views.py	/^def index(request):$/;"	kind:function	line:8
+initial	../questionnaire/migrations/0001_initial.py	/^    initial = True$/;"	kind:variable	line:9
+main	../manage.py	/^def main():$/;"	kind:function	line:7
+manage.py	../manage.py	1;"	kind:file	line:1
+models.py	../questionnaire/models.py	1;"	kind:file	line:1
+name	../questionnaire/apps.py	/^    name = 'questionnaire'$/;"	kind:variable	line:5
+name	../questionnaire/migrations/0001_initial.py	/^            name='Choice',$/;"	kind:variable	line:24
+name	../questionnaire/migrations/0001_initial.py	/^            name='Question',$/;"	kind:variable	line:16
+operations	../questionnaire/migrations/0001_initial.py	/^    operations = [$/;"	kind:variable	line:14
+pub_date	../questionnaire/models.py	/^    pub_date = models.DateTimeField('date published')$/;"	kind:variable	line:6
+question	../questionnaire/models.py	/^    question = models.ForeignKey(Question, on_delete=models.CASCADE)$/;"	kind:variable	line:14
+question_text	../questionnaire/models.py	/^    question_text = models.CharField(max_length=200)$/;"	kind:variable	line:5
+results	../questionnaire/views.py	/^def results(request, question_id):$/;"	kind:function	line:18
+settings.py	../masterSurvey/settings.py	1;"	kind:file	line:1
+tests.py	../questionnaire/tests.py	1;"	kind:file	line:1
+urlpatterns	../masterSurvey/urls.py	/^urlpatterns = [$/;"	kind:variable	line:19
+urlpatterns	../questionnaire/urls.py	/^urlpatterns = [$/;"	kind:variable	line:5
+urls.py	../masterSurvey/urls.py	1;"	kind:file	line:1
+urls.py	../questionnaire/urls.py	1;"	kind:file	line:1
+views.py	../questionnaire/views.py	1;"	kind:file	line:1
+vote	../questionnaire/views.py	/^def vote(request, question_id):$/;"	kind:function	line:22
+votes	../questionnaire/models.py	/^    votes = models.IntegerField(default=0)$/;"	kind:variable	line:16
+wsgi.py	../masterSurvey/wsgi.py	1;"	kind:file	line:1
