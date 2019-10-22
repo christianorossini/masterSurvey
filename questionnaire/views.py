@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 #from .models import Question, Choice
+from .forms import ParticipantForm
 
 # Create your views here.
 def index(request):
@@ -12,7 +13,11 @@ def login(request):
     return render(request, 'masterquest/login.html')
 
 def newparticipant(request):
-    return render(request, 'masterquest/participant.html')    
+    if(request.method=='POST'):
+        form = ParticipantForm(request.POST)
+    else:
+        form = ParticipantForm()    
+    return render(request, 'masterquest/participant.html', {'form': form})    
 
 def detail(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
