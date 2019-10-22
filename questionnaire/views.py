@@ -8,6 +8,12 @@ from django.urls import reverse
 def index(request):
     return render(request, 'masterquest/index.html')
 
+def login(request):
+    return render(request, 'masterquest/login.html')
+
+def newparticipant(request):
+    return render(request, 'masterquest/participant.html')    
+
 def detail(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
     return render(request, 'masterquest/detail.html', {'question': question}) """    

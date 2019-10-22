@@ -3,11 +3,10 @@ from django.urls import path
 from . import views
 
 #app_name = 'masterquest'
-urlpatterns = [
-    # ex: /polls/
-    path('', views.index, name='index'),
-    # ex: /polls/5/
-    path('<int:question_id>/', views.detail, name='detail'),
+urlpatterns = [    
+    path('', views.index, name='index'),    
+    path('login/', views.login, name='login'),
+    path('newparticipant/', views.newparticipant, name='newparticipant'),
     # ex: /polls/5/results/
     path('<int:question_id>/results/', views.results, name='results'),
     # ex: /polls/5/vote/
