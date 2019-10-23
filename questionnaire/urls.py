@@ -7,6 +7,8 @@ urlpatterns = [
     path('', views.index, name='index'),    
     path('login/', views.login, name='login'),
     path('newparticipant/', views.newparticipant, name='newparticipant'),
+    path('instructions/', views.instructions, name='instructions'),
+    path('survey/', views.survey, name='survey'),
     # ex: /polls/5/results/
     path('<int:question_id>/results/', views.results, name='results'),
     # ex: /polls/5/vote/

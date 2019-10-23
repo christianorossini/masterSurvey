@@ -14,7 +14,11 @@ class Participant(models.Model):
     )
     name = models.CharField(max_length=100, blank=False)
     origin = models.CharField(choices=PART_ORIGIN, max_length=1) 
-    experience = models.CharField(max_length=3, choices=YEARS_OF_EXP) # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
+    experience = models.CharField(max_length=3, choices=YEARS_OF_EXP, verbose_name="Programming experince") # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
+
+    def __str__(self):
+        return self.name
+
 
 class Task(models.Model):
     name = models.CharField(max_length=30, default='')

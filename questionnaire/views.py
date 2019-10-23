@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-#from .models import Question, Choice
+import secrets
 from .forms import ParticipantForm
 
 # Create your views here.
@@ -15,13 +15,34 @@ def login(request):
 def newparticipant(request):
     if(request.method=='POST'):
         form = ParticipantForm(request.POST)
+        
+        if(form.is_valid):            
+            participant = form.save(commit=False)
+            participant.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo
+            participant.save()
+
+            #inclui o participante na sessão, condiciona acessar os outros passos da survey a partir desta view
+            request.session['participant']=participant.inviteId
+            request.session['participantName']=participant.name
+
+            return HttpResponseRedirect(reverse('instructions'))        
+
     else:
         form = ParticipantForm()    
+    
     return render(request, 'masterquest/participant.html', {'form': form})    
 
-def detail(request, question_id):
-   """  question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'masterquest/detail.html', {'question': question}) """    
+def instructions(request):    
+    if(not isParticipantInSession(request)):
+         return HttpResponseRedirect(reverse('newparticipant'))  
+
+    return render(request, 'masterquest/instructions.html')
+
+def survey(request):
+    if(not isParticipantInSession(request)):
+         return HttpResponseRedirect(reverse('newparticipant'))  
+    
+    return render(request, 'masterquest/survey.html')    
 
 def results(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
@@ -44,4 +65,8 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('results', args=(question.id,))) """
-    
+
+def isParticipantInSession(request):
+    if('participant' in request.session):
+         return HttpResponseRedirect(reverse('newparticipant'))  
+        
