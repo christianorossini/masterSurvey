@@ -1,6 +1,18 @@
-<form action="{% url 'newparticipant' %}" method="POST">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" />
+{% extends "masterQuest/base.html" %}
 
-</form>
+{% block content %}
+
+    <h1 class="stepTitle">Set some informations</h1>
+    
+    <fieldset>
+        <form action="{% url 'newparticipant' %}" method="POST">
+            <div class="form-group">
+                {% csrf_token %}
+                {{form}}                                
+            </div>    
+            <input type="submit" value="Start!" class="btn btn-primary" />
+
+        </form>
+    </fieldset>
+
+{% endblock content %}
