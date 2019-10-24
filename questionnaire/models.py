@@ -19,13 +19,19 @@ class Participant(models.Model):
     def __str__(self):
         return self.name
 
+class DTModel(models.Model):
+    imgPath = models.CharField(max_length=50)
+    codeSnippet1 = models.TextField()
+    codeSnippert2 = models.TextField()    
 
 class Task(models.Model):
     name = models.CharField(max_length=30, default='')
+    dtModel = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)
     
 class Question(models.Model):
     description = models.TextField(max_length=100, default="")
     task = models.ForeignKey(Task,on_delete=models.CASCADE)
+    sequenceNumber = models.IntegerField() #as 'questions' tem uma sequência dentro de uma task
     
     def __str__(self):
         return self.question_text

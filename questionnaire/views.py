@@ -4,6 +4,7 @@ from django.template import loader
 from django.urls import reverse
 import secrets
 from .forms import ParticipantForm
+from .models import DTModel, Task
 
 # Create your views here.
 def index(request):
@@ -42,7 +43,13 @@ def survey(request):
     if(not isParticipantInSession(request)):
          return HttpResponseRedirect(reverse('newparticipant'))  
     
-    return render(request, 'masterquest/survey.html')    
+    dtModels = DTModel.objects.all()
+
+    #tasks = dtModel.tasks    
+
+    print(dtModels[0])
+    
+    return render(request, 'masterquest/survey.html',context={'dtModel':dtModels[0]})    
 
 def results(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
