@@ -1,14 +1,15 @@
-{% load static %}
 {% extends "masterQuest/base.html" %}
+{% load static %}
 
 {% block content %}
 
-<h1>Task 1</h1>
+<h1>Analyse Model #</h1>
 
-<img src="{% get_static_prefix %}masterquest/images/gc.png" />
+<img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" class="img-thumbnail rounded"/>
 
-<h2>Question n. 1</h2>
-<h2>Question n. 2</h2>
-<h2>Question n. 3</h2>
+<h2 class="tasktitle">Task 1: {{task.name}}</h2>
+<h3 class="questionDesc">Question n. 1</h3>
+<h3 class="questionDesc">Question n. 2</h3>
+<h3 class="questionDesc">Question n. 3</h3>
 
 {% endblock content %}

@@ -8,11 +8,11 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('newparticipant/', views.newparticipant, name='newparticipant'),
     path('instructions/', views.instructions, name='instructions'),
-    path('survey/', views.survey, name='survey'),
+    path('survey/', views.survey, name='survey'),    
     # ex: /polls/5/results/
-    path('<int:question_id>/results/', views.results, name='results'),
+    #path('<int:question_id>/results/', views.results, name='results'),
     # ex: /polls/5/vote/
-    path('<int:question_id>/vote/', views.vote, name='vote'),
+    #path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
 
 """ urlpatterns = [

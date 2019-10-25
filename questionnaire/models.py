@@ -26,7 +26,7 @@ class DTModel(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=30, default='')
-    dtModel = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)
+    dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
     
 class Question(models.Model):
     description = models.TextField(max_length=100, default="")

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <h1 class="stepTitle">Set some informations</h1>
+    <h1 class="stepTitle">1 - Set some informations</h1>
     
     <fieldset>
         <form action="{% url 'newparticipant' %}" method="POST">
@@ -10,7 +10,7 @@
                 {% csrf_token %}
                 {{form}}                                
             </div>    
-            <input type="submit" value="Start!" class="btn btn-primary" />
+            <input type="submit" value="Ok. Now, show me instructions." class="btn btn-primary" />
 
         </form>
     </fieldset>

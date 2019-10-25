@@ -5,6 +5,7 @@ from django.urls import reverse
 import secrets
 from .forms import ParticipantForm
 from .models import DTModel, Task
+import random
 
 # Create your views here.
 def index(request):
@@ -41,15 +42,23 @@ def instructions(request):
 
 def survey(request):
     if(not isParticipantInSession(request)):
-         return HttpResponseRedirect(reverse('newparticipant'))  
-    
-    dtModels = DTModel.objects.all()
+         return HttpResponseRedirect(reverse('newparticipant'))      
+        
+    """ if('modelExibOrder' not in request.session):
+        # primeiro acesso ao survey: prepara uma variável de sessão que vai ditar a ordem de exibição dos modelos
+        modelKeys = list(DTModel.objects.values_list('pk', flat=True))
+        random.shuffle(modelKeys) 
+        request.session['modelExibOrder'] = modelKeys
+    else:
+        modelKeys = request.session['modelExibOrder'] """
 
-    #tasks = dtModel.tasks    
+    #implementar um tratamento para lista vazia
+    #dtModel = DTModel.objects.get(pk=modelKeys.pop())    
+    import pdb;pdb.set_trace()
+    dtModel = DTModel.objects.get(pk=1)
+    tasks = Task.objects.filter(dtModel=dtModel)
 
-    print(dtModels[0])
-    
-    return render(request, 'masterquest/survey.html',context={'dtModel':dtModels[0]})    
+    return render(request, 'masterquest/survey.html', context={'dtModel':dtModel, 'task':tasks[0]})    
 
 def results(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
@@ -76,4 +85,3 @@ def vote(request, question_id):
 def isParticipantInSession(request):
     if('participant' in request.session):
          return HttpResponseRedirect(reverse('newparticipant'))  
-        
