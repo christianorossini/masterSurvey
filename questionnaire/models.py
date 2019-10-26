@@ -19,35 +19,42 @@ class Participant(models.Model):
     def __str__(self):
         return self.name
 
+class Question(models.Model):
+    description = models.CharField(max_length=100)    
+    sequenceNumber = models.IntegerField() #as 'questions' tem uma sequência dentro de uma task    
+    def __str__(self):
+        return self.description
+
+class Task(models.Model):
+    name = models.CharField(max_length=30, default='')    
+    questions = models.ManyToManyField(Question)
+    def __str__(self):
+        return self.name
+
 class DTModel(models.Model):
     imgPath = models.CharField(max_length=50)
     codeSnippet1 = models.TextField()
     codeSnippert2 = models.TextField()    
-
-class Task(models.Model):
-    name = models.CharField(max_length=30, default='')
-    dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
-    
-class Question(models.Model):
-    description = models.TextField(max_length=100, default="")
-    task = models.ForeignKey(Task,on_delete=models.CASCADE)
-    sequenceNumber = models.IntegerField() #as 'questions' tem uma sequência dentro de uma task
-    
+    tasks = models.ManyToManyField(Task)
     def __str__(self):
-        return self.question_text
+        return self.imgPath
 
 class Questionnaire(models.Model):
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
     dtStartTasks = models.DateTimeField()
     dtEndTasks = models.DateTimeField()
+    def __str__(self):
+        return self.participant
 
 class Answer(models.Model):
-    text = models.TextField()
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
+    content = models.CharField(max_length=5)
     answerStartTime = models.TimeField()
-    answerEndTime = models.TimeField()
-   
+    answerEndTime = models.TimeField() 
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
+    dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+      
 
 class InviteControl(models.Model):
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
