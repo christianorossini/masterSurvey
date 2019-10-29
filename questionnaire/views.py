@@ -4,8 +4,9 @@ from django.template import loader
 from django.urls import reverse
 import secrets
 from .forms import *
-from .models import DTModel, Task
+from .models import DTModel, Task, Answer
 import random
+import datetime
 
 # Create your views here.
 def index(request):
@@ -22,6 +23,11 @@ def newparticipant(request):
             participant = form.save(commit=False)
             participant.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo
             participant.save()
+
+            #cria um novo questionário e vincula o participant
+            questionnaire = Questionnaire()            
+            questionnaire.participant = participant
+            questionnaire.save()                        
 
             #inclui o participante na sessão, condiciona acessar os outros passos da survey a partir desta view
             request.session['participant']=participant.inviteId
@@ -60,12 +66,19 @@ def survey(request):
         return HttpResponse("ok");
 
     else:
-        answerForm = AnswerTaskCLForm()
-        dtModel = DTModel.objects.get(pk=4)
-        tasks = dtModel.tasks.all()
-        task = tasks[0]       
+        modelKeys = list(DTModel.objects.values_list('pk', flat=True))        
+        request.session['modelExibOrder'] = modelKeys
         
-
+        dtModel = DTModel.objects.get(pk=1)        
+        task = Task.objects.get(pk=1)
+        questionnaire = Questionnaire.objects.get(pk=2) 
+        
+        answer = Answer()
+        answer.dtModel = dtModel 
+        answer.questionnaire = questionnaire
+        answer.task = task
+        answerForm = AnswerTaskCLForm(instance=answer)
+       
     #implementar um tratamento para lista vazia
     #dtModel = DTModel.objects.get(pk=modelKeys.pop())    
     #import pdb;pdb.set_trace()

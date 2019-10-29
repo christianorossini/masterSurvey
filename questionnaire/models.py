@@ -32,7 +32,7 @@ class Question(models.Model):
 
 class Task(models.Model):
     CLASSIFICATION_TASK = "CL"
-    shortName = models.CharField(max_length=2,unique=True)
+    shortName = models.CharField(max_length=2)
     name = models.CharField(max_length=30, default='')    
     questions = models.ManyToManyField(Question)
     def __str__(self):
@@ -52,8 +52,8 @@ class DTModel(models.Model):
 
 class Questionnaire(models.Model):
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-    dtStartTasks = models.DateTimeField()
-    dtEndTasks = models.DateTimeField()
+    dtStartTasks = models.DateTimeField(auto_now_add=True)
+    dtEndTasks = models.DateTimeField(null=True)
     def __str__(self):
         return self.participant
     class Meta:
@@ -73,11 +73,19 @@ class Answer(models.Model):
     class Meta:
         db_table="ms_answer"  
 
+# Classe para respostas da task Classification
 class AnswerTaskCL(Answer):
-    OPTIONSQ1 = (            
+    OPTIONS_CLASSIFY = (            
             ("CS", "It belongs to class 'Code smell'"),
-            ("NC", "It DOESN'T belongs to class 'Code smell'")) 
-    """ OPTIONSQ2 = (            
+            ("NC", "It DOESN'T belongs to class 'Code smell'"))    
+    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_CLASSIFY)
+    answerq2 = models.CharField(max_length=2, verbose_name='', choices=Answer.OPTIONS_DIFFICULTY)
+    class Meta:
+        db_table="ms_answerTaskCL" 
+
+# Classe para respostas da task Identify
+class AnswerTaskID(Answer):    
+    OPTIONS_CODE_SMELL = (            
             ("CDSBP", "Class Data Should Be Private"),
             ("CC", "Complex Class"),
             ("FE", "Feature Envy"),
@@ -90,11 +98,19 @@ class AnswerTaskCL(Answer):
             ("RB", "Refused Bequest"),
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
-            ) """ 
-    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONSQ1)
-    answerq2 = models.CharField(max_length=2, verbose_name='', choices=Answer.OPTIONS_DIFFICULTY)
+            )
+    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_CODE_SMELL)    
     class Meta:
-        db_table="ms_answerTaskCL" 
+        db_table="ms_answerTaskID"
+
+# Classe para respostas da task Rate
+class AnswerTaskRA(Answer):    
+    OPTIONS_RATE = (            
+            (""),
+            )
+    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_RATE)    
+    class Meta:
+        db_table="ms_answerTaskRA"
 
 class InviteControl(models.Model):
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
