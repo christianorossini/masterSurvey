@@ -67,8 +67,13 @@ class Questionnaire(models.Model):
     class Meta:
         db_table="ms_questionnaire"
 
-class Answer(models.Model):
-    content = models.CharField(max_length=5, verbose_name='')
+class Answer(models.Model):    
+    OPTIONS_DIFFICULTY = (
+            ("VE", "Very easy - I answered without any problems in less then 7 seconds"),
+            ("E", "Easy - I found the answer quite quickly and without major problems"),
+            ("M", "Medium"),
+            ("D","Difficult - I had to think hard and am I am not sure if I answered correctly."),
+            ("VD","Very difficult - Despite thinking hard, my answer is likely to be wrong."))    
     answerStartTime = models.TimeField()
     answerEndTime = models.TimeField() 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -76,7 +81,30 @@ class Answer(models.Model):
     dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     class Meta:
-        db_table="ms_answer"    
+        db_table="ms_answer"  
+
+class AnswerTaskCL(Answer):
+    OPTIONSQ1 = (            
+            ("CS", "It belongs to class 'Code smell'"),
+            ("NC", "It DOESN'T belongs to class 'Code smell'")) 
+    """ OPTIONSQ2 = (            
+            ("CDSBP", "Class Data Should Be Private"),
+            ("CC", "Complex Class"),
+            ("FE", "Feature Envy"),
+            ("GC", "God Class"),
+            ("II", "Inappropriate Intimacy"),
+            ("LC", "Lazy Class"),
+            ("LM", "Long Method"),
+            ("LPL", "Long Parameter List"),
+            ("MM", "Middle Man"),
+            ("RB", "Refused Bequest"),
+            ("SC", "Spaghetti Code"),
+            ("SG", "Speculative Generality"),
+            ) """ 
+    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONSQ1)
+    answerq2 = models.CharField(max_length=2, verbose_name='', choices=Answer.OPTIONS_DIFFICULTY)
+    class Meta:
+        db_table="ms_answerTaskCL" 
 
 class InviteControl(models.Model):
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
