@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 import secrets
-from .forms import ParticipantForm
+from .forms import *
 from .models import DTModel, Task
 import random
 
@@ -52,15 +52,25 @@ def survey(request):
     else:
         modelKeys = request.session['modelExibOrder'] """
 
+    if(request.method=='POST'):
+        answerForm = AnswerTaskCLForm(request.POST)
+        if(answerForm.is_valid):
+            answerForm.save()
+        
+        return HttpResponse("ok");
+
+    else:
+        answerForm = AnswerTaskCLForm()
+        dtModel = DTModel.objects.get(pk=4)
+        tasks = dtModel.tasks.all()
+        task = tasks[0]       
+        
+
     #implementar um tratamento para lista vazia
     #dtModel = DTModel.objects.get(pk=modelKeys.pop())    
     #import pdb;pdb.set_trace()
-    dtModel = DTModel.objects.get(pk=4)
-    tasks = dtModel.tasks.all()
-    task = tasks[0]
-    questions = task.questions.all()
 
-    return render(request, 'masterquest/survey.html', context={'dtModel':dtModel, 'task':task, 'questions':questions})    
+    return render(request, 'masterquest/survey.html', context={'dtModel':dtModel, 'task':task, 'form':answerForm})
 
 def results(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)

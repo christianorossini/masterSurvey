@@ -1,5 +1,5 @@
 from .models import *
-from django.forms import ModelForm, CharField, TextInput, Select, RadioSelect
+from django.forms import ModelForm, CharField, TextInput, Select, RadioSelect, HiddenInput
 from django import forms
 
 
@@ -17,8 +17,11 @@ class ParticipantForm(ModelForm):
 class AnswerTaskCLForm(forms.ModelForm):        
     class Meta:               
         model = AnswerTaskCL
-        fields = ['answerq1', 'answerq2']
+        fields = ['answerq1', 'answerq2', 'questionnaire', 'dtModel', 'task']
         widgets = {            
             'answerq1': Select(attrs={'class':"form-control"}),
-            'answerq2': Select(attrs={'class':"form-control"})
+            'answerq2': Select(attrs={'class':"form-control"}),
+            'questionnaire': HiddenInput(),
+            'dtModel': HiddenInput(),
+            'task': HiddenInput()
         }

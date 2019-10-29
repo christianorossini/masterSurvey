@@ -52,14 +52,15 @@
         </div>
     </div>
     
-    <form action="" method="POST">      
+    <form action="{% url 'survey' %}" method="POST">    
+        {% csrf_token %}  
         <div class="quest0Content questContent">
-            <h3 class="questionDesc">Q. {{questions.0.sequenceNumber}} - {{questions.0.description}}</h3>             
+            <h3 class="questionDesc">How does the model classify the folowing observation?</h3>             
             <p>
                 <strong>CountLine=60 and MaxNesting > 5.8 and CountLineCodeExe=29 and RatioCommentToCode=0.06 and CountPath=9 and CountLineBlank=2 </strong>
             </p>
             <div class="input-group mb-3">                
-                {{questions.0.getForm}}
+                {{form.answerq1}}
                 <div class="input-group-append">
                     <button type="button" class="btn btn-primary btnStartQuest1">Apply answer</button>
                 </div>
@@ -67,22 +68,17 @@
         </div>    
 
         <div class="quest1Content questContent">
-            <h3 class="questionDesc">Q. {{questions.1.sequenceNumber}} - {{questions.1.description}}</h3>                     
-            <div class="input-group mb-3">    
-                {{questions.1.getForm}}            
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-primary btnStartQuest2">Apply answer</button>
-                </div>
-            </div>            
+            <h3 class="questionDesc">How difficult was the task?</h3>                     
+               
+                {{form.answerq2}}   
+            
+                <input type="submit" value="Next Task" class="btn btn-primary" />
         </div>    
-
-        <div class="quest2Content questContent">
-            <h3 class="questionDesc">Q. {{questions.2.sequenceNumber}} - {{questions.2.description}}</h3>    
-            
-                {{questions.2.getForm}}
-            <input type="submit" value="Next Task" class="btn btn-primary" />
-            
-        </div>
+               
+        {{form.task}}
+        {{form.dtModel}}   
+        {{form.questionnaire}}   
+        
     </form>
     
 </div>
