@@ -29,14 +29,6 @@ class Question(models.Model):
     class Meta:
         db_table="ms_question"    
         ordering = ['sequenceNumber']
-    def getForm(self):
-        from . import forms
-        if self.id==5:
-            return forms.AnswerFormCL1()
-        if self.id==6:
-            return forms.AnswerFormCL2()
-        if self.id==7:
-            return forms.AnswerFormCL3()       
 
 class Task(models.Model):
     CLASSIFICATION_TASK = "CL"
@@ -74,9 +66,7 @@ class Answer(models.Model):
             ("M", "Medium"),
             ("D","Difficult - I had to think hard and am I am not sure if I answered correctly."),
             ("VD","Very difficult - Despite thinking hard, my answer is likely to be wrong."))    
-    answerStartTime = models.TimeField()
-    answerEndTime = models.TimeField() 
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    secondsToAnswer = models.IntegerField(null=True)    
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
     dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
