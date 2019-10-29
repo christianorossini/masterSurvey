@@ -1,0 +1,154 @@
+{% extends "masterQuest/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<script>   
+    $(document).ready(function() {
+        $('.btnStartTask').click(function() {
+            $('.btnStartTask').attr("disabled","disabled");
+            $('#gridModelSnippets').show();
+            $('.quest0Content').css('display','block');            
+        });
+
+        $('.btnStartQuest1').click(function() {
+            $('.btnStartQuest1').attr("disabled","disabled");
+            $('.quest1Content').css('display','block')
+        });
+
+        $('.btnStartQuest2').click(function() {
+            $('.btnStartQuest2').attr("disabled","disabled");
+            $('.quest2Content').css('display','block')
+        });
+    });
+</script>
+
+
+<h1>3 - Analyse Model #13213</h1>
+
+<h2 class="tasktitle">Task 1: {{task.name}}</h2>
+<button type="button" class="btn btn-primary btnStartTask">Start solving</button>
+
+<div class="taskContent">
+   
+    <div class="container" id="gridModelSnippets" onclick="" style="display: none">
+        <div class="row">
+            <div class="col-sm">            
+                <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
+                    <!--<img src="{% get_static_prefix %}masterquest/images/dtree.png" data-toggle="modal" data-target="#dtModelModal"/>      --> 
+                    <img src="{% get_static_prefix %}masterquest/images/dtree.png"/>
+                </a>
+            </div>        
+            <div class="col-sm">
+                <span style="display: block;">Code snippet 1</span>
+                <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs1"/>
+            </div>    
+            <div class="col-sm">
+                <span style="display: block;">Code snippet 2</span>
+                <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs2"/>
+            </div>
+        </div>
+    </div>
+    
+    <form action="{% url 'survey' %}" method="POST">    
+        {% csrf_token %}  
+        <div class="quest0Content questContent">
+            <h3 class="questionDesc">How does the model classify the folowing observation?</h3>             
+            <p>
+                <strong>CountLine=60 and MaxNesting > 5.8 and CountLineCodeExe=29 and RatioCommentToCode=0.06 and CountPath=9 and CountLineBlank=2 </strong>
+            </p>
+            <div class="input-group mb-3">                
+                {{form.answerq1}}
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary btnStartQuest1">Apply answer</button>
+                </div>
+            </div>                                       
+        </div>    
+
+        <div class="quest1Content questContent">
+            <h3 class="questionDesc">How difficult was the task?</h3>                     
+               
+                {{form.answerq2}}   
+            
+                <input type="submit" value="Next Task" class="btn btn-primary" />
+        </div>    
+               
+        {{form.task}}
+        {{form.dtModel}}   
+        {{form.questionnaire}}   
+        
+    </form>
+    
+</div>
+
+
+
+      
+<!-- Modal -->
+<!--<div class="modal fade" id="dtModelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">DT Model</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="cs1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Code Snippet 1</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <pre><code>
+                    {{dtModel.codeSnippet1}}
+                </code></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
+            </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="cs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Code Snippet 2</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <pre><code>
+                            {{dtModel.codeSnippet2}}
+                        </code></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
