@@ -66,5 +66,18 @@ body{
     cursor: pointer;
 }
 
+.questContent{
+    display: none;
+    margin-top:20px;
+    margin-bottom:20px;
+}
 
+h3.questionDesc{
+    font-size: 120%;
+}
 
+form ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}

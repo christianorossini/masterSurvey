@@ -54,11 +54,13 @@ def survey(request):
 
     #implementar um tratamento para lista vazia
     #dtModel = DTModel.objects.get(pk=modelKeys.pop())    
-    import pdb;pdb.set_trace()
-    dtModel = DTModel.objects.get(pk=1)
-    tasks = Task.objects.filter(dtModel=dtModel)
+    #import pdb;pdb.set_trace()
+    dtModel = DTModel.objects.get(pk=4)
+    tasks = dtModel.tasks.all()
+    task = tasks[0]
+    questions = task.questions.all()
 
-    return render(request, 'masterquest/survey.html', context={'dtModel':dtModel, 'task':tasks[0]})    
+    return render(request, 'masterquest/survey.html', context={'dtModel':dtModel, 'task':task, 'questions':questions})    
 
 def results(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
