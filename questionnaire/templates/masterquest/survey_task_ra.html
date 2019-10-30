@@ -3,35 +3,13 @@
 
 {% block content %}
 
-<script>   
-    $(document).ready(function() {
-        $('.btnStartTask').click(function() {
-            $('.btnStartTask').attr("disabled","disabled");
-            $('#gridModelSnippets').show();
-            $('.quest0Content').css('display','block');            
-        });
+<h1>3 - Analyse Model {{dtModel.sequenceNumber}}</h1>
 
-        $('.btnStartQuest1').click(function() {
-            $('.btnStartQuest1').attr("disabled","disabled");
-            $('.quest1Content').css('display','block')
-        });
-
-        $('.btnStartQuest2').click(function() {
-            $('.btnStartQuest2').attr("disabled","disabled");
-            $('.quest2Content').css('display','block')
-        });
-    });
-</script>
-
-
-<h1>3 - Analyse Model #13213</h1>
-
-<h2 class="tasktitle">Task 1: {{task.name}}</h2>
-<button type="button" class="btn btn-primary btnStartTask">Start solving</button>
+<h2 class="tasktitle">Task {{task.sequenceNumber}}: {{task.name}}</h2>
 
 <div class="taskContent">
    
-    <div class="container" id="gridModelSnippets" onclick="" style="display: none">
+    <div class="container" id="gridModelSnippets" onclick="">
         <div class="row">
             <div class="col-sm">            
                 <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
@@ -53,25 +31,13 @@
     <form action="{% url 'survey' %}" method="POST">    
         {% csrf_token %}  
         <div class="quest0Content questContent">
-            <h3 class="questionDesc">How does the model classify the folowing observation?</h3>             
-            <p>
-                <strong>CountLine=60 and MaxNesting > 5.8 and CountLineCodeExe=29 and RatioCommentToCode=0.06 and CountPath=9 and CountLineBlank=2 </strong>
-            </p>
-            <div class="input-group mb-3">                
-                {{form.answerq1}}
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-primary btnStartQuest1">Apply answer</button>
-                </div>
-            </div>                                       
-        </div>    
-
-        <div class="quest1Content questContent">
-            <h3 class="questionDesc">How difficult was the task?</h3>                     
-               
-                {{form.answerq2}}   
+            <h3 class="questionDesc">The above classification tree is:</h3>             
             
-                <input type="submit" value="Next Task" class="btn btn-primary" />
-        </div>    
+            {{form.answerq1}}
+         
+
+            <input type="submit" value="Next Task" class="btn btn-primary" />
+        </div>               
                
         {{form.task}}
         {{form.dtModel}}   

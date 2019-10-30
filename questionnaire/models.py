@@ -31,33 +31,47 @@ class Question(models.Model):
         ordering = ['sequenceNumber']
 
 class Task(models.Model):
-    CLASSIFICATION_TASK = "CL"
+    CLASSIFY_TASK = "CL"
+    RATE_TASK = "RA"
     shortName = models.CharField(max_length=2)
     name = models.CharField(max_length=30, default='')    
     questions = models.ManyToManyField(Question)
+    sequenceNumber = models.IntegerField(null=True) #ordem de exibição das tasks
     def __str__(self):
         return self.name
     class Meta:
-        db_table="ms_task"    
+        db_table="ms_task"      
+    def getForm(self, post=None, instance=None):
+        from . import forms
+        if (self.shortName==Task.CLASSIFY_TASK):
+            return forms.AnswerTaskCLForm(post, instance=instance)            
+        if (self.shortName==Task.RATE_TASK):    
+            return forms.AnswerTaskRAForm(post, instance=instance)            
+    def getView(self):
+        if (self.shortName==Task.CLASSIFY_TASK):            
+            return "masterquest/survey_task_cl.html"
+        if (self.shortName==Task.RATE_TASK):                
+            return "masterquest/survey_task_ra.html"
 
 class DTModel(models.Model):
     imgPath = models.CharField(max_length=50)
     codeSnippet1 = models.TextField()
     codeSnippet2 = models.TextField()    
     tasks = models.ManyToManyField(Task)
+    sequenceNumber = models.IntegerField(null=True) #ordem de exibição dos modelos de DT
     def __str__(self):
         return self.imgPath
     class Meta:
-        db_table="ms_dtModel"    
+        db_table="ms_dtModel"        
 
 class Questionnaire(models.Model):
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
     dtStartTasks = models.DateTimeField(auto_now_add=True)
-    dtEndTasks = models.DateTimeField(null=True)
-    def __str__(self):
-        return self.participant
+    dtEndTasks = models.DateTimeField(null=True)    
     class Meta:
-        db_table="ms_questionnaire"
+        db_table="ms_questionnaire"   
+    def __str__(self):
+        return str(self.dtStartTasks)
 
 class Answer(models.Model):    
     OPTIONS_DIFFICULTY = (
@@ -106,9 +120,13 @@ class AnswerTaskID(Answer):
 # Classe para respostas da task Rate
 class AnswerTaskRA(Answer):    
     OPTIONS_RATE = (            
-            (""),
+            ("VE", "Very easily comprehensible"),
+            ("E", "Easily comprehensible"),
+            ("C", "Comprehensible"),
+            ("D", "Difficult to comprehend"),
+            ("VD", "Very difficult to comprehend"),
             )
-    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_RATE)    
+    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_RATE, default='')    
     class Meta:
         db_table="ms_answerTaskRA"
 

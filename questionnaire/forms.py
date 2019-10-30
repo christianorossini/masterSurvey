@@ -25,3 +25,14 @@ class AnswerTaskCLForm(forms.ModelForm):
             'dtModel': HiddenInput(),
             'task': HiddenInput()
         }
+
+class AnswerTaskRAForm(forms.ModelForm):        
+    class Meta:               
+        model = AnswerTaskRA
+        fields = ['answerq1', 'questionnaire', 'dtModel', 'task']
+        widgets = {            
+            'answerq1': RadioSelect(),            
+            'questionnaire': HiddenInput(),
+            'dtModel': HiddenInput(),
+            'task': HiddenInput()
+        }

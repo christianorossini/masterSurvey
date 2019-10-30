@@ -4,7 +4,7 @@ from django.template import loader
 from django.urls import reverse
 import secrets
 from .forms import *
-from .models import DTModel, Task, Answer
+from .models import DTModel, Task, Answer, Questionnaire
 import random
 import datetime
 
@@ -25,6 +25,7 @@ def newparticipant(request):
             participant.save()
 
             #cria um novo questionário e vincula o participant
+            # TODO tentar realizar um save só
             questionnaire = Questionnaire()            
             questionnaire.participant = participant
             questionnaire.save()                        
@@ -32,8 +33,11 @@ def newparticipant(request):
             #inclui o participante na sessão, condiciona acessar os outros passos da survey a partir desta view
             request.session['participant']=participant.inviteId
             request.session['participantName']=participant.name
+            request.session['questionnaireID']=questionnaire.id
 
-            return HttpResponseRedirect(reverse('instructions'))        
+            initSurvey(request)
+
+            return HttpResponseRedirect(reverse('instructions'))     
 
     else:
         form = ParticipantForm()    
@@ -47,43 +51,57 @@ def instructions(request):
     return render(request, 'masterquest/instructions.html')
 
 def survey(request):
-    if(not isParticipantInSession(request)):
+    if(not isSurveyInitiated(request)):
          return HttpResponseRedirect(reverse('newparticipant'))      
-        
-    """ if('modelExibOrder' not in request.session):
-        # primeiro acesso ao survey: prepara uma variável de sessão que vai ditar a ordem de exibição dos modelos
-        modelKeys = list(DTModel.objects.values_list('pk', flat=True))
-        random.shuffle(modelKeys) 
-        request.session['modelExibOrder'] = modelKeys
-    else:
-        modelKeys = request.session['modelExibOrder'] """
-
+    
     if(request.method=='POST'):
-        answerForm = AnswerTaskCLForm(request.POST)
-        if(answerForm.is_valid):
+        
+        pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]
+        task = Task.objects.get(pk=pkTask)
+        answerForm = task.getForm(post=request.POST)
+
+        if(answerForm.is_valid()):
             answerForm.save()
         
-        return HttpResponse("ok");
-
+            if(isLastDtModel(request) and isLastTask(request)):
+                return HttpResponseRedirect(reverse('finish'))  
+           
+            if(isLastTask(request)):
+                nextDtModel(request)
+                setCurrentTaskIndex(request, 0)
+            else:
+                nextTask(request)
+            
+            return HttpResponseRedirect(reverse('survey'))
     else:
-        modelKeys = list(DTModel.objects.values_list('pk', flat=True))        
-        request.session['modelExibOrder'] = modelKeys
+        pkModel = request.session['dtModelSequenceList'][getCurrentDtModelIndex(request)]
+        pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]
         
-        dtModel = DTModel.objects.get(pk=1)        
-        task = Task.objects.get(pk=1)
-        questionnaire = Questionnaire.objects.get(pk=2) 
+        dtModel = DTModel.objects.get(pk=pkModel)        
+        task = Task.objects.get(pk=pkTask)
+        questionnaire = Questionnaire.objects.get(pk=request.session['questionnaireID'])         
         
         answer = Answer()
         answer.dtModel = dtModel 
         answer.questionnaire = questionnaire
         answer.task = task
-        answerForm = AnswerTaskCLForm(instance=answer)
-       
-    #implementar um tratamento para lista vazia
-    #dtModel = DTModel.objects.get(pk=modelKeys.pop())    
-    #import pdb;pdb.set_trace()
+        
+        answerForm = task.getForm(instance=answer)        
+        view = task.getView()     
+    
+    return render(request, view, context={'dtModel':dtModel, 'task':task, 'form':answerForm})
 
-    return render(request, 'masterquest/survey.html', context={'dtModel':dtModel, 'task':task, 'form':answerForm})
+def endSurvey(request):
+    if(not isSurveyInitiated(request)):
+         return HttpResponseRedirect(reverse('newparticipant')) 
+
+    #elimina as varíáveis de controle criadas para gerenciar o survey
+    del request.session['participant']
+    del request.session['participantName']
+    del request.session['dtModelSequenceList']
+    del request.session['taskSequenceList']
+        
+    return render(request, 'masterquest/surveyFinish.html')
 
 def results(request, question_id):
    """  question = get_object_or_404(Question, pk=question_id)
@@ -106,7 +124,52 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('results', args=(question.id,))) """
-
+ 
 def isParticipantInSession(request):
     if('participant' in request.session):
-         return HttpResponseRedirect(reverse('newparticipant'))  
+         return HttpResponseRedirect(reverse('newparticipant'))   
+ 
+#inicializa o survey. Cria um fluxo com a sequência de atividades
+def initSurvey(request):    
+    modelSequencePks = list(DTModel.objects.values_list('pk', flat=True).order_by('sequenceNumber'))
+    request.session['dtModelSequenceList'] = modelSequencePks
+    taskSequencePks = list(Task.objects.values_list('pk', flat=True).order_by('sequenceNumber'))
+    request.session['taskSequenceList'] = taskSequencePks
+    setCurrentTaskIndex(request, 0)
+    setCurrentDtModelIndex(request, 0)
+
+def isSurveyInitiated(request):
+    return 'dtModelSequenceList' in request.session
+
+def nextTask(request):    
+    currentTaskIndex = getCurrentTaskIndex(request) + 1            
+    setCurrentTaskIndex(request, currentTaskIndex)
+    return request.session['taskSequenceList'][currentTaskIndex]
+
+def nextDtModel(request):
+    currentModelIndex = getCurrentDtModelIndex(request) + 1        
+    setCurrentDtModelIndex(request, currentModelIndex)    
+    return request.session['dtModelSequenceList'][currentModelIndex]
+
+def isLastTask(request):
+    currentTask = getCurrentTaskIndex(request)
+    taskList = request.session['taskSequenceList']
+    return len(taskList)==currentTask+1
+
+def isLastDtModel(request):
+    currentModel = getCurrentDtModelIndex(request)
+    modelList = request.session['dtModelSequenceList']
+    return len(modelList)==currentModel+1
+
+def setCurrentTaskIndex(request, num):
+    request.session['currentTask'] = num
+
+def getCurrentTaskIndex(request):
+    return request.session['currentTask']
+
+def setCurrentDtModelIndex(request, num):
+    request.session['currentDTModel'] = num
+
+def getCurrentDtModelIndex(request):
+    return request.session['currentDTModel']
+    

@@ -66,10 +66,14 @@ body{
     cursor: pointer;
 }
 
-.questContent{
-    display: none;
+
+.questContent{    
     margin-top:20px;
     margin-bottom:20px;
+}
+
+.questContentHidden{
+    display: none;
 }
 
 h3.questionDesc{

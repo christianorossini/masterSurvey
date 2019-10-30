@@ -26,7 +26,7 @@
 
 <h1>3 - Analyse Model #13213</h1>
 
-<h2 class="tasktitle">Task 1: {{task.name}}</h2>
+<h2 class="tasktitle">Task {{task.sequenceNumber}}: {{task.name}}</h2>
 <button type="button" class="btn btn-primary btnStartTask">Start solving</button>
 
 <div class="taskContent">
@@ -52,7 +52,7 @@
     
     <form action="{% url 'survey' %}" method="POST">    
         {% csrf_token %}  
-        <div class="quest0Content questContent">
+        <div class="quest0Content questContent questContenthidden">
             <h3 class="questionDesc">How does the model classify the folowing observation?</h3>             
             <p>
                 <strong>CountLine=60 and MaxNesting > 5.8 and CountLineCodeExe=29 and RatioCommentToCode=0.06 and CountPath=9 and CountLineBlank=2 </strong>
@@ -65,7 +65,7 @@
             </div>                                       
         </div>    
 
-        <div class="quest1Content questContent">
+        <div class="quest1Content questContent questContenthidden">
             <h3 class="questionDesc">How difficult was the task?</h3>                     
                
                 {{form.answerq2}}   
