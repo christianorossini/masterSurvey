@@ -17,7 +17,7 @@
 
         $('.btnStartQuest1').click(function() {             
             $('.btnStartQuest1').attr("disabled","disabled");
-            $('.slcQuest1').attr("readonly",true);
+            //$('.slcQuest1').attr("readonly",true);
             $('.quest2Content').css('visibility','visible');  
             endTime();            
             //computar o tempo em segundos
@@ -30,10 +30,12 @@
         });      
 
         $('.slcQuest1').change(function() {
-            if($('.slcQuest1').val()==''){
+            /* if($('.slcQuest1').val()==''){
                 $('.btnStartQuest1').attr("disabled",true);
-            }else{
+            }else{ */
+            if($('.slcQuest1').val()!=''){
                 $('.btnStartQuest1').attr("disabled",false);
+                $('.quest2Content').css('visibility','hidden'); 
             }
         });  
         
