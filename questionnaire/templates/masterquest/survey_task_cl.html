@@ -4,34 +4,64 @@
 {% block content %}
 
 <script>   
+    var taskStartTime;
+    var taskEndTime;
+    
     $(document).ready(function() {
         $('.btnStartTask').click(function() {
             $('.btnStartTask').attr("disabled","disabled");
-            $('#gridModelSnippets').show();
-            $('.quest0Content').css('display','block');            
+            $('#gridModelSnippets').css('visibility','visible');
+            $('.quest1Content').css('visibility','visible');
+            startTime();
         });
 
-        $('.btnStartQuest1').click(function() {
+        $('.btnStartQuest1').click(function() {             
             $('.btnStartQuest1').attr("disabled","disabled");
-            $('.quest1Content').css('display','block')
-        });
+            $('.slcQuest1').attr("readonly",true);
+            $('.quest2Content').css('visibility','visible');  
+            endTime();            
+            //computar o tempo em segundos
+            //atribuir o tempo a uma variável hidden
+            timeDiff = (taskEndTime - taskStartTime)/1000;
+            timeDiff = timeDiff.toFixed(2);
+            $('#id_secondsToAnswer').val(timeDiff);
 
-        $('.btnStartQuest2').click(function() {
-            $('.btnStartQuest2').attr("disabled","disabled");
-            $('.quest2Content').css('display','block')
-        });
+
+        });      
+
+        $('.slcQuest1').change(function() {
+            if($('.slcQuest1').val()==''){
+                $('.btnStartQuest1').attr("disabled",true);
+            }else{
+                $('.btnStartQuest1').attr("disabled",false);
+            }
+        });  
+        
     });
+
+    function startTime(){
+        taskStartTime =  new Date().getTime();    
+
+        /*var startDate = new Date();
+        // Do your operations
+        var endDate   = new Date();
+        var seconds = (endDate.getTime() - startDate.getTime()) / 1000;*/
+    }
+
+    function endTime(){
+        taskEndTime = new Date().getTime();    
+    }
 </script>
 
 
-<h1>3 - Analyse Model #13213</h1>
+<h1>3 - Classification tree {{classificationTreePosition}} of {{classificationTreeTotal}}</h1>
 
 <h2 class="tasktitle">Task {{task.sequenceNumber}}: {{task.name}}</h2>
 <button type="button" class="btn btn-primary btnStartTask">Start solving</button>
 
 <div class="taskContent">
    
-    <div class="container" id="gridModelSnippets" onclick="" style="display: none">
+    <div class="container taskContentHidden" id="gridModelSnippets">
         <div class="row">
             <div class="col-sm">            
                 <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
@@ -52,21 +82,21 @@
     
     <form action="{% url 'survey' %}" method="POST">    
         {% csrf_token %}  
-        <div class="quest0Content questContent questContenthidden">
-            <h3 class="questionDesc">How does the model classify the folowing observation?</h3>             
+        <div class="quest1Content questContent taskContentHidden">
+            <h3 class="questionDesc">{{questions.0.description}}</h3>             
             <p>
                 <strong>CountLine=60 and MaxNesting > 5.8 and CountLineCodeExe=29 and RatioCommentToCode=0.06 and CountPath=9 and CountLineBlank=2 </strong>
             </p>
             <div class="input-group mb-3">                
                 {{form.answerq1}}
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-primary btnStartQuest1">Apply answer</button>
+                    <button type="button" class="btn btn-primary btnStartQuest1" disabled="disabled">Apply answer</button>
                 </div>
             </div>                                       
         </div>    
 
-        <div class="quest1Content questContent questContenthidden">
-            <h3 class="questionDesc">How difficult was the task?</h3>                     
+        <div class="quest2Content questContent taskContentHidden">
+            <h3 class="questionDesc">{{questions.1.description}}</h3>                     
                
                 {{form.answerq2}}   
             
@@ -75,7 +105,8 @@
                
         {{form.task}}
         {{form.dtModel}}   
-        {{form.questionnaire}}   
+        {{form.questionnaire}} 
+        {{form.secondsToAnswer}}   
         
     </form>
     

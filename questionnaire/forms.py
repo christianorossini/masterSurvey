@@ -17,13 +17,14 @@ class ParticipantForm(ModelForm):
 class AnswerTaskCLForm(forms.ModelForm):        
     class Meta:               
         model = AnswerTaskCL
-        fields = ['answerq1', 'answerq2', 'questionnaire', 'dtModel', 'task']
+        fields = ['answerq1', 'answerq2', 'questionnaire', 'dtModel', 'task', 'secondsToAnswer']
         widgets = {            
-            'answerq1': Select(attrs={'class':"form-control"}),
-            'answerq2': Select(attrs={'class':"form-control"}),
+            'answerq1': Select(attrs={'class':"form-control slcQuest1"}),
+            'answerq2': Select(attrs={'class':"form-control slcQuest2"}),
             'questionnaire': HiddenInput(),
             'dtModel': HiddenInput(),
-            'task': HiddenInput()
+            'task': HiddenInput(),
+            'secondsToAnswer': HiddenInput(),
         }
 
 class AnswerTaskRAForm(forms.ModelForm):        
@@ -34,5 +35,5 @@ class AnswerTaskRAForm(forms.ModelForm):
             'answerq1': RadioSelect(),            
             'questionnaire': HiddenInput(),
             'dtModel': HiddenInput(),
-            'task': HiddenInput()
+            'task': HiddenInput(),            
         }

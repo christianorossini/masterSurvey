@@ -54,52 +54,63 @@ def survey(request):
     if(not isSurveyInitiated(request)):
          return HttpResponseRedirect(reverse('newparticipant'))      
     
+    pkModel = request.session['dtModelSequenceList'][getCurrentDtModelIndex(request)]
+    pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]        
+    dtModel = DTModel.objects.get(pk=pkModel)        
+    task = Task.objects.get(pk=pkTask)
+    questionnaire = Questionnaire.objects.get(pk=request.session['questionnaireID'])         
+    
     if(request.method=='POST'):
         
+        ## código redundante: refatorar
         pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]
         task = Task.objects.get(pk=pkTask)
+        ##
         answerForm = task.getForm(post=request.POST)
 
         if(answerForm.is_valid()):
             answerForm.save()
         
+            # fim do survey
             if(isLastDtModel(request) and isLastTask(request)):
                 return HttpResponseRedirect(reverse('finish'))  
            
+            # próximo classification tree
             if(isLastTask(request)):
                 nextDtModel(request)
                 setCurrentTaskIndex(request, 0)
             else:
+                #próxima task
                 nextTask(request)
             
             return HttpResponseRedirect(reverse('survey'))
-    else:
-        pkModel = request.session['dtModelSequenceList'][getCurrentDtModelIndex(request)]
-        pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]
-        
-        dtModel = DTModel.objects.get(pk=pkModel)        
-        task = Task.objects.get(pk=pkTask)
-        questionnaire = Questionnaire.objects.get(pk=request.session['questionnaireID'])         
-        
+    else:       
         answer = Answer()
         answer.dtModel = dtModel 
         answer.questionnaire = questionnaire
-        answer.task = task
-        
+        answer.task = task        
         answerForm = task.getForm(instance=answer)        
-        view = task.getView()     
     
-    return render(request, view, context={'dtModel':dtModel, 'task':task, 'form':answerForm})
+    return render(request, task.getView(), context={'dtModel':dtModel, 'task':task, 'form':answerForm, 
+                'questions':task.questions.all(), 'classificationTreePosition':getCurrentDtModelIndex(request)+1, 
+                'classificationTreeTotal':len(request.session['dtModelSequenceList'])})
 
 def endSurvey(request):
     if(not isSurveyInitiated(request)):
          return HttpResponseRedirect(reverse('newparticipant')) 
-
+       
+    #encerra o questionário
+    questId = request.session['questionnaireID']
+    questionnaire = Questionnaire.objects.get(id=questId)
+    questionnaire.finish()
+    questionnaire.save()
+    
     #elimina as varíáveis de controle criadas para gerenciar o survey
     del request.session['participant']
     del request.session['participantName']
     del request.session['dtModelSequenceList']
     del request.session['taskSequenceList']
+    del request.session['questionnaireID']
         
     return render(request, 'masterquest/surveyFinish.html')
 
@@ -172,4 +183,6 @@ def setCurrentDtModelIndex(request, num):
 
 def getCurrentDtModelIndex(request):
     return request.session['currentDTModel']
+
+
     

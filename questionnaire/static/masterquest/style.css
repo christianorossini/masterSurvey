@@ -72,8 +72,8 @@ body{
     margin-bottom:20px;
 }
 
-.questContentHidden{
-    display: none;
+.taskContentHidden{
+    visibility: hidden;
 }
 
 h3.questionDesc{

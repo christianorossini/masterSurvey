@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class Participant(models.Model):
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
@@ -72,6 +73,8 @@ class Questionnaire(models.Model):
         db_table="ms_questionnaire"   
     def __str__(self):
         return str(self.dtStartTasks)
+    def finish(self):
+        self.dtEndTasks = datetime.now()
 
 class Answer(models.Model):    
     OPTIONS_DIFFICULTY = (
@@ -80,7 +83,7 @@ class Answer(models.Model):
             ("M", "Medium"),
             ("D","Difficult - I had to think hard and am I am not sure if I answered correctly."),
             ("VD","Very difficult - Despite thinking hard, my answer is likely to be wrong."))    
-    secondsToAnswer = models.IntegerField(null=True)    
+    secondsToAnswer = models.FloatField(null=True)    
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
     dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
