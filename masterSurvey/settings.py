@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5abx3=ru8_ldbey#0@e*aq^5sw5n-bdj1psjt*4nfaz%t8+zo!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'masterSurvey.wsgi.application'
 DATABASES = {   
     'default': {     
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "masterquestdb",
-        'USER': 'masterquestuser',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'NAME': "christianorossin$masterquestdb",
+        'USER': 'christianorossin',
+        'PASSWORD': '@pEzZgMHe5zAzGV',
+        'HOST': 'christianorossini.mysql.pythonanywhere-services.com',
     }
 }
 
