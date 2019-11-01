@@ -37,3 +37,15 @@ class AnswerTaskRAForm(forms.ModelForm):
             'dtModel': HiddenInput(),
             'task': HiddenInput(),            
         }
+
+class AnswerTaskIDForm(AnswerTaskRAForm):        
+    class Meta(AnswerTaskRAForm.Meta):               
+        model = AnswerTaskID
+        widgets = {            
+            'answerq1': Select(attrs={'class':"form-control"}),  
+            'questionnaire': HiddenInput(),
+            'dtModel': HiddenInput(),
+            'task': HiddenInput(),        
+        }
+
+        

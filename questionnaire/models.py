@@ -34,6 +34,7 @@ class Question(models.Model):
 class Task(models.Model):
     CLASSIFY_TASK = "CL"
     RATE_TASK = "RA"
+    IDENTIFY_TASK = "ID"
     shortName = models.CharField(max_length=2)
     name = models.CharField(max_length=30, default='')    
     questions = models.ManyToManyField(Question)
@@ -48,14 +49,19 @@ class Task(models.Model):
             return forms.AnswerTaskCLForm(post, instance=instance)            
         if (self.shortName==Task.RATE_TASK):    
             return forms.AnswerTaskRAForm(post, instance=instance)            
+        if (self.shortName==Task.IDENTIFY_TASK):    
+            return forms.AnswerTaskIDForm(post, instance=instance)                
     def getView(self):
         if (self.shortName==Task.CLASSIFY_TASK):            
             return "masterquest/survey_task_cl.html"
         if (self.shortName==Task.RATE_TASK):                
             return "masterquest/survey_task_ra.html"
+        if (self.shortName==Task.IDENTIFY_TASK):                
+            return "masterquest/survey_task_id.html"    
 
 class DTModel(models.Model):
     imgPath = models.CharField(max_length=50)
+    modelTreePath = models.CharField(max_length=200, null=True)
     codeSnippet1 = models.TextField()
     codeSnippet2 = models.TextField()    
     tasks = models.ManyToManyField(Task)

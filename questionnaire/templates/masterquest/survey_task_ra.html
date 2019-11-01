@@ -31,7 +31,7 @@
     <form action="{% url 'survey' %}" method="POST">    
         {% csrf_token %}  
         <div class="quest0Content questContent">
-            <h3 class="questionDesc">The above classification tree is:</h3>             
+            <h3 class="questionDesc">{{questions.0.description}}</h3>             
             
             {{form.answerq1}}
          
