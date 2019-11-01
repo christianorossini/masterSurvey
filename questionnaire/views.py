@@ -62,7 +62,7 @@ def survey(request):
     
     if(request.method=='POST'):
         
-        ## código redundante: refatorar
+        ## TODO código redundante: refatorar
         pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]
         task = Task.objects.get(pk=pkTask)
         ##

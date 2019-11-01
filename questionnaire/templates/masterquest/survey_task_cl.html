@@ -17,7 +17,7 @@
 
         $('.btnStartQuest1').click(function() {             
             $('.btnStartQuest1').attr("disabled","disabled");
-            //$('.slcQuest1').attr("readonly",true);
+            $('.slcQuest1').attr("disabled",true);
             $('.quest2Content').css('visibility','visible');  
             endTime();            
             //computar o tempo em segundos
@@ -25,21 +25,26 @@
             timeDiff = (taskEndTime - taskStartTime)/1000;
             timeDiff = timeDiff.toFixed(2);
             $('#id_secondsToAnswer').val(timeDiff);
-
-
         });      
 
         $('.slcQuest1').change(function() {
-            /* if($('.slcQuest1').val()==''){
+            if($('.slcQuest1').val()==''){
                 $('.btnStartQuest1').attr("disabled",true);
-            }else{ */
-            if($('.slcQuest1').val()!=''){
+            }else{             
                 $('.btnStartQuest1').attr("disabled",false);
                 $('.quest2Content').css('visibility','hidden'); 
             }
         });  
+
+        $('form').submit(function(e) {
+            $(':disabled').each(function(e) {
+                $(this).removeAttr('disabled');
+            })
+        });
         
     });
+
+    
 
     function startTime(){
         taskStartTime =  new Date().getTime();    
@@ -72,22 +77,22 @@
                 </a>
             </div>        
             <div class="col-sm">
-                <span style="display: block;">Code snippet 1</span>
+                <span style="display: block;">smelly code 1</span>
                 <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs1"/>
             </div>    
             <div class="col-sm">
-                <span style="display: block;">Code snippet 2</span>
+                <span style="display: block;">smelly code 2</span>
                 <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs2"/>
             </div>
         </div>
     </div>
     
-    <form action="{% url 'survey' %}" method="POST">    
+    <form action="{% url 'survey' %}" method="POST" id="taskForm">    
         {% csrf_token %}  
         <div class="quest1Content questContent taskContentHidden">
             <h3 class="questionDesc">{{questions.0.description}}</h3>             
             <p>
-                <strong>CountLine=60 and MaxNesting > 5.8 and CountLineCodeExe=29 and RatioCommentToCode=0.06 and CountPath=9 and CountLineBlank=2 </strong>
+                <strong>{{dtModel.modelTreePath}}</strong>
             </p>
             <div class="input-group mb-3">                
                 {{form.answerq1}}
@@ -144,15 +149,15 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Code Snippet 1</h5>
+                <h5 class="modal-title" id="exampleModalLabel">smelly code 1</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <pre><code>
+                <pre class="smelycode">
                     {{dtModel.codeSnippet1}}
-                </code></pre>
+                </pre>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
@@ -166,15 +171,15 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Code Snippet 2</h5>
+                <h5 class="modal-title" id="exampleModalLabel">smelly code 2</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                    <pre><code>
+                    <pre class="smelycode">
                             {{dtModel.codeSnippet2}}
-                        </code></pre>
+                    </pre>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
