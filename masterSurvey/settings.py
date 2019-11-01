@@ -134,3 +134,5 @@ STATIC_URL = '/static/'
 #session
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 60 * 60
+
+ADMINS = [('Christiano', 'christiano.rossini.mc@gmail.com')]
