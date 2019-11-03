@@ -1,79 +1,16 @@
-{% extends "masterquest/base.html" %}
+{% extends "masterquest/survey.html" %}
 {% load static %}
 
-{% block content %}
+{% block surveyContent %}
 
-<script>   
-    var taskStartTime;
-    var taskEndTime;
-    
-    $(document).ready(function() {
-        $('.btnStartTask').click(function() {
-            $('.btnStartTask').attr("disabled","disabled");
-            $('#gridModelSnippets').css('visibility','visible');
-            $('.quest1Content').css('visibility','visible');
-            startTime();
-        });
-
-        $('.btnStartQuest1').click(function() {             
-            $('.btnStartQuest1').attr("disabled","disabled");
-            $('.slcQuest1').attr("disabled",true);
-            $('.quest2Content').css('visibility','visible');  
-            endTime();            
-            //computar o tempo em segundos
-            //atribuir o tempo a uma variável hidden
-            timeDiff = (taskEndTime - taskStartTime)/1000;
-            timeDiff = timeDiff.toFixed(2);
-            $('#id_secondsToAnswer').val(timeDiff);
-        });      
-
-        $('.slcQuest1').change(function() {
-            if($('.slcQuest1').val()==''){
-                $('.btnStartQuest1').attr("disabled",true);
-            }else{             
-                $('.btnStartQuest1').attr("disabled",false);
-                $('.quest2Content').css('visibility','hidden'); 
-            }
-        });  
-
-        $('form').submit(function(e) {
-            $(':disabled').each(function(e) {
-                $(this).removeAttr('disabled');
-            })
-        });
-        
-    });
-
-    
-
-    function startTime(){
-        taskStartTime =  new Date().getTime();    
-
-        /*var startDate = new Date();
-        // Do your operations
-        var endDate   = new Date();
-        var seconds = (endDate.getTime() - startDate.getTime()) / 1000;*/
-    }
-
-    function endTime(){
-        taskEndTime = new Date().getTime();    
-    }
-</script>
-
-
-<h1>3 - Classification tree {{classificationTreePosition}} of {{classificationTreeTotal}}</h1>
-
-<h2 class="tasktitle">Task {{task.sequenceNumber}}: {{task.name}}</h2>
-<button type="button" class="btn btn-primary btnStartTask">Start solving</button>
-
-<div class="taskContent">
+    <script src="{% static 'masterquest/script.js' %}"></script>
    
     <div class="container taskContentHidden" id="gridModelSnippets">
         <div class="row">
             <div class="col-sm">            
                 <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
                     <!--<img src="{% get_static_prefix %}masterquest/images/dtree.png" data-toggle="modal" data-target="#dtModelModal"/>      --> 
-                    <img src="{% get_static_prefix %}masterquest/images/dtree.png"/>
+                    <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}"/>
                 </a>
             </div>        
             <div class="col-sm">
@@ -116,77 +53,8 @@
         {{form.secondsToAnswer}}   
         
     </form>
-    
-</div>
 
+    <!-- Modals -->
+    {% include "masterquest/incModals.html" %}
 
-
-      
-<!-- Modal -->
-<!--<div class="modal fade" id="dtModelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" >
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">DT Model</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
-            </div>
-        </div>
-    </div>
-</div>
--->
-
-
-<!-- Modal -->
-<div class="modal fade" id="cs1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">smelly code 1</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <pre class="smelycode">
-                    {{dtModel.codeSnippet1}}
-                </pre>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
-            </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Modal -->
-<div class="modal fade" id="cs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">smelly code 2</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                    <pre class="smelycode">
-                            {{dtModel.codeSnippet2}}
-                    </pre>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
-            </div>
-            </div>
-        </div>
-    </div>
-
-
-{% endblock content %}
+{% endblock surveyContent %}
