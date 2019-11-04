@@ -1,32 +1,9 @@
-{% extends "masterquest/base.html" %}
+{% extends "masterquest/survey.html" %}
 {% load static %}
 
-{% block content %}
-
-<h1>3 - Analyse Model {{dtModel.sequenceNumber}}</h1>
-
-<h2 class="tasktitle">Task {{task.sequenceNumber}}: {{task.name}}</h2>
-
-<div class="taskContent">
+{% block surveyContent %}
    
-    <div class="container" id="gridModelSnippets" onclick="">
-        <div class="row">
-            <div class="col-sm">            
-                <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
-                    <!--<img src="{% get_static_prefix %}masterquest/images/dtree.png" data-toggle="modal" data-target="#dtModelModal"/>      --> 
-                    <img src="{% get_static_prefix %}masterquest/images/dtree.png"/>
-                </a>
-            </div>        
-            <div class="col-sm">
-                <span style="display: block;">Code snippet 1</span>
-                <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs1"/>
-            </div>    
-            <div class="col-sm">
-                <span style="display: block;">Code snippet 2</span>
-                <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs2"/>
-            </div>
-        </div>
-    </div>
+    {% include "masterquest/incTreePanel.html" %}
     
     <form action="{% url 'survey' %}" method="POST">    
         {% csrf_token %}  
@@ -45,76 +22,6 @@
         
     </form>
     
-</div>
 
 
-
-      
-<!-- Modal -->
-<!--<div class="modal fade" id="dtModelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" >
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">DT Model</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
-            </div>
-        </div>
-    </div>
-</div>
--->
-
-
-<!-- Modal -->
-<div class="modal fade" id="cs1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Code Snippet 1</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <pre><code>
-                    {{dtModel.codeSnippet1}}
-                </code></pre>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
-            </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Modal -->
-<div class="modal fade" id="cs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Code Snippet 2</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                    <pre><code>
-                            {{dtModel.codeSnippet2}}
-                        </code></pre>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>              
-            </div>
-            </div>
-        </div>
-    </div>
-
-
-{% endblock content %}
+{% endblock surveyContent %}

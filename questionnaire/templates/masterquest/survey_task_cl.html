@@ -2,27 +2,11 @@
 {% load static %}
 
 {% block surveyContent %}
-
     <script src="{% static 'masterquest/script.js' %}"></script>
+
+    <button type="button" class="btn btn-primary btnStartTask">Start solving</button>    
    
-    <div class="container taskContentHidden" id="gridModelSnippets">
-        <div class="row">
-            <div class="col-sm">            
-                <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
-                    <!--<img src="{% get_static_prefix %}masterquest/images/dtree.png" data-toggle="modal" data-target="#dtModelModal"/>      --> 
-                    <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}"/>
-                </a>
-            </div>        
-            <div class="col-sm">
-                <span style="display: block;">smelly code 1</span>
-                <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs1"/>
-            </div>    
-            <div class="col-sm">
-                <span style="display: block;">smelly code 2</span>
-                <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs2"/>
-            </div>
-        </div>
-    </div>
+    {% include "masterquest/incTreePanel.html" with class="taskContentHidden" %}
     
     <form action="{% url 'survey' %}" method="POST" id="taskForm">    
         {% csrf_token %}  
@@ -52,9 +36,6 @@
         {{form.questionnaire}} 
         {{form.secondsToAnswer}}   
         
-    </form>
-
-    <!-- Modals -->
-    {% include "masterquest/incModals.html" %}
+    </form>   
 
 {% endblock surveyContent %}
