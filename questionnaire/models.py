@@ -122,7 +122,7 @@ class AnswerTaskID(Answer):
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
             )
-    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_CODE_SMELL)    
+    answerq1 = models.CharField(max_length=5, verbose_name='', choices=OPTIONS_CODE_SMELL)    
     class Meta:
         db_table="ms_answerTaskID"
 
