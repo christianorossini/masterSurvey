@@ -3,16 +3,13 @@
 
 {% block surveyContent %}
    
-    {% include "masterquest/incTreePanel.html" %}
+    {% include "masterquest/incTreePanel.html" with showCodeSnippets=True %}
     
     <form action="{% url 'survey' %}" method="POST">    
         {% csrf_token %}  
         <div class="quest0Content questContent">
-            <h3 class="questionDesc">{{questions.0.description}}</h3>             
-            
-            {{form.answerq1}}
-         
-
+            <h3 class="questionDesc">{{questions.0.description}}</h3>                         
+            {{form.answerq1}}         
             <input type="submit" value="Next Task" class="btn btn-primary" />
         </div>               
                

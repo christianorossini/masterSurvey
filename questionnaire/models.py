@@ -13,9 +13,24 @@ class Participant(models.Model):
         ('6-8', '6 to 8 years of experience'),
         ('MT9', 'More than 9 years of experience'),        
     )
+    BG_CS = (
+        ('NK', 'Not knowledgeable (I do not know anything)'),
+        ('SK', 'Somewhat knowledgeable (I have a vague idea)'),
+        ('K', 'Knowledgeable (I am familiar with it)'),
+        ('VK', 'Very knowledgeable (I know all/most classes and methods of it)'),        
+    )
+    BG_ML = (
+        ('NK', 'Not knowledgeable (I do not know anything)'),
+        ('SK', 'Somewhat knowledgeable (I have a vague idea)'),
+        ('K', 'Knowledgeable (I am familiar with it)'),
+        ('VK', 'Very knowledgeable (I know all/most classes and methods of it)'),
+    )    
     name = models.CharField(max_length=100, blank=False, verbose_name="Name (or Nickname)")
     origin = models.CharField(choices=PART_ORIGIN, max_length=1) 
     experience = models.CharField(max_length=3, choices=YEARS_OF_EXP, verbose_name="Programming experience") # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
+    csBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells")
+    csdtBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells Detection Tools")
+    mlBackground = models.CharField(max_length=2, choices=BG_ML, verbose_name="Rate your background/knowledge about machine learning and decision tree")
     def __str__(self):
         return self.name
     class Meta:

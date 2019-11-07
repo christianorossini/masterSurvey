@@ -11,6 +11,9 @@ class ParticipantForm(ModelForm):
             'name': TextInput(attrs={'class':"form-control"}),
             'experience': Select(attrs={'class':"form-control"}),
             'origin': Select(attrs={'class':"form-control"}),
+            'csBackground': Select(attrs={'class':"form-control"}),
+            'csdtBackground': Select(attrs={'class':"form-control"}),
+            'mlBackground': Select(attrs={'class':"form-control"}),
         }
 
 
