@@ -1,5 +1,5 @@
 from .models import *
-from django.forms import ModelForm, CharField, TextInput, Select, RadioSelect, HiddenInput
+from django.forms import ModelForm, CharField, TextInput, Select, RadioSelect, HiddenInput, Textarea
 from django import forms
 
 
@@ -44,8 +44,14 @@ class AnswerTaskRAForm(forms.ModelForm):
 class AnswerTaskIDForm(AnswerTaskRAForm):        
     class Meta(AnswerTaskRAForm.Meta):               
         model = AnswerTaskID
+        fields = ['answerq1', 'answerq1_complement', 'answerq2', 'answerq2_complement', 'answerq3', 'answerq3_complement', 'questionnaire', 'dtModel', 'task']
         widgets = {            
-            'answerq1': Select(attrs={'class':"form-control"}),  
+            'answerq1': Select(attrs={'class':"form-control"}), 
+            'answerq1_complement': TextInput(attrs={'class':"form-control"}),  
+            'answerq2': RadioSelect(),
+            'answerq2_complement': TextInput(attrs={'class':"form-control"}),
+            'answerq3': RadioSelect(),
+            'answerq3_complement': TextInput(attrs={'class':"form-control"}),            
             'questionnaire': HiddenInput(),
             'dtModel': HiddenInput(),
             'task': HiddenInput(),        

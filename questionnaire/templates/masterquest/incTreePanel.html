@@ -12,13 +12,18 @@
         {% if showCodeSnippets %}            
         <div class="row">            
             <div class="col-sm">
-                <span style="display: block;">smelly code 1</span>
+                <span style="display: block;">Code snippet 1</span>
                 <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs1"/>
             </div>    
             <div class="col-sm">
-                <span style="display: block;">smelly code 2</span>
+                <span style="display: block;">Code snippet 2</span>
                 <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs2"/>
-            </div>            
+            </div>    
         </div>
         {% endif %} 
     </div>
+    
+    {% if showCodeSnippets %}            
+    <!-- Modals -->
+    {% include "masterquest/incModals.html" %}
+    {% endif %} 

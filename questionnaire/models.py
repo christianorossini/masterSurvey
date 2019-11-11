@@ -38,7 +38,7 @@ class Participant(models.Model):
 
 
 class Question(models.Model):
-    description = models.CharField(max_length=100)    
+    description = models.CharField(max_length=500)    
     sequenceNumber = models.IntegerField() #as 'questions' tem uma sequência dentro de uma task    
     def __str__(self):
         return self.description
@@ -137,7 +137,17 @@ class AnswerTaskID(Answer):
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
             )
-    answerq1 = models.CharField(max_length=5, verbose_name='', choices=OPTIONS_CODE_SMELL)    
+    OPTIONS_Q2 = (
+            ("HC", "Highly Correlated - I detected a code smell in the showed code that matches the rules contained in the Decision Tree."),            
+            ("LC", "Low Correlation -  I a detected a code smell in the showed code but I'm not sure wether the code smell type I've detected is the same code smell pointed in decision tree model."),
+            ("NC", "I'ts not correlated / There isn't any correlation."),            
+    )
+    answerq1 = models.CharField(max_length=5, verbose_name='', choices=OPTIONS_CODE_SMELL)
+    answerq1_complement = models.TextField(verbose_name='')    
+    answerq2 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')    
+    answerq2_complement = models.TextField(null=True)    
+    answerq3 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')
+    answerq3_complement = models.TextField(null=True)    
     class Meta:
         db_table="ms_answerTaskID"
 
