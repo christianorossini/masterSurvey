@@ -75,8 +75,7 @@ class Task(models.Model):
             return "masterquest/survey_task_cc.html"
 
 class DTModel(models.Model):
-    imgPath = models.CharField(max_length=50)
-    modelTreePath = models.CharField(max_length=200, null=True)
+    imgPath = models.CharField(max_length=50)    
     codeSnippet1 = models.TextField()
     codeSnippet2 = models.TextField()    
     tasks = models.ManyToManyField(Task)
@@ -103,8 +102,7 @@ class Answer(models.Model):
             ("E", "Easy - I found the answer quite quickly and without major problems"),
             ("M", "Medium"),
             ("D","Difficult - I had to think hard and am I am not sure if I answered correctly."),
-            ("VD","Very difficult - Despite thinking hard, my answer is likely to be wrong."))    
-    secondsToAnswer = models.FloatField(null=True)    
+            ("VD","Very difficult - Despite thinking hard, my answer is likely to be wrong."))        
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
     dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
