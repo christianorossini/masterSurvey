@@ -143,6 +143,7 @@ class AnswerTaskID(Answer):
 class AnswerTaskCC(Answer):        
     OPTIONS_Q2 = (
             ("HC", "Highly Correlated - I detected a code smell in the showed code that matches the rules contained in the Decision Tree."),            
+            ("C", "Correlated"),            
             ("LC", "Low Correlation -  I a detected a code smell in the showed code but I'm not sure wether the code smell type I've detected is the same code smell pointed in decision tree model."),
             ("NC", "I'ts not correlated / There isn't any correlation."),            
     )    

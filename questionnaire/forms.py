@@ -36,7 +36,7 @@ class AnswerTaskCCForm(forms.ModelForm):
         model = AnswerTaskCC
         fields = ['answerq1', 'answerq1_complement', 'answerq2', 'answerq2_complement','questionnaire', 'dtModel', 'task']
         widgets = {            
-            'answerq1': Select(attrs={'class':"form-control"}), 
+            'answerq1': RadioSelect(), 
             'answerq1_complement': TextInput(attrs={'class':"form-control"}),  
             'answerq2': RadioSelect(),
             'answerq2_complement': TextInput(attrs={'class':"form-control"}),            
