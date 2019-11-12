@@ -3,43 +3,47 @@
 
 {% block surveyContent %}
    
-    {% include "masterquest/incTreePanel.html" with showCodeSnippets=True %}
+    <p>
+        Analyse the model. See carefully the rules, conections, nodes and leaves. Then, answer the questions below.        
+    </p>
+
+    {% include "masterquest/incTreePanel.html" %}    
     
-    <form action="{% url 'survey' %}" method="POST">    
+    <form action="{% url 'survey' %}" method="POST" id="taskForm">    
         {% csrf_token %}  
-        <div class="quest0Content questContent">
-            <h3 class="questionDesc">{{questions.0.sequenceNumber}} - {{questions.0.description}}</h3>                         
-            {{form.answerq1}}            
-        </div>               
         <div class="quest1Content questContent">
-            <h3 class="questionDesc">{{questions.1.sequenceNumber}} - {{questions.1.description}}</h3>                         
-            {{form.answerq1_complement}}                                     
-        </div>
+            <h3 class="questionDesc">What code smell do you infer from leaves?</h3>           
+            <div class="input-group mb-3">                
+                {{form.answerq1}}
+            </div>                                       
+        </div>    
+
         <div class="quest2Content questContent">
-            <h3 class="questionDesc">{{questions.2.sequenceNumber}} - {{questions.2.description}}</h3>                         
-            {{form.answerq2}}                                     
-        </div>
+            <h3 class="questionDesc">Why do you chose the option above?</h3>       
+            <div class="input-group mb-3">                
+                {{form.answerq1_complement}}
+            </div>                
+        </div>    
+               
         <div class="quest3Content questContent">
-            <h3 class="questionDesc">{{questions.3.sequenceNumber}} - {{questions.3.description}}</h3>                         
-            {{form.answerq2_complement}}
+            <h3 class="questionDesc">How comprehensible are the classification model?</h3>       
+            <div class="input-group mb-3">                
+                {{form.answerq2}}
+            </div>                
         </div>
-        <div class="quest4Content questContent">
-            <h3 class="questionDesc">{{questions.4.sequenceNumber}} - {{questions.4.description}}</h3>                         
-            {{form.answerq3}}                     
-        </div>
-        <div class="quest5Content questContent">
-            <h3 class="questionDesc">{{questions.5.sequenceNumber}} - {{questions.5.description}}</h3>                         
-            {{form.answerq3_complement}}                     
+        
+        <div class="quest2Content questContent">
+            <h3 class="questionDesc">Why do you chose the option above?</h3>       
+            <div class="input-group mb-3">                
+                {{form.answerq1_complement}}
+            </div>                
         </div>
 
-        <input type="submit" value="Next Task" class="btn btn-primary" />
-               
         {{form.task}}
         {{form.dtModel}}   
-        {{form.questionnaire}}   
+        {{form.questionnaire}}         
         
-    </form>
-    
-
+        <input type="submit" value="Next Task" class="btn btn-primary" />
+    </form>   
 
 {% endblock surveyContent %}

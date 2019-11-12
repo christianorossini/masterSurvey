@@ -1,0 +1,45 @@
+{% extends "masterquest/survey.html" %}
+{% load static %}
+
+{% block surveyContent %}
+   
+    {% include "masterquest/incTreePanel.html" with showCodeSnippets=True %}
+    
+    <form action="{% url 'survey' %}" method="POST">    
+        {% csrf_token %}  
+        <div class="quest0Content questContent">
+            <h3 class="questionDesc">{{questions.0.sequenceNumber}} - {{questions.0.description}}</h3>                         
+            {{form.answerq1}}            
+        </div>               
+        <div class="quest1Content questContent">
+            <h3 class="questionDesc">{{questions.1.sequenceNumber}} - {{questions.1.description}}</h3>                         
+            {{form.answerq1_complement}}                                     
+        </div>
+        <div class="quest2Content questContent">
+            <h3 class="questionDesc">{{questions.2.sequenceNumber}} - {{questions.2.description}}</h3>                         
+            {{form.answerq2}}                                     
+        </div>
+        <div class="quest3Content questContent">
+            <h3 class="questionDesc">{{questions.3.sequenceNumber}} - {{questions.3.description}}</h3>                         
+            {{form.answerq2_complement}}
+        </div>
+        <div class="quest4Content questContent">
+            <h3 class="questionDesc">{{questions.4.sequenceNumber}} - {{questions.4.description}}</h3>                         
+            {{form.answerq3}}                     
+        </div>
+        <div class="quest5Content questContent">
+            <h3 class="questionDesc">{{questions.5.sequenceNumber}} - {{questions.5.description}}</h3>                         
+            {{form.answerq3_complement}}                     
+        </div>
+
+        <input type="submit" value="Next Task" class="btn btn-primary" />
+               
+        {{form.task}}
+        {{form.dtModel}}   
+        {{form.questionnaire}}   
+        
+    </form>
+    
+
+
+{% endblock surveyContent %}

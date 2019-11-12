@@ -46,10 +46,10 @@ class Question(models.Model):
         db_table="ms_question"    
         ordering = ['sequenceNumber']
 
-class Task(models.Model):
-    CLASSIFY_TASK = "CL"
+class Task(models.Model):    
     RATE_TASK = "RA"
     IDENTIFY_TASK = "ID"
+    CORRELATION_TASK = "CC"
     shortName = models.CharField(max_length=2)
     name = models.CharField(max_length=30, default='')    
     questions = models.ManyToManyField(Question)
@@ -59,20 +59,20 @@ class Task(models.Model):
     class Meta:
         db_table="ms_task"      
     def getForm(self, post=None, instance=None):
-        from . import forms
-        if (self.shortName==Task.CLASSIFY_TASK):
-            return forms.AnswerTaskCLForm(post, instance=instance)            
+        from . import forms        
         if (self.shortName==Task.RATE_TASK):    
             return forms.AnswerTaskRAForm(post, instance=instance)            
         if (self.shortName==Task.IDENTIFY_TASK):    
-            return forms.AnswerTaskIDForm(post, instance=instance)                
-    def getView(self):
-        if (self.shortName==Task.CLASSIFY_TASK):            
-            return "masterquest/survey_task_cl.html"
+            return forms.AnswerTaskIDForm(post, instance=instance)
+        if (self.shortName==Task.CORRELATION_TASK):
+            return forms.AnswerTaskCCForm(post, instance=instance)
+    def getView(self):        
         if (self.shortName==Task.RATE_TASK):                
             return "masterquest/survey_task_ra.html"
         if (self.shortName==Task.IDENTIFY_TASK):                
             return "masterquest/survey_task_id.html"    
+        if (self.shortName==Task.CORRELATION_TASK):
+            return "masterquest/survey_task_cc.html"
 
 class DTModel(models.Model):
     imgPath = models.CharField(max_length=50)
@@ -111,16 +111,6 @@ class Answer(models.Model):
     class Meta:
         db_table="ms_answer"  
 
-# Classe para respostas da task Classification
-class AnswerTaskCL(Answer):
-    OPTIONS_CLASSIFY = (            
-            ("CS", "It belongs to class 'Code smell'"),
-            ("NC", "It DOESN'T belongs to class 'Code smell'"))    
-    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_CLASSIFY)
-    answerq2 = models.CharField(max_length=2, verbose_name='', choices=Answer.OPTIONS_DIFFICULTY)
-    class Meta:
-        db_table="ms_answerTaskCL" 
-
 # Classe para respostas da task Identify
 class AnswerTaskID(Answer):    
     OPTIONS_CODE_SMELL = (            
@@ -137,32 +127,33 @@ class AnswerTaskID(Answer):
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
             )
-    OPTIONS_Q2 = (
-            ("HC", "Highly Correlated - I detected a code smell in the showed code that matches the rules contained in the Decision Tree."),            
-            ("LC", "Low Correlation -  I a detected a code smell in the showed code but I'm not sure wether the code smell type I've detected is the same code smell pointed in decision tree model."),
-            ("NC", "I'ts not correlated / There isn't any correlation."),            
-    )
-    answerq1 = models.CharField(max_length=5, verbose_name='', choices=OPTIONS_CODE_SMELL)
-    answerq1_complement = models.TextField(verbose_name='')    
-    answerq2 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')    
-    answerq2_complement = models.TextField(null=True)    
-    answerq3 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')
-    answerq3_complement = models.TextField(null=True)    
-    class Meta:
-        db_table="ms_answerTaskID"
-
-# Classe para respostas da task Rate
-class AnswerTaskRA(Answer):    
     OPTIONS_RATE = (            
             ("VE", "Very easily comprehensible"),
             ("E", "Easily comprehensible"),
             ("C", "Comprehensible"),
             ("D", "Difficult to comprehend"),
             ("VD", "Very difficult to comprehend"),
-            )
-    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_RATE, default='')    
+            )           
+    answerq1 = models.CharField(max_length=5, verbose_name='', choices=OPTIONS_CODE_SMELL)
+    answerq1_complement = models.TextField(verbose_name='')    
+    answerq2 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_RATE, default='') 
+    answerq2_complement = models.TextField(verbose_name='')    
     class Meta:
-        db_table="ms_answerTaskRA"
+        db_table="ms_answerTaskID"
+
+# Classe para respostas da task Code Correlations
+class AnswerTaskCC(Answer):        
+    OPTIONS_Q2 = (
+            ("HC", "Highly Correlated - I detected a code smell in the showed code that matches the rules contained in the Decision Tree."),            
+            ("LC", "Low Correlation -  I a detected a code smell in the showed code but I'm not sure wether the code smell type I've detected is the same code smell pointed in decision tree model."),
+            ("NC", "I'ts not correlated / There isn't any correlation."),            
+    )    
+    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')    
+    answerq1_complement = models.TextField(null=True)    
+    answerq2 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')
+    answerq2_complement = models.TextField(null=True)    
+    class Meta:
+        db_table="ms_answerTaskCC"
 
 class InviteControl(models.Model):
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
