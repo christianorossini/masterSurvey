@@ -2,48 +2,62 @@
 {% load static %}
 
 {% block surveyContent %}
-   
-    <p>
-        Analyse the model. See carefully the rules, conections, nodes and leaves. Then, answer the questions below.        
-    </p>
 
-    {% include "masterquest/incTreePanel.html" %}    
-    
-    <form action="{% url 'survey' %}" method="POST" id="taskForm">    
-        {% csrf_token %}  
-        <div class="quest1Content questContent">
-            <h3 class="questionDesc">What code smell do you infer from leaves?</h3>           
-            <div class="input-group mb-3">                
-                {{form.answerq1}}
-            </div>                                       
-        </div>    
+<p>
+    Analyse the model. See carefully the rules, conections, nodes and leaves. Then, answer the questions below.
+</p>
 
-        <div class="quest2Content questContent">
-            <h3 class="questionDesc">Why do you chose the option above?</h3>       
-            <div class="input-group mb-3">                
-                {{form.answerq1_complement}}
-            </div>                
-        </div>    
-               
-        <div class="quest3Content questContent">
-            <h3 class="questionDesc">How comprehensible are the classification model?</h3>       
-            <div class="input-group mb-3">                
-                {{form.answerq2}}
-            </div>                
+
+<a class="btn btn-primary" data-toggle="collapse" href="#formColumn" role="button" aria-expanded="false" aria-controls="collapseExample">Colapse form</a>
+<a class="btn btn-primary" data-toggle="collapse" href="#rowDtree" role="button" aria-expanded="false" aria-controls="collapseExample">Colapse Tree</a>
+
+<div class="content-fluid">        
+    <div class="row border">            
+        <div class="col-4 border-right" class="colapse" id="formColumn">                
+            <form action="{% url 'survey' %}" method="POST" id="taskForm">
+                {% csrf_token %}
+                <div class="quest1Content questContent">
+                    <h3 class="questionDesc">What code smell do you infer from leaves?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answerq1}}
+                    </div>
+                </div>
+
+                <div class="quest2Content questContent">
+                    <h3 class="questionDesc">Why do you chose the option above?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answerq1_complement}}
+                    </div>
+                </div>
+
+                <div class="quest3Content questContent">
+                    <h3 class="questionDesc">How comprehensible are the classification model?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answerq2}}
+                    </div>
+                </div>
+
+                <div class="quest2Content questContent">
+                    <h3 class="questionDesc">Why do you chose the option above?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answerq2_complement}}
+                    </div>
+                </div>
+
+                {{form.task}}
+                {{form.dtModel}}
+                {{form.questionnaire}}
+
+                <input type="submit" value="Next Task" class="btn btn-primary" />
+            </form>
         </div>
-        
-        <div class="quest2Content questContent">
-            <h3 class="questionDesc">Why do you chose the option above?</h3>       
-            <div class="input-group mb-3">                
-                {{form.answerq2_complement}}
-            </div>                
+        <div class="col">
+            
+            {% include "masterquest/incTreePanel.html" with showCodeSnippets=True %}
+            
         </div>
+    </div>
+</div>
 
-        {{form.task}}
-        {{form.dtModel}}   
-        {{form.questionnaire}}         
-        
-        <input type="submit" value="Next Task" class="btn btn-primary" />
-    </form>   
 
 {% endblock surveyContent %}

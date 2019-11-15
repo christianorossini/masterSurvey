@@ -1,16 +1,17 @@
 {% load static %}
 
-<div class="container {{class}}" id="gridModelSnippets">
-        <div class="row">
-            <div class="col-sm">            
-                <a href="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" target="_blank">
-                    <!--<img src="{% get_static_prefix %}masterquest/images/dtree.png" data-toggle="modal" data-target="#dtModelModal"/>      --> 
-                    <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}"/>
-                </a>
-            </div>            
+<div class="container-fluid {{class}}" id="gridModelSnippets">
+    <div class="row" id="rowDtree">
+        <div class="col">           
+            
+            <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" />            
+            
         </div>
-        {% if showCodeSnippets %}            
-        <div class="row">            
+    </div>
+    {% if showCodeSnippets %}
+    <div class="row">
+        <div class="col">
+            <!--
             <div class="col-sm">
                 <span style="display: block;">Code snippet 1</span>
                 <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs1"/>
@@ -18,12 +19,19 @@
             <div class="col-sm">
                 <span style="display: block;">Code snippet 2</span>
                 <img src="{% get_static_prefix %}masterquest/images/fileico.png" data-toggle="modal" data-target="#cs2"/>
-            </div>    
+            </div>
+            -->
+            <pre>
+                <code">
+                    {{dtModel.codeSnippet1}}
+                </code>
+            </pre>
         </div>
-        {% endif %} 
     </div>
-    
-    {% if showCodeSnippets %}            
-    <!-- Modals -->
-    {% include "masterquest/incModals.html" %}
-    {% endif %} 
+    {% endif %}
+</div>
+
+{% if showCodeSnippets %}
+<!-- Modals -->
+{% include "masterquest/incModals.html" %}
+{% endif %}
