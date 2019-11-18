@@ -7,13 +7,17 @@
     Analyse the model. See carefully the rules, conections, nodes and leaves. Then, answer the questions below.
 </p>
 
-
-<a class="btn btn-primary" data-toggle="collapse" href="#formColumn" role="button" aria-expanded="false" aria-controls="collapseExample">Colapse form</a>
-<a class="btn btn-primary" data-toggle="collapse" href="#rowDtree" role="button" aria-expanded="false" aria-controls="collapseExample">Colapse Tree</a>
-
 <div class="content-fluid">        
+    <div class="row" id="hideShowRow">
+        <div class="col-4 text-sm-left">
+            <a class="btn-sm btn-primary" data-toggle="collapse" href="#formColumn" role="button" aria-expanded="true" aria-controls="collapseExample">hide/show form</a>
+        </div>
+        <div class="col text-sm-right">
+            <a class="btn-sm btn-primary" data-toggle="collapse" href="#rowDtree" role="button" aria-expanded="true" aria-controls="collapseExample">hide/show tree</a>            
+        </div>
+    </div>
     <div class="row border">            
-        <div class="col-4 border-right" class="colapse" id="formColumn">                
+        <div class="col-4 border-right collapse show" id="formColumn">                
             <form action="{% url 'survey' %}" method="POST" id="taskForm">
                 {% csrf_token %}
                 <div class="quest1Content questContent">
