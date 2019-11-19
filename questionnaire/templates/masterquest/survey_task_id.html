@@ -3,21 +3,40 @@
 
 {% block surveyContent %}
 
+<!--
 <p>
     Analyse the model. See carefully the rules, conections, nodes and leaves. Then, answer the questions below.
 </p>
+-->
 
-<div class="content-fluid">        
-    <div class="row" id="hideShowRow">
-        <div class="col-4 text-sm-left">
-            <a class="btn-sm btn-primary" data-toggle="collapse" href="#formColumn" role="button" aria-expanded="true" aria-controls="collapseExample">hide/show form</a>
-        </div>
-        <div class="col text-sm-right">
-            <a class="btn-sm btn-primary" data-toggle="collapse" href="#rowDtree" role="button" aria-expanded="true" aria-controls="collapseExample">hide/show tree</a>            
-        </div>
-    </div>
-    <div class="row border">            
-        <div class="col-4 border-right collapse show" id="formColumn">                
+<div class="content">
+
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="formContent-tab" data-toggle="tab" href="#formContent" role="tab"
+                aria-controls="formContent" aria-selected="true">Form</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="dtContent-tab" data-toggle="tab" href="#dtContent" role="tab"
+                aria-controls="dtContent" aria-selected="false">Tree view</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="codeSnippet-tab" data-toggle="tab" href="#codeSnippetContent" role="tab"
+                aria-controls="codeSnippetContent" aria-selected="false">Code view</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="formContent" role="tabpanel" aria-labelledby="formContent-tab">
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                To answer the questions below, you should visualize the corresponding tree and code snippet. Click on the tabs to navigate.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <form action="{% url 'survey' %}" method="POST" id="taskForm">
                 {% csrf_token %}
                 <div class="quest1Content questContent">
@@ -55,11 +74,9 @@
                 <input type="submit" value="Next Task" class="btn btn-primary" />
             </form>
         </div>
-        <div class="col">
-            
-            {% include "masterquest/incTreePanel.html" with showCodeSnippets=True %}
-            
-        </div>
+
+        {% include "masterquest/incTreePanel.html" with showCodeSnippets=True showDt=True %}
+
     </div>
 </div>
 

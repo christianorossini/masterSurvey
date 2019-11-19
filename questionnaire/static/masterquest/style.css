@@ -121,3 +121,12 @@ pre {
 
     /* your custom style here */
 }
+
+#formContent{
+    width:50%;
+    margin: 0px auto;
+}
+
+.tab-content{
+    padding-top:20px;
+}
