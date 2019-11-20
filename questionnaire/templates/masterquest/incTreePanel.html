@@ -3,13 +3,13 @@
 {% if showDt %}
 <div class="tab-pane fade" id="dtContent" role="tabpanel" aria-labelledby="dtContent-tab">
     <div class="container-fluid {{class}}" id="gridModelSnippets">
-        <img src="{% get_static_prefix %}masterquest/images/{{dtModel.imgPath}}" />
+        <img src="{% get_static_prefix %}masterquest/images/dt/{{dtModel.imgPath}}" />
     </div>
 </div>
 {% endif %}
 
 {% if showCodeSnippets %}
-<div class="tab-pane fade" id="codeSnippetContent" role="tabpanel" aria-labelledby="codeSnippetContent-tab">
+<div class="tab-pane fade  show active" id="codeSnippetContent" role="tabpanel" aria-labelledby="codeSnippetContent-tab">
     <pre>        
         <code>    
             {{dtModel.codeSnippet1}}

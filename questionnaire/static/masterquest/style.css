@@ -62,11 +62,6 @@ body{
     margin-bottom: 30px;
 }
 
-#gridModelSnippets img:hover{
-    cursor: pointer;
-}
-
-
 .questContent{    
     margin-top:20px;
     margin-bottom:20px;
