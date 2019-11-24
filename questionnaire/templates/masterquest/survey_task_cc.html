@@ -1,43 +1,114 @@
 {% extends "masterquest/survey.html" %}
 {% load static %}
 
+{% block tabTreeContent %}
+<li class="nav-item">
+    <a class="nav-link" id="dtContent-tab" data-toggle="tab" href="#dtContent" role="tab" aria-controls="dtContent"
+        aria-selected="false">Tree view</a>
+</li>
+{% endblock tabTreeContent %}
+
 {% block surveyContent %}
-   
-    <p>
-        Analyse the model and the code snippets.   
-        Click on each code snippet, analyse the code and try to detect some code smell. 
-        Soon after, analyse the decision tree whose paths, nodes and leafs indicates an unrevelead type of code smell. Try to find out a correlation between each code snippet and the classification tree. 
-    </p>
 
-    {% include "masterquest/incTreePanel.html" with showCodeSnippets=True %}
-    
-    <form action="{% url 'survey' %}" method="POST">    
-        {% csrf_token %}  
-        <div class="quest0Content questContent">
-            <h3 class="questionDesc">How correlated is the code snippet 1 and the tree model?</h3>                         
-            {{form.answerq1}}            
-        </div>               
-        <div class="quest1Content questContent">
-            <h3 class="questionDesc">What's the reason behind the choice you've made above?</h3>                         
-            {{form.answerq1_complement}}                                     
-        </div>
-        <div class="quest2Content questContent">
-            <h3 class="questionDesc">How correlated is the code snippet 2 and the tree model?</h3>                         
-            {{form.answerq2}}                                     
-        </div>
-        <div class="quest3Content questContent">
-            <h3 class="questionDesc">What's the reason behind the choice you've made above?</h3>                         
-            {{form.answerq2_complement}}
-        </div>
-        
-        <input type="submit" value="Next model" class="btn btn-primary" />
-               
-        {{form.task}}
-        {{form.dtModel}}   
-        {{form.questionnaire}}   
-        
-    </form>
-    
+<div class="container-fluid">
 
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane show active" id="introContent" role="tabpanel" aria-labelledby="introContent-tab">
+            <div class="navigationButtons clearfix">
+                <button type="button" class="btn btn-primary btn-sm" style="float:right">Code view &gt;&gt;</button>                
+            </div>
+
+            <h3><span class="text-white bg-dark rounded">Task 2/2</span> - code and decision tree analysis</h3>
+
+            <h4>Instructions</h4>
+
+            <p>
+                This task presents the same code snippet from previous task, along with a decision tree. This machine
+                learning technique contains rules, nodes and leafs that aims to detect the same code smell type as the
+                code, i.e., both tree and code points to same code smell type.
+            </p>
+            <p>
+                It's an effort to measure to what extent the rules from decision tree helps the developer to
+                make correlation with code.
+            </p>
+            <p>
+                Thus, in this task you have to:
+            </p>
+            <ol>
+                <li>Check the code snippet.</li>
+                <li>Check the decision tree. You might come back to the code if you want to.</li>
+                <li>Fill in the form and submit it.</li>
+            </ol>
+        </div>
+
+        <div class="tab-pane" id="formContent" role="tabpanel" aria-labelledby="formContent-tab">
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{form.errors}}
+            </div>
+            {% endif %}
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                To answer the questions below, you should visualize the corresponding tree and code snippet. Click on
+                the tabs to navigate.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form action="{% url 'survey' %}" method="POST" id="taskForm">
+                {% csrf_token %}
+
+                <div class="quest1Content questContent">
+                    <h3 class="questionDesc">1 - This time, aided by decision tree rules, what code smell type do you infer
+                        from code snippet?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answer_cst}}
+                    </div>
+                </div>
+
+                <div class="questContent">
+                    <h3 class="questionDesc">2 - What's your confidence level about the chosen option above?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answer_cst_confidence}}
+                    </div>
+                </div>
+
+                <div class="questContent">
+                    <h3 class="questionDesc">3 - How much the decision tree has influenced your choice?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answer_cst_dm}}
+                    </div>
+                </div>
+
+                <div class="questContent">
+                    <h3 class="questionDesc">4 - How comprehensible is the shown decision tree?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answer_tr}}
+                    </div>
+                </div>
+
+                <div class="questContent">
+                    <h3 class="questionDesc">5 - Could you please justify your answer to question 4?</h3>
+                    <div class="input-group mb-3">
+                        {{form.answer_tr_complement}}
+                    </div>
+                </div>
+
+                {{form.task}}
+                {{form.dtModel}}
+                {{form.questionnaire}}
+
+                <input type="submit" value="Next Task" class="btn btn-primary" />
+            </form>
+        </div>
+
+        {% include "masterquest/inc_survey_codeSnippet.html" %}
+
+        {% include "masterquest/inc_survey_treePanel.html" %}
+
+    </div>
+</div>
 
 {% endblock surveyContent %}

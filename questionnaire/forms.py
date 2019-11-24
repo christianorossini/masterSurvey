@@ -20,12 +20,10 @@ class ParticipantForm(ModelForm):
 class AnswerTaskIDForm(forms.ModelForm):        
     class Meta:               
        model = AnswerTaskID
-       fields = ['answerq1', 'answerq1_complement', 'answerq2', 'answerq2_complement', 'questionnaire', 'dtModel', 'task']
+       fields = ['answer_cst', 'answer_cst_confidence', 'questionnaire', 'dtModel', 'task']
        widgets = {            
-           'answerq1': Select(attrs={'class':"form-control"}),            
-           'answerq1_complement': TextInput(attrs={'class':"form-control"}),
-           'answerq2': RadioSelect(),
-           'answerq2_complement': TextInput(attrs={'class':"form-control"}),                 
+           'answer_cst': Select(attrs={'class':"form-control"}),                       
+           'answer_cst_confidence': RadioSelect(),           
            'questionnaire': HiddenInput(),
            'dtModel': HiddenInput(),
            'task': HiddenInput(),            
@@ -34,12 +32,13 @@ class AnswerTaskIDForm(forms.ModelForm):
 class AnswerTaskCCForm(forms.ModelForm):        
     class Meta:               
         model = AnswerTaskCC
-        fields = ['answerq1', 'answerq1_complement', 'answerq2', 'answerq2_complement','questionnaire', 'dtModel', 'task']
+        fields = ['answer_cst', 'answer_cst_confidence','answer_cst_dm', 'answer_tr', 'answer_tr_complement','questionnaire', 'dtModel', 'task']
         widgets = {            
-            'answerq1': RadioSelect(), 
-            'answerq1_complement': TextInput(attrs={'class':"form-control"}),  
-            'answerq2': RadioSelect(),
-            'answerq2_complement': TextInput(attrs={'class':"form-control"}),            
+            'answer_cst': Select(attrs={'class':"form-control"}),                       
+            'answer_cst_confidence': RadioSelect(),            
+            'answer_cst_dm': RadioSelect(),        
+            'answer_tr': RadioSelect(),  
+            'answer_tr_complement': Textarea(attrs={'class':"form-control", 'rows':'5'}),      
             'questionnaire': HiddenInput(),
             'dtModel': HiddenInput(),
             'task': HiddenInput(),        

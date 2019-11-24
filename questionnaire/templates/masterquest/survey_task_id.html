@@ -11,59 +11,59 @@
 
 <div class="container-fluid">
 
-    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">        
-        <li class="nav-item">
-            <a class="nav-link active" id="codeSnippet-tab" data-toggle="tab" href="#codeSnippetContent" role="tab"
-                aria-controls="codeSnippetContent" aria-selected="false">Code view</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="dtContent-tab" data-toggle="tab" href="#dtContent" role="tab"
-                aria-controls="dtContent" aria-selected="false">Tree view</a>
-        </li>        
-        <li class="nav-item">
-            <a class="nav-link" id="formContent-tab" data-toggle="tab" href="#formContent" role="tab"
-                aria-controls="formContent" aria-selected="true">Submit Form</a>
-        </li>
-    </ul>
-
     <div class="tab-content" id="myTabContent">
 
-        <div class="tab-pane fade" id="formContent" role="tabpanel" aria-labelledby="formContent-tab">
+        <div class="tab-pane show active" id="introContent" role="tabpanel" aria-labelledby="introContent-tab">
+            <div class="navigationButtons clearfix">
+                <button type="button" class="btn btn-primary btn-sm" style="float:right">Code view &gt;&gt;</button>
+            </div>
 
+            <h3><span class="text-white bg-dark rounded">Task 1 of 2</span> - code snippet analysis</h3>
+
+            <h4>Instructions</h4>
+
+            <p>
+                This task presents a code snippet with a code smell.
+            </p>
+            <p>
+                In this task you have to:
+            </p>
+            <ol>
+                <li>Check the code snippet.</li>                
+                <li>Fill in the form and submit it.</li>
+            </ol>
+        </div>
+
+        <div class="tab-pane" id="formContent" role="tabpanel" aria-labelledby="formContent-tab">
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{form.errors}}
+            </div>
+            {% endif %}
+
+            <!--
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                To answer the questions below, you should visualize the corresponding tree and code snippet. Click on the tabs to navigate.
+                To answer the questions below, you should visualize the corresponding tree and code snippet. Click on
+                the tabs to navigate.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            -->
 
             <form action="{% url 'survey' %}" method="POST" id="taskForm">
                 {% csrf_token %}
                 <div class="quest1Content questContent">
-                    <h3 class="questionDesc">What code smell do you infer from leaves?</h3>
+                    <h3 class="questionDesc">What code smell type do you infer from code snippet?</h3>
                     <div class="input-group mb-3">
-                        {{form.answerq1}}
-                    </div>
-                </div>
-
-                <div class="quest2Content questContent">
-                    <h3 class="questionDesc">Why do you chose the option above?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answerq1_complement}}
+                        {{form.answer_cst}}
                     </div>
                 </div>
 
                 <div class="quest3Content questContent">
-                    <h3 class="questionDesc">How comprehensible are the classification model?</h3>
+                    <h3 class="questionDesc">What's your confidence level about the chosen option above??</h3>
                     <div class="input-group mb-3">
-                        {{form.answerq2}}
-                    </div>
-                </div>
-
-                <div class="quest2Content questContent">
-                    <h3 class="questionDesc">Why do you chose the option above?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answerq2_complement}}
+                        {{form.answer_cst_confidence}}
                     </div>
                 </div>
 
@@ -75,10 +75,9 @@
             </form>
         </div>
 
-        {% include "masterquest/incTreePanel.html" with showCodeSnippets=True showDt=True %}
+        {% include "masterquest/inc_survey_codeSnippet.html" %}
 
     </div>
 </div>
-
 
 {% endblock surveyContent %}

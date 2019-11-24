@@ -34,7 +34,7 @@ body{
     margin: 0px;    
 }
 
-#content.container-fluid{
+#content>.container, #content>.container-fluid{
     border: 1px solid;
     border-color: lightgray;
     /* Safari 3-4, iOS 1-3.2, Android 1.6- */
@@ -44,12 +44,18 @@ body{
     border-radius: 20px;    
     background: white;    
 
-    padding-bottom: 30px;        
+    padding-bottom: 30px;   
+    margin-bottom: 30px;     
 }
 
-.container h1{
+#newParticipant{
+    width: 50%;
+}
+
+h1{
     border-bottom: 1px solid rgb(241, 229, 229); 
     margin-bottom: 30px;   
+    font-size: 2.2em;        
     color: grey;
 }
 
@@ -117,11 +123,11 @@ pre {
     /* your custom style here */
 }
 
-#formContent{
+#formContent, #introContent{
     width:50%;
     margin: 0px auto;
 }
 
 .tab-content{
-    padding-top:20px;
+    /*padding-top:20px;*/
 }

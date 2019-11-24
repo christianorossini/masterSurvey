@@ -4,18 +4,36 @@
 {% block content %}
 
 <div class="container-fluid">
-    <h1>3 - Classification tree {{classificationTreePosition}} of {{classificationTreeTotal}}</h1>
+    <h1>3 - Stage {{classificationTreePosition}} of {{classificationTreeTotal}}</h1>
 
     <!--
     <h2 class="tasktitle">Task: {{task.name}}</h2>
     -->
 
-    <div class="taskContent">
-    {% block surveyContent %}
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="intro-tab" data-toggle="tab" href="#introContent" role="tab" aria-controls="introContent" aria-selected="true">Instructions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="codeSnippet-tab" data-toggle="tab" href="#codeSnippetContent" role="tab"
+                aria-controls="codeSnippetContent" aria-selected="false">Code view</a>
+        </li>
+        {% block tabTreeContent %}
 
-    {% endblock surveyContent %}
-    </div>      
-    
-{% endblock content %}
+        {% endblock tabTreeContent %}                
+        <li class="nav-item">
+            <a class="nav-link" id="formContent-tab" data-toggle="tab" href="#formContent" role="tab"
+                aria-controls="formContent" aria-selected="false">Task submission</a>
+        </li>
+    </ul>
+
+    <div class="taskContent">
+        {% block surveyContent %}
+
+        {% endblock surveyContent %}
+    </div>
+ 
 
 </div>
+
+{% endblock content %}

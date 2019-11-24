@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 import secrets
-from .forms import *
+from .forms import ParticipantForm, AnswerTaskCCForm, AnswerTaskIDForm
 from .models import DTModel, Task, Answer, Questionnaire
 import random
 import datetime
@@ -46,13 +46,13 @@ def newparticipant(request):
 
 def instructions(request):    
     if(not isParticipantInSession(request)):
-         return HttpResponseRedirect(reverse('newparticipant'))  
+        return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'masterquest/instructions.html')
 
 def survey(request):
     if(not isSurveyInitiated(request)):
-         return HttpResponseRedirect(reverse('newparticipant'))      
+        return HttpResponseRedirect(reverse('index'))      
     
     pkModel = request.session['dtModelSequenceList'][getCurrentDtModelIndex(request)]
     pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]        
@@ -97,7 +97,7 @@ def survey(request):
 
 def endSurvey(request):
     if(not isSurveyInitiated(request)):
-         return HttpResponseRedirect(reverse('newparticipant')) 
+        return HttpResponseRedirect(reverse('index'))
        
     #encerra o questionário
     questId = request.session['questionnaireID']
@@ -143,8 +143,11 @@ def isParticipantInSession(request):
 #inicializa o survey. Cria um fluxo com a sequência de atividades
 def initSurvey(request):    
     modelSequencePks = list(DTModel.objects.values_list('pk', flat=True).order_by('sequenceNumber'))
+    # embaralha a ordem das models para que cada participante execute a survey em uma ordem diferente
+    random.shuffle(modelSequencePks)
+    # guarda a ordem das models embaralhadas em variável de sessão
     request.session['dtModelSequenceList'] = modelSequencePks
-    taskSequencePks = list(Task.objects.values_list('pk', flat=True).order_by('sequenceNumber'))
+    taskSequencePks = list(Task.objects.values_list('pk', flat=True).order_by('sequenceNumber'))    
     request.session['taskSequenceList'] = taskSequencePks
     setCurrentTaskIndex(request, 0)
     setCurrentDtModelIndex(request, 0)

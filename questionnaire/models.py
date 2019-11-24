@@ -59,16 +59,12 @@ class Task(models.Model):
     class Meta:
         db_table="ms_task"      
     def getForm(self, post=None, instance=None):
-        from . import forms        
-        if (self.shortName==Task.RATE_TASK):    
-            return forms.AnswerTaskRAForm(post, instance=instance)            
+        from . import forms                
         if (self.shortName==Task.IDENTIFY_TASK):    
             return forms.AnswerTaskIDForm(post, instance=instance)
         if (self.shortName==Task.CORRELATION_TASK):
             return forms.AnswerTaskCCForm(post, instance=instance)
-    def getView(self):        
-        if (self.shortName==Task.RATE_TASK):                
-            return "masterquest/survey_task_ra.html"
+    def getView(self):                
         if (self.shortName==Task.IDENTIFY_TASK):                
             return "masterquest/survey_task_id.html"    
         if (self.shortName==Task.CORRELATION_TASK):
@@ -96,21 +92,13 @@ class Questionnaire(models.Model):
     def finish(self):
         self.dtEndTasks = datetime.now()
 
-class Answer(models.Model):    
-    OPTIONS_DIFFICULTY = (
-            ("VE", "Very easy - I answered without any problems in less then 7 seconds"),
-            ("E", "Easy - I found the answer quite quickly and without major problems"),
-            ("M", "Medium"),
-            ("D","Difficult - I had to think hard and am I am not sure if I answered correctly."),
-            ("VD","Very difficult - Despite thinking hard, my answer is likely to be wrong."))        
-    questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
-    dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    class Meta:
-        db_table="ms_answer"  
-
-# Classe para respostas da task Identify
-class AnswerTaskID(Answer):    
+class Answer(models.Model):            
+    OPTIONS_CODE_CONFIDENCE = (
+            (4, "Very confident"),
+            (3, "Confident"),
+            (2, "A little bit confident"),
+            (1,"Not confident at all"),            
+            ) 
     OPTIONS_CODE_SMELL = (            
             ("CDSBP", "Class Data Should Be Private"),
             ("CC", "Complex Class"),
@@ -124,33 +112,45 @@ class AnswerTaskID(Answer):
             ("RB", "Refused Bequest"),
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
-            )
-    OPTIONS_RATE = (            
-            ("VE", "Very easily comprehensible"),
-            ("E", "Easily comprehensible"),
-            ("C", "Comprehensible"),
-            ("D", "Difficult to comprehend"),
-            ("VD", "Very difficult to comprehend"),
-            )           
-    answerq1 = models.CharField(max_length=5, verbose_name='', choices=OPTIONS_CODE_SMELL)
-    answerq1_complement = models.TextField(verbose_name='')    
-    answerq2 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_RATE, default='') 
-    answerq2_complement = models.TextField(verbose_name='')    
+            )         
+    questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
+    dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    class Meta:
+        db_table="ms_answer"  
+
+# Classe para respostas da task Identify
+class AnswerTaskID(Answer):           
+    answer_cst = models.CharField(max_length=5, verbose_name='', choices=Answer.OPTIONS_CODE_SMELL)    
+    answer_cst_confidence = models.IntegerField(verbose_name='', choices=Answer.OPTIONS_CODE_CONFIDENCE, default=None)
     class Meta:
         db_table="ms_answerTaskID"
 
 # Classe para respostas da task Code Correlations
-class AnswerTaskCC(Answer):        
-    OPTIONS_Q2 = (
-            ("HC", "Highly Correlated - I detected a code smell in the showed code that matches the rules contained in the Decision Tree."),            
-            ("C", "Correlated"),            
-            ("LC", "Low Correlation -  I a detected a code smell in the showed code but I'm not sure wether the code smell type I've detected is the same code smell pointed in decision tree model."),
-            ("NC", "I'ts not correlated / There isn't any correlation."),            
-    )    
-    answerq1 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')    
-    answerq1_complement = models.TextField(null=True)    
-    answerq2 = models.CharField(max_length=2, verbose_name='', choices=OPTIONS_Q2, default='')
-    answerq2_complement = models.TextField(null=True)    
+class AnswerTaskCC(Answer):                
+    OPTIONS_TREE_RATE = (            
+            (5, "Very easily comprehensible"),
+            (4, "Easily comprehensible"),
+            (3, "Comprehensible"),
+            (2, "Difficult to comprehend"),
+            (1, "Very difficult to comprehend"),
+            )
+    OPTIONS_TREE_INFLUENCED_DECISION = (                        
+            (3, "Very much"),
+            (2, "Not so much"),
+            (1, "None"),
+            )
+    # escolha da decision tree
+    answer_cst = models.CharField(max_length=5, verbose_name='', choices=Answer.OPTIONS_CODE_SMELL)    
+    # escolha da 'confidence' da opção anterior
+    answer_cst_confidence = models.IntegerField(verbose_name='', choices=Answer.OPTIONS_CODE_CONFIDENCE, default=None)
+    # escolha do quanto a DT influenciou na tomada de decisão
+    answer_cst_dm = models.IntegerField(verbose_name='', choices=OPTIONS_TREE_INFLUENCED_DECISION, default=None)
+    # escolha do quanto a DT é compreensível 
+    answer_tr = models.IntegerField(verbose_name='', choices=OPTIONS_TREE_RATE, default=None)    
+    # texto aberto sobre a opção feita anteriormente
+    answer_tr_complement = models.TextField(verbose_name='')    
+
     class Meta:
         db_table="ms_answerTaskCC"
 
