@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5abx3=ru8_ldbey#0@e*aq^5sw5n-bdj1psjt*4nfaz%t8+zo!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['christianorossini.pythonanywhere.com']
 
 
 # Application definition
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'masterSurvey.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'masterSurvey.wsgi.application'
 DATABASES = {   
     'default': {     
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "masterquestdb",
-        'USER': 'masterquestuser',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'NAME': "christianorossin$masterquestdb",
+        'USER': 'christianorossin',
+        'PASSWORD': '@pEzZgMHe5zAzGV',
+        'HOST': 'christianorossini.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -130,7 +130,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 #session
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-#SESSION_COOKIE_AGE = 60 * 60
+SESSION_COOKIE_AGE = 60 * 60
+
+ADMINS = [('Christiano', 'christiano.rossini.mc@gmail.com')]
