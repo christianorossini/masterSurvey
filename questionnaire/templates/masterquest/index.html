@@ -4,33 +4,42 @@
 
 <div class="container">
 
-    <h1>Welcome</h1>
 
-    <h2 id="research-title">Research - Code Smell Detection: assessing interpretability of decision tree-based detections.</h2>
+
+    <h2 id="research-title">Research - Code Smell Detection: assessing interpretability of decision tree-based
+        detections.</h2>
 
     <div>
-        <p>We refer to "Smells" as pieces of code that need to be improved. Examples of these code smells are Long Methods (method that is too long and tries to do too much) and God Class (classes that tend to centralize the intelligence of the system). By code smells harmfulness, we mean code smells that can degrade the software quality, e. g., bug-prone code smells. </p>
+        <p>Code anomaly, so-called "code smell", is an implementation choice that indicates a deign problem which
+            violates the well-known principles of cohesion, abstraction and separation of concerns on software
+            development.</p>
 
-        <p>The goal of this survey is to identify the perceptions of professionals regarding to interpretability decision-tree based detections of code smells. </p>
-        
-        <ul>
-            <li>i. Participant Background (4 questions)</li>
-            <li>ii. Code Smells Harmfulness (7 questions)</li>
-            <li>iii. Additional Comments (2 questions)</li>
-        </ul>
-        <p>Answering the survey should take around 30 minutes of your time. All the data collected from the survey is anonymous. The results of the survey may be reported in academic publications. If you have any questions or concerns, please contact me (christianorossini@ic.ufal.br).</p>
-    </div>       
-    
+        <p>There have been many studies proposing to automatically detect bad smells in code. Over the last years,
+            Machine learning has been introduced as an important approach to detect code smells. For instance, the
+            decision tree is a supervised classifier that has been addressed in many problems involving code smell
+            detections, obtaining good effectivity. </p>
+
+        <p>
+            The goal of this survey is to aid an empirical research that aims to evaluate how interpretable is a code
+            smell detection based on decision tree classifier . It'll test the perception of a participant about a specific code smell type, merged in a java code, and test this
+            same perception after a feedback provided by a white box classifier - a decision tree classifier.
+        </p>
+
+        <p>Answering the survey might take around XX minutes of your time. The results of the survey may be reported in
+            academic publications. If you have any questions
+            or concerns, please contact me (christianorossini@ic.ufal.br).</p>
+    </div>
+
     <div id="members">
         <p><strong>Ms Student:</strong> Christiano Rossini (christianorossini@ic.ufal.br)</p>
         <p><strong>Advisor:</strong> Baldoino Fonseca</p>
     </div>
-    
-    <p>Welcome! Click below to enter!</p>    
-    
-    <p class="text-center">        
-        <a href="newparticipant/" title="Enter" class="btn btn-primary btn-lg" role="button">Go to survey</a>    
+
+    <p>Welcome! Click below to enter!</p>
+
+    <p class="text-center">
+        <a href="newparticipant/" title="Enter" class="btn btn-primary btn-lg" role="button">Go to survey</a>
     </p>
 
     <p>** Preferable browsers: Mozila Firefox and Google Chrome</p>
-{% endblock %}
+    {% endblock %}
