@@ -17,19 +17,18 @@ class Participant(models.Model):
         ('NK', 'Not knowledgeable (I do not know anything)'),
         ('SK', 'Somewhat knowledgeable (I have a vague idea)'),
         ('K', 'Knowledgeable (I am familiar with it)'),
-        ('VK', 'Very knowledgeable (I know all/most classes and methods of it)'),        
+        ('VK', 'Very knowledgeable (I know all about it)'),        
     )
     BG_ML = (
         ('NK', 'Not knowledgeable (I do not know anything)'),
         ('SK', 'Somewhat knowledgeable (I have a vague idea)'),
         ('K', 'Knowledgeable (I am familiar with it)'),
-        ('VK', 'Very knowledgeable (I know all/most classes and methods of it)'),
+        ('VK', 'Very knowledgeable (I know all about ir)'),
     )    
     name = models.CharField(max_length=100, blank=False, verbose_name="Name (or Nickname)")
     origin = models.CharField(choices=PART_ORIGIN, max_length=1) 
     experience = models.CharField(max_length=3, choices=YEARS_OF_EXP, verbose_name="Programming experience") # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
-    csBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells")
-    csdtBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells Detection Tools")
+    csBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells")    
     mlBackground = models.CharField(max_length=2, choices=BG_ML, verbose_name="Rate your background/knowledge about machine learning and decision tree")
     def __str__(self):
         return self.name
@@ -71,13 +70,17 @@ class Task(models.Model):
             return "masterquest/survey_task_cc.html"
 
 class DTModel(models.Model):
-    imgPath = models.CharField(max_length=50)    
-    codeSnippet1 = models.TextField()
-    codeSnippet2 = models.TextField()    
-    tasks = models.ManyToManyField(Task)
-    sequenceNumber = models.IntegerField(null=True) #ordem de exibição dos modelos de DT
+    dtImg = models.CharField(max_length=50)    
+    dtNumberOfLeaves = models.IntegerField()
+    dtDepth = models.IntegerField(null=True)        
+    codeSmellType = models.CharField(max_length=10)
+    codeSnippetProject = models.CharField(max_length=100)
+    codeSnippetKind = models.CharField(max_length=30)
+    codeSnippetURI = models.CharField(max_length=200)
+    codeSnippet = models.TextField()    
+    tasks = models.ManyToManyField(Task)    
     def __str__(self):
-        return self.imgPath
+        return self.dtImg
     class Meta:
         db_table="ms_dtModel"        
 

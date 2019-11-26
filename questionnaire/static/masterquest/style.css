@@ -61,6 +61,8 @@ h1{
 
 #research-title{
     margin-bottom: 30px;
+    font-size: 1.7em;
+    margin-top: 20px;
 }
 
 #gridModelSnippets{
@@ -129,5 +131,9 @@ pre {
 }
 
 .tab-content{
-    /*padding-top:20px;*/
+    padding-top:20px;
+}
+
+h4.instructions{
+    margin-top: 20px;
 }

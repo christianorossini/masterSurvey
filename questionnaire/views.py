@@ -56,7 +56,7 @@ def survey(request):
     
     pkModel = request.session['dtModelSequenceList'][getCurrentDtModelIndex(request)]
     pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]        
-    dtModel = DTModel.objects.get(pk=pkModel)        
+    dtModel = DTModel.objects.get(pk=pkModel)
     task = Task.objects.get(pk=pkTask)
     questionnaire = Questionnaire.objects.get(pk=request.session['questionnaireID'])         
     
@@ -142,7 +142,7 @@ def isParticipantInSession(request):
  
 #inicializa o survey. Cria um fluxo com a sequência de atividades
 def initSurvey(request):    
-    modelSequencePks = list(DTModel.objects.values_list('pk', flat=True).order_by('sequenceNumber'))
+    modelSequencePks = list(DTModel.objects.values_list('pk', flat=True))
     # embaralha a ordem das models para que cada participante execute a survey em uma ordem diferente
     random.shuffle(modelSequencePks)
     # guarda a ordem das models embaralhadas em variável de sessão
