@@ -28,6 +28,10 @@ class AnswerTaskIDForm(forms.ModelForm):
            'dtModel': HiddenInput(),
            'task': HiddenInput(),            
        }
+       labels = {
+            'answer_cst': 'What code smell type do you infer from code snippet?',
+            'answer_cst_confidence': 'What\'s your confidence level about the chosen option above?',
+        }
                 
 class AnswerTaskCCForm(forms.ModelForm):        
     class Meta:               
@@ -42,6 +46,13 @@ class AnswerTaskCCForm(forms.ModelForm):
             'questionnaire': HiddenInput(),
             'dtModel': HiddenInput(),
             'task': HiddenInput(),        
+        }
+        labels = {
+            'answer_cst': '1 - This time, aided by decision tree rules, what code smell type do you infer from code snippet?',
+            'answer_cst_confidence': '2 - What\'s your confidence level about the chosen option above?',
+            'answer_cst_dm': '3 - How much the decision tree has influenced your choice?',
+            'answer_tr': '4 - How comprehensible is the shown decision tree?',
+            'answer_tr_complement': '5 - Could you please justify your answer to question 4?',
         }
 
         
