@@ -124,7 +124,7 @@ class Answer(models.Model):
 
 # Classe para respostas da task Identify
 class AnswerTaskID(Answer):           
-    answer_cst = models.CharField(max_length=5, verbose_name='', choices=Answer.OPTIONS_CODE_SMELL)    
+    answer_cst = models.CharField(max_length=5, choices=Answer.OPTIONS_CODE_SMELL)    
     answer_cst_confidence = models.IntegerField(verbose_name='', choices=Answer.OPTIONS_CODE_CONFIDENCE, default=None)
     class Meta:
         db_table="ms_answerTaskID"

@@ -57,45 +57,16 @@
             <form action="{% url 'survey' %}" method="POST" id="taskForm">
                 {% csrf_token %}
 
-                <div class="quest1Content questContent">
-                    <h3 class="questionDesc">1 - This time, aided by decision tree rules, what code smell type do you infer
-                        from code snippet?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_cst}}
-                    </div>
+                {% for field in form.visible_fields %}
+                <div class="form-group questContent">
+                    {{field.label_tag }}
+                    {{field}}
                 </div>
+                {% endfor %}
 
-                <div class="questContent">
-                    <h3 class="questionDesc">2 - What's your confidence level about the chosen option above?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_cst_confidence}}
-                    </div>
-                </div>
-
-                <div class="questContent">
-                    <h3 class="questionDesc">3 - How much the decision tree has influenced your choice?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_cst_dm}}
-                    </div>
-                </div>
-
-                <div class="questContent">
-                    <h3 class="questionDesc">4 - How comprehensible is the shown decision tree?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_tr}}
-                    </div>
-                </div>
-
-                <div class="questContent">
-                    <h3 class="questionDesc">5 - Could you please justify your answer to question 4?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_tr_complement}}
-                    </div>
-                </div>
-
-                {{form.task}}
-                {{form.dtModel}}
-                {{form.questionnaire}}
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
 
                 <input type="submit" value="Next Task" class="btn btn-primary" />
             </form>

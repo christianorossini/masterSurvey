@@ -49,13 +49,13 @@ body{
 }
 
 #newParticipant{
-    width: 50%;
+    /* width: 50%; */
 }
 
 h1{
     border-bottom: 1px solid rgb(241, 229, 229); 
     margin-bottom: 30px;   
-    font-size: 2.2em;        
+    font-size: 1.9em;        
     color: grey;
 }
 
@@ -71,8 +71,14 @@ h1{
 }
 
 .questContent{    
-    margin-top:20px;
-    margin-bottom:20px;
+    /* margin-top:20px;
+    margin-bottom:20px; */
+    background-color: #97FFFF;
+    border-radius: 7px;
+}
+
+.questContent>label{
+    font-weight: 600;
 }
 
 .taskContentHidden{
@@ -126,8 +132,8 @@ pre {
 }
 
 #formContent, #introContent{
-    width:50%;
-    margin: 0px auto;
+    /* width:50%; */
+    /* margin: 0px auto; */
 }
 
 .tab-content{

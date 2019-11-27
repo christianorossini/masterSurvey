@@ -4,10 +4,10 @@
 {% block surveyContent %}
 
 <div class="container-fluid">
-        
+
     <div class="tab-content" id="myTabContent">
 
-        <div class="tab-pane show active" id="introContent" role="tabpanel" aria-labelledby="introContent-tab">            
+        <div class="tab-pane show active" id="introContent" role="tabpanel" aria-labelledby="introContent-tab">
 
             <h3><span class="text-white bg-dark rounded">Task 1 of 2</span> - code snippet analysis</h3>
 
@@ -20,7 +20,7 @@
                 So you have to:
             </p>
             <ol>
-                <li>Check the code snippet - click on "Code view".</li>                
+                <li>Check the code snippet - click on "Code view".</li>
                 <li>Fill in the form and submit it - click on "Task submission".</li>
             </ol>
         </div>
@@ -44,23 +44,17 @@
 
             <form action="{% url 'survey' %}" method="POST" id="taskForm">
                 {% csrf_token %}
-                <div class="quest1Content questContent">
-                    <h3 class="questionDesc">What code smell type do you infer from code snippet?</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_cst}}
-                    </div>
-                </div>
 
-                <div class="quest3Content questContent">
-                    <h3 class="questionDesc">What's your confidence level about the chosen option above??</h3>
-                    <div class="input-group mb-3">
-                        {{form.answer_cst_confidence}}
-                    </div>
+                {% for field in form.visible_fields %}
+                <div class="form-group questContent">
+                    {{field.label_tag }}
+                    {{field}}
                 </div>
+                {% endfor %}
 
-                {{form.task}}
-                {{form.dtModel}}
-                {{form.questionnaire}}
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
 
                 <input type="submit" value="Next Task" class="btn btn-primary" />
             </form>
