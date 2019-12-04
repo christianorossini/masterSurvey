@@ -6,7 +6,7 @@ from django import forms
 class ParticipantForm(ModelForm):
     class Meta:
         model = Participant        
-        exclude = ['inviteId']
+        exclude = ['inviteId', 'nuGroup']
         widgets = {
             'name': TextInput(attrs={'class':"form-control"}),
             'experience': Select(attrs={'class':"form-control"}),

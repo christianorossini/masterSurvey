@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-import secrets
+
 from .forms import ParticipantForm, AnswerTaskCCForm, AnswerTaskIDForm
 from .models import DTModel, Task, Answer, Questionnaire
 import random
@@ -20,9 +20,8 @@ def newparticipant(request):
         form = ParticipantForm(request.POST)
         
         if(form.is_valid):            
-            participant = form.save(commit=False)
-            participant.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo
-            participant.save()
+            participant = form.save(commit=False)  
+            participant.save()          
 
             #cria um novo questionário e vincula o participant
             # TODO tentar realizar um save só
@@ -92,7 +91,7 @@ def survey(request):
         answerForm = task.getForm(instance=answer)        
     
     return render(request, task.getView(), context={'dtModel':dtModel, 'task':task, 'form':answerForm, 
-                'questions':task.questions.all(), 'classificationTreePosition':getCurrentDtModelIndex(request)+1, 
+                'classificationTreePosition':getCurrentDtModelIndex(request)+1, 
                 'classificationTreeTotal':len(request.session['dtModelSequenceList'])})
 
 def endSurvey(request):

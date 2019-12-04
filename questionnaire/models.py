@@ -1,8 +1,15 @@
 from django.db import models
 from datetime import datetime
+import secrets
 
-class Participant(models.Model):
-    inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
+class GroupQueueLog(models.Model):
+    OPTIONS_GROUP = ((1,"Group 1"),(2,"Group 2"))
+    dtInsertion = models.DateTimeField(auto_now_add=True)
+    nuGroup = models.IntegerField(choices=OPTIONS_GROUP)
+    class Meta:
+        db_table="ms_groupQueueLog"
+
+class Participant(models.Model):        
     PART_ORIGIN = (
         ('I', 'Industry - Professional from industry'),
         ('M', 'Academics - Professional from academy [student, master or PHD]'),        
@@ -25,33 +32,33 @@ class Participant(models.Model):
         ('K', 'Knowledgeable (I am familiar with it)'),
         ('VK', 'Very knowledgeable (I know all about ir)'),
     )    
+    inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
+    nuGroup = models.IntegerField(choices=GroupQueueLog.OPTIONS_GROUP) 
     name = models.CharField(max_length=100, blank=False, verbose_name="Name (or Nickname)")
     origin = models.CharField(choices=PART_ORIGIN, max_length=1) 
     experience = models.CharField(max_length=3, choices=YEARS_OF_EXP, verbose_name="Programming experience") # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
     csBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells")    
     mlBackground = models.CharField(max_length=2, choices=BG_ML, verbose_name="Rate your background/knowledge about machine learning and decision tree")
+    
+    def save(self):
+        self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo
+        # TODO setar um grupo para o usuário.
+        super().save()
+    
     def __str__(self):
         return self.name
+    
     class Meta:
         db_table="ms_participant"
 
-
-class Question(models.Model):
-    description = models.CharField(max_length=500)    
-    sequenceNumber = models.IntegerField() #as 'questions' tem uma sequência dentro de uma task    
-    def __str__(self):
-        return self.description
-    class Meta:
-        db_table="ms_question"    
-        ordering = ['sequenceNumber']
+    
 
 class Task(models.Model):    
     RATE_TASK = "RA"
     IDENTIFY_TASK = "ID"
     CORRELATION_TASK = "CC"
     shortName = models.CharField(max_length=2)
-    name = models.CharField(max_length=30, default='')    
-    questions = models.ManyToManyField(Question)
+    name = models.CharField(max_length=30, default='')        
     sequenceNumber = models.IntegerField(null=True) #ordem de exibição das tasks
     def __str__(self):
         return self.name
@@ -162,4 +169,4 @@ class InviteControl(models.Model):
     activated = models.BooleanField(default=False)
     class Meta:
         db_table="ms_inviteControl"
-    
+  
