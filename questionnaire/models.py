@@ -3,11 +3,27 @@ from datetime import datetime
 import secrets
 
 class GroupQueueLog(models.Model):
-    OPTIONS_GROUP = ((1,"Group 1"),(2,"Group 2"))
+    GROUP_1 = 1
+    GROUP_2 = 2
+    OPTIONS_GROUP = ((GROUP_1,"Group 1"),(GROUP_2,"Group 2"))
     dtInsertion = models.DateTimeField(auto_now_add=True)
     nuGroup = models.IntegerField(choices=OPTIONS_GROUP)
+    
+    def getNextGroupNumber(self):
+        try:
+            actualId = GroupQueueLog.objects.order_by('-id')[0]                        
+            if(actualId.nuGroup==self.GROUP_1):
+                self.nuGroup = self.GROUP_2 
+            else: 
+                self.nuGroup = self.GROUP_1
+        except(IndexError):
+            self.nuGroup = self.GROUP_1                   
+        super().save()            
+        return self.nuGroup
+            
     class Meta:
         db_table="ms_groupQueueLog"
+
 
 class Participant(models.Model):        
     PART_ORIGIN = (
@@ -42,7 +58,9 @@ class Participant(models.Model):
     
     def save(self):
         self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo
-        # TODO setar um grupo para o usuário.
+        groupLog = GroupQueueLog()
+        # ao participante é atribuído um grupo de forma alternada, a medida em que novos participantes se cadastram
+        self.nuGroup = groupLog.getNextGroupNumber()         
         super().save()
     
     def __str__(self):
@@ -52,11 +70,7 @@ class Participant(models.Model):
         db_table="ms_participant"
 
     
-
 class Task(models.Model):    
-    RATE_TASK = "RA"
-    IDENTIFY_TASK = "ID"
-    CORRELATION_TASK = "CC"
     shortName = models.CharField(max_length=2)
     name = models.CharField(max_length=30, default='')        
     sequenceNumber = models.IntegerField(null=True) #ordem de exibição das tasks
