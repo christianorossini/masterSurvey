@@ -1,22 +1,28 @@
 {% extends "masterquest/base.html" %}
 {% load static %}
 
-{% block content %}
+{% block scripts %}
+<script src="{% static 'masterquest/script.js' %}"></script>
+{% endblock scripts %}
 
+{% block content %}
 <div class="container-fluid">
-    <h1>3 - Survey content - <strong>{{surveyProgress}}</strong></h1>
-    
+    <h1>3 - Survey content - <strong>task {{surveyProgress}}</strong></h1>
+
     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        {% comment %}
         <li class="nav-item">
-            <a class="nav-link active" id="intro-tab" data-toggle="tab" href="#introContent" role="tab" aria-controls="introContent" aria-selected="true">Instructions</a>
+            <a class="nav-link" id="intro-tab" data-toggle="tab" href="#introContent" role="tab"
+                aria-controls="introContent" aria-selected="true">Instructions</a>
         </li>
+        {% endcomment %}
         <li class="nav-item">
-            <a class="nav-link" id="codeSnippet-tab" data-toggle="tab" href="#codeSnippetContent" role="tab"
+            <a class="nav-link  active" id="codeSnippet-tab" data-toggle="tab" href="#codeSnippetContent" role="tab"
                 aria-controls="codeSnippetContent" aria-selected="false">Code view</a>
         </li>
         {% block tabTreeContent %}
 
-        {% endblock tabTreeContent %}                
+        {% endblock tabTreeContent %}
         <li class="nav-item">
             <a class="nav-link" id="formContent-tab" data-toggle="tab" href="#formContent" role="tab"
                 aria-controls="formContent" aria-selected="false" style="font-weight: bold">Task submission</a>
@@ -27,9 +33,37 @@
         {% block surveyContent %}
 
         {% endblock surveyContent %}
-    </div>
- 
+    </div>   
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="instructionsModal">                        
+                    Task {{surveyProgress}} - {% block modalTitle %}code analysis{% endblock modalTitle %}    
+                </h5>                
+            </div>
+            <div class="modal-body">         
+                <h4 class="instructions">Instructions</h4>                    
+
+                {% block modalContent %}
+
+                {% endblock modalContent %}
+
+                <p>
+                    <strong>Warning:</strong> This experiment is <strong>time-sensitive</strong>, thus it is only permitted to get distracted after submitting the task under evaluation.
+                </p>
+
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-primary" id="btnStartTask">Start task</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}

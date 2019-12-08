@@ -97,7 +97,7 @@ class SurveyManager:
     def getSurveyProgress(self):
         currentTaskPosition = self.getTasksList().index(self.getCurrentTaskId()) + 1
         totalTasks = len(self.getTasksList())
-        return  "code {0} of {1}".format(currentTaskPosition, totalTasks)
+        return  "{0} of {1}".format(currentTaskPosition, totalTasks)
 
     def selectView(self):
         row = self.getCurrentRow()

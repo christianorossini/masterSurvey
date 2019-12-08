@@ -154,6 +154,7 @@ class Answer(models.Model):
             )         
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    secondsToAnswer = models.FloatField(null=True) 
     class Meta:
         db_table="ms_answer"  
 
