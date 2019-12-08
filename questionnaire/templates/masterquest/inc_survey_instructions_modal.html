@@ -1,0 +1,41 @@
+{% load static %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="instructionsModal">Task {{surveyProgress}} - code analysis</h5>                
+            </div>
+            <div class="modal-body">
+                <h4 class="instructions">Instructions</h4>
+
+                <p>
+                    This task presents a code snippet which contains a specific code smell type.
+                </p>
+                <p>
+                    So you have to:
+                </p>
+                <ol>
+                    <li>Check the code snippet and try detect it - tab "Code view".</li>
+                    <li>Fill in the form and submit it - tab "Task submission".</li>
+                </ol>
+
+                <p>
+                    <strong>Warning:</strong> This experiment is <strong>time-sensitive</strong>, thus it is only permitted to get
+                    distracted after submitting the current task.
+                </p>
+
+                {% block modalContent %}
+
+{% endblock modalContent %}
+
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-primary" id="btnStartTask">Start task</button>
+            </div>
+        </div>
+    </div>
+</div>

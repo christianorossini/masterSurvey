@@ -138,8 +138,13 @@ pre {
 
 .tab-content{
     padding-top:20px;
+    visibility: hidden;
 }
 
 h4.instructions{
-    margin-top: 20px;
+    margin-top: 5px;
+}
+
+.modal-backdrop{
+    opacity:0.5 !important;    
 }
