@@ -1,29 +1,8 @@
 from django.db import models
 from datetime import datetime
 import secrets
-
-class GroupQueueLog(models.Model):
-    GROUP_1 = 1
-    GROUP_2 = 2
-    OPTIONS_GROUP = ((GROUP_1,"Group 1"),(GROUP_2,"Group 2"))
-    dtInsertion = models.DateTimeField(auto_now_add=True)
-    nuGroup = models.IntegerField(choices=OPTIONS_GROUP)
-    
-    def getNextGroupNumber(self):
-        try:
-            actualId = GroupQueueLog.objects.order_by('-id')[0]                        
-            if(actualId.nuGroup==self.GROUP_1):
-                self.nuGroup = self.GROUP_2 
-            else: 
-                self.nuGroup = self.GROUP_1
-        except(IndexError):
-            self.nuGroup = self.GROUP_1                   
-        super().save()            
-        return self.nuGroup
-            
-    class Meta:
-        db_table="ms_groupQueueLog"
-
+import random
+import logging
 
 class Participant(models.Model):        
     PART_ORIGIN = (
@@ -49,7 +28,6 @@ class Participant(models.Model):
         ('VK', 'Very knowledgeable (I know all about ir)'),
     )    
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
-    nuGroup = models.IntegerField(choices=GroupQueueLog.OPTIONS_GROUP) 
     name = models.CharField(max_length=100, blank=False, verbose_name="Name (or Nickname)")
     origin = models.CharField(choices=PART_ORIGIN, max_length=1) 
     experience = models.CharField(max_length=3, choices=YEARS_OF_EXP, verbose_name="Programming experience") # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
@@ -57,10 +35,7 @@ class Participant(models.Model):
     mlBackground = models.CharField(max_length=2, choices=BG_ML, verbose_name="Rate your background/knowledge about machine learning and decision tree")
     
     def save(self):
-        self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo
-        groupLog = GroupQueueLog()
-        # ao participante é atribuído um grupo de forma alternada, a medida em que novos participantes se cadastram
-        self.nuGroup = groupLog.getNextGroupNumber()         
+        self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo        
         super().save()
     
     def __str__(self):
@@ -70,40 +45,80 @@ class Participant(models.Model):
         db_table="ms_participant"
 
     
-class Task(models.Model):    
-    shortName = models.CharField(max_length=2)
-    name = models.CharField(max_length=30, default='')        
-    sequenceNumber = models.IntegerField(null=True) #ordem de exibição das tasks
-    def __str__(self):
-        return self.name
+class LatinSquare(models.Model):    
+    cells = [[True, False],     #   DT      |   noDT
+            [False, True]]      #   noDT    |   DT
+    row1Participant = models.OneToOneField(Participant, on_delete=models.CASCADE, related_name='participant1', null="True")     
+    row2Participant = models.OneToOneField(Participant, on_delete=models.CASCADE, related_name='participant2', null="True") 
+    column1Tasks = models.CharField(max_length=50)
+    column2Tasks = models.CharField(max_length=50)
+
+    # inicializa a instância de latin square
+    #     - cria a sequência de atividades por coluna
+    #     - atribui o usuário a uma 'row' do latin square
+    def init(self, participant):
+        self.column1Tasks = self.initColumn(1)
+        self.column2Tasks = self.initColumn(2)
+        # confere se há o mesmo número de tarefas por coluna: essencial para a execução so survey
+        if(len(self.column1Tasks)!=len(self.column2Tasks)):     
+            msg = 'Latin Square Columns with diferent number of tasks.'
+            logging.warning(msg)
+            raise Exception(msg)
+        sortedRow = random.sample([1,2],1)[0]      # sorteia a linha em que estará o Participant no Latin Square
+        if sortedRow==1:
+            self.row1Participant = participant
+        else:
+            self.row2Participant = participant            
+
+    def initColumn(self, group):
+        tasks = Task.objects.filter(taskGroup=group).values_list('pk', flat=True)                
+        randomTasks = random.sample(list(tasks), len(tasks))
+        # converte em string (inteiros separados por vírgulas) e retorna
+        return ",".join(str(x) for x in randomTasks)
+
+    def setNewParticipant(self, participant):
+        if self.row1Participant==None:
+            self.row1Participant = participant
+        else:
+            self.row2Participant = participant     
+
     class Meta:
-        db_table="ms_task"      
-    def getForm(self, post=None, instance=None):
-        from . import forms                
-        if (self.shortName==Task.IDENTIFY_TASK):    
-            return forms.AnswerTaskIDForm(post, instance=instance)
-        if (self.shortName==Task.CORRELATION_TASK):
-            return forms.AnswerTaskCCForm(post, instance=instance)
-    def getView(self):                
-        if (self.shortName==Task.IDENTIFY_TASK):                
-            return "masterquest/survey_task_id.html"    
-        if (self.shortName==Task.CORRELATION_TASK):
-            return "masterquest/survey_task_cc.html"
+        db_table="ms_latinSquare" 
+    
 
 class DTModel(models.Model):
     dtImg = models.CharField(max_length=50)    
     dtNumberOfLeaves = models.IntegerField()
-    dtDepth = models.IntegerField(null=True)        
+    dtDepth = models.IntegerField(null=True)       
+
+    def __str__(self):
+        return self.dtImg
+    
+    class Meta:
+        db_table="ms_dtModel"        
+
+
+class Task(models.Model):            
+    OPTIONS_CS_SCOPE = (('C','Class'),('M','Method'))
+    OPTIONS_TASK_GROUP = ((1,'Group 1'),(2,'Group 2')) 
+    taskGroup = models.IntegerField(choices=OPTIONS_TASK_GROUP)                                   # Grupo = coluna do LatinSquare
+    codeSmellScope = models.CharField(max_length=1, choices=OPTIONS_CS_SCOPE)
     codeSmellType = models.CharField(max_length=10)
     codeSnippetProject = models.CharField(max_length=100)
     codeSnippetKind = models.CharField(max_length=30)
     codeSnippetURI = models.CharField(max_length=200)
-    codeSnippet = models.TextField()    
-    tasks = models.ManyToManyField(Task)    
+    codeSnippetContent = models.TextField()     
+    decisionTree = models.OneToOneField(DTModel, on_delete=models.DO_NOTHING, unique=True)   
+    
     def __str__(self):
-        return self.dtImg
+        return "Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType)
+    
+    def getForm(self, post=None, instance=None):        
+        from . import forms        
+        return forms.AnswerTaskIDForm(post, instance=instance)
+            
     class Meta:
-        db_table="ms_dtModel"        
+        db_table="ms_task"      
 
 class Questionnaire(models.Model):
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
@@ -137,8 +152,7 @@ class Answer(models.Model):
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
             )         
-    questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)
-    dtModel = models.ForeignKey(DTModel, on_delete=models.CASCADE)
+    questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     class Meta:
         db_table="ms_answer"  

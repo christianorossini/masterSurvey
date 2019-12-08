@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseNotFound
 from django.template import loader
 from django.urls import reverse
 
 from .forms import ParticipantForm, AnswerTaskCCForm, AnswerTaskIDForm
-from .models import DTModel, Task, Answer, Questionnaire
+from .models import DTModel, Task, Answer, Questionnaire, LatinSquare, Participant
 import random
 import datetime
+from .surveyManager import SurveyManager
 
 # Create your views here.
 def index(request):
@@ -21,170 +22,72 @@ def newparticipant(request):
         
         if(form.is_valid):            
             participant = form.save(commit=False)  
-            participant.save()          
+            participant.save()                                         
 
-            #cria um novo questionário e vincula o participant
-            # TODO tentar realizar um save só
-            questionnaire = Questionnaire()            
-            questionnaire.participant = participant
-            questionnaire.save()                        
-
-            #inclui o participante na sessão, condiciona acessar os outros passos da survey a partir desta view
-            request.session['participant']=participant.inviteId
-            request.session['participantName']=participant.name
-            request.session['questionnaireID']=questionnaire.id
-
-            initSurvey(request)
-
-            return HttpResponseRedirect(reverse('instructions'))     
+            return HttpResponseRedirect(reverse('instructions', args=(participant.pk,)))     
 
     else:
         form = ParticipantForm()    
     
     return render(request, 'masterquest/participant.html', {'form': form})    
 
-def instructions(request):    
-    if(not isParticipantInSession(request)):
-        return HttpResponseRedirect(reverse('index'))
 
-    return render(request, 'masterquest/instructions.html')
+def instructions(request, participant_id):    
+    get_object_or_404(Participant, pk=participant_id)
+
+    return render(request, 'masterquest/instructions.html', context={'participant_id':participant_id})
+
+
+def startSurvey(request):
+    if request.method=='POST':
+        participant = get_object_or_404(Participant, pk=request.POST['participant_id'])  
+
+        # TODO criar uma condição para evitar que se inicialize várias surveys para o mesmo participant        
+        surveyManager = SurveyManager(request)
+        surveyManager.startSurvey(participant)
+        
+        return HttpResponseRedirect(reverse('survey'))    
+
+    else:
+        return HttpResponseNotFound()
+    
 
 def survey(request):
-    if(not isSurveyInitiated(request)):
-        return HttpResponseRedirect(reverse('index'))      
+    surveyManager = SurveyManager(request)
     
-    pkModel = request.session['dtModelSequenceList'][getCurrentDtModelIndex(request)]
-    pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]        
-    dtModel = DTModel.objects.get(pk=pkModel)
-    task = Task.objects.get(pk=pkTask)
-    questionnaire = Questionnaire.objects.get(pk=request.session['questionnaireID'])         
+    if(not surveyManager.isSurveyInitiated()):
+        return HttpResponseNotFound(content="Access not allowed.")     
+       
+    task = Task.objects.get(pk=surveyManager.getCurrentTaskId())
+    questionnaire = Questionnaire.objects.get(participant=surveyManager.getParticipantId())
     
     if(request.method=='POST'):
         
-        ## TODO código redundante: refatorar
-        pkTask = request.session['taskSequenceList'][getCurrentTaskIndex(request)]
-        task = Task.objects.get(pk=pkTask)
-        ##
         answerForm = task.getForm(post=request.POST)
 
         if(answerForm.is_valid()):
             answerForm.save()
-        
-            # fim do survey
-            if(isLastDtModel(request) and isLastTask(request)):
-                return HttpResponseRedirect(reverse('finish'))  
-           
-            # próximo classification tree
-            if(isLastTask(request)):
-                nextDtModel(request)
-                setCurrentTaskIndex(request, 0)
-            else:
-                #próxima task
-                nextTask(request)
-            
-            return HttpResponseRedirect(reverse('survey'))
+            try:
+                surveyManager.nextTask()
+                return HttpResponseRedirect(reverse('survey'))
+            except IndexError:
+                return HttpResponseRedirect(reverse('finish'))             
     else:       
-        answer = Answer()
-        answer.dtModel = dtModel 
+        answer = Answer()        
         answer.questionnaire = questionnaire
         answer.task = task        
         answerForm = task.getForm(instance=answer)        
     
-    return render(request, task.getView(), context={'dtModel':dtModel, 'task':task, 'form':answerForm, 
-                'classificationTreePosition':getCurrentDtModelIndex(request)+1, 
-                'classificationTreeTotal':len(request.session['dtModelSequenceList'])})
+    return render(request, surveyManager.selectView(), 
+                context={'dtModel':task.decisionTree, 'task':task, 'form':answerForm, 
+                    'surveyProgress': surveyManager.getSurveyProgress()})
 
 def endSurvey(request):
-    if(not isSurveyInitiated(request)):
-        return HttpResponseRedirect(reverse('index'))
-       
-    #encerra o questionário
-    questId = request.session['questionnaireID']
-    questionnaire = Questionnaire.objects.get(id=questId)
-    questionnaire.finish()
-    questionnaire.save()
+    surveyManager = SurveyManager(request)
     
-    #elimina as varíáveis de controle criadas para gerenciar o survey
-    del request.session['participant']
-    del request.session['participantName']
-    del request.session['dtModelSequenceList']
-    del request.session['taskSequenceList']
-    del request.session['questionnaireID']
-        
+    if(not surveyManager.isSurveyInitiated()):
+        return HttpResponseNotFound()  
+
+    surveyManager.finishSurvey()
+
     return render(request, 'masterquest/surveyFinish.html')
-
-def results(request, question_id):
-   """  question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'masterquest/results.html', {'question': question}) """
-
-def vote(request, question_id):
-   """  question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'masterquest/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('results', args=(question.id,))) """
- 
-def isParticipantInSession(request):
-    if('participant' in request.session):
-         return HttpResponseRedirect(reverse('newparticipant'))   
- 
-#inicializa o survey. Cria um fluxo com a sequência de atividades
-def initSurvey(request):    
-    modelSequencePks = list(DTModel.objects.values_list('pk', flat=True))
-    # embaralha a ordem das models para que cada participante execute a survey em uma ordem diferente
-    random.shuffle(modelSequencePks)
-    # guarda a ordem das models embaralhadas em variável de sessão
-    request.session['dtModelSequenceList'] = modelSequencePks
-    taskSequencePks = list(Task.objects.values_list('pk', flat=True).order_by('sequenceNumber'))    
-    request.session['taskSequenceList'] = taskSequencePks
-    setCurrentTaskIndex(request, 0)
-    setCurrentDtModelIndex(request, 0)
-
-def isSurveyInitiated(request):
-    return 'dtModelSequenceList' in request.session
-
-def nextTask(request):    
-    currentTaskIndex = getCurrentTaskIndex(request) + 1            
-    setCurrentTaskIndex(request, currentTaskIndex)
-    return request.session['taskSequenceList'][currentTaskIndex]
-
-def nextDtModel(request):
-    currentModelIndex = getCurrentDtModelIndex(request) + 1        
-    setCurrentDtModelIndex(request, currentModelIndex)    
-    return request.session['dtModelSequenceList'][currentModelIndex]
-
-def isLastTask(request):
-    currentTask = getCurrentTaskIndex(request)
-    taskList = request.session['taskSequenceList']
-    return len(taskList)==currentTask+1
-
-def isLastDtModel(request):
-    currentModel = getCurrentDtModelIndex(request)
-    modelList = request.session['dtModelSequenceList']
-    return len(modelList)==currentModel+1
-
-def setCurrentTaskIndex(request, num):
-    request.session['currentTask'] = num
-
-def getCurrentTaskIndex(request):
-    return request.session['currentTask']
-
-def setCurrentDtModelIndex(request, num):
-    request.session['currentDTModel'] = num
-
-def getCurrentDtModelIndex(request):
-    return request.session['currentDTModel']
-
-
-    

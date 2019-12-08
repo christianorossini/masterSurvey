@@ -9,7 +9,16 @@
         {% lorem 3 p %}
     </p>
 
-    <a href="{% url 'survey' %}" class="btn btn-primary btn-lg" role="button">Start!</a>
+    
+    
+        <form action="{% url 'startSurvey' %}" method="POST">
+            {% csrf_token %}
+            <p class="text-center">
+                <input type="submit" class="btn btn-primary btn-lg" value="Start!">                
+            </p>    
+            <input type="hidden" value="{{participant_id}}" name="participant_id" />
+        </form>
+    
 
 </div>
 
