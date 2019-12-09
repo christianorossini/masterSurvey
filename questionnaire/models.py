@@ -3,6 +3,8 @@ from datetime import datetime
 import secrets
 import random
 import logging
+import pandas as pd
+import os
 
 class Participant(models.Model):        
     PART_ORIGIN = (
@@ -90,12 +92,20 @@ class DTModel(models.Model):
     dtImg = models.CharField(max_length=50)    
     dtNumberOfLeaves = models.IntegerField()
     dtDepth = models.IntegerField(null=True)       
+    dtNodes = models.CharField(max_length=500)
 
     def __str__(self):
         return self.dtImg
     
     class Meta:
-        db_table="ms_dtModel"        
+        db_table="ms_dtModel"    
+
+    def getNodesGlossary(self):
+        pyPath = os.path.dirname(os.path.abspath(__file__))
+        dfMetrics =  pd.read_csv(pyPath + '/software_class_level_metrics.csv', sep=';')        
+        dictMetrics = {'apiName':dfMetrics['apiname']}
+        dictMetrics = {'apiName':[1,2,3,4,5,6]}
+        return dictMetrics
 
 
 class Task(models.Model):            

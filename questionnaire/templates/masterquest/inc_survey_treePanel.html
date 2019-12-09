@@ -7,4 +7,13 @@
     <div class="container-fluid" id="gridModelSnippets">
         <img src="{% get_static_prefix %}masterquest/images/dt/{{task.decisionTree}}" />
     </div>
+
+    {{task.decisionTree.getNodesGlossary}}
+    <table>
+        {% for node in task.decisionTree.getNodesGlossary %}
+        <tr>
+            <td>{{node.apiname}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
