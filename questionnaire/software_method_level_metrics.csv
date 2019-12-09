@@ -1,0 +1,33 @@
+"apiname";"name";"description";"categorie_by_scitools";"categorie_by_palomba";"research";"apply"
+"CountInput";"Number of<br/> inputs (FANIN)";"The number of inputs a function uses plus the number of unique subprograms calling the function. Inputs include parameters and global variables that are used in the function, so Functions calledby + Parameters read + Global Variables read. Of the two general approachs to calculating FANIN (informational versus structural) ours is the informational approach.";"volume";"coupling";"FANIN";1
+"CountLine";"Number of physical<br/> lines";"Number of physical lines";"volume";;"NL";0
+"CountLineBlank";"Number of blank lines";"Number of blank lines";"volume";"size";"BLOC";1
+"CountLineCode";"Source Lines of Code";"The number of lines that contain source code. Note that a line can contain source and a comment and thus count towards multiple metrics. For Classes this is the sum of the CountLineCode for the member functions of the class";"volume";"size";"LOC, SLOC";1
+"CountLineCodeDecl";"Number of declarative<br/> Lines of Code";"Number of lines containing declarative source code. Note that a line can be declarative and executable - int i =0; for instance.";"volume";;;0
+"CountLineCodeExe";"Executable Lines of Code";"Number of lines containing executable source code.";"volume";;;0
+"CountLineComment";"Lines with Comments";"Number of lines containing comment. This can overlap with other code counting metrics. For instance int j = 1; // comment has a comment, is a source line, is an executable source line, and a declarative source line.";"volume";;"CLOC";0
+"CountOutput";"Number of<br/> outputs (FANOUT)";"The number of outputs that are SET. This can be parameters or global variables. So Functions calls + Parameters set/modify + Global Varibales set/modify. Of the two general approachs to calculating FANOUT (informational versus structural) ours is the informational approach.";"volume";"coupling";"FANOUT";1
+"CountPath";"Paths";"Number of unique paths though a body of code, not counting abnormal exits or gotos.";"complexity";"complexity";"NPATH";1
+"CountPathLog";"Paths (Log10x)";"The base 10 logarithm (Log10x) of the number of unique paths though a body of code, not counting abnormal exits or gotos through the code, truncated to an integer value.";"complexity";;;0
+"CountSemicolon";"Number of semicolons";"Number of semicolons";"volume";;;0
+"CountStmt";"Statements";"Number of declarative plus executable statements.";"volume";;;0
+"CountStmtDecl";"Declarative Statements";"Number of declarative statements";"volume";"complexity";;1
+"CountStmtExe";"Executable Statements";"Number of executable statements.";"volume";"complexity";;1
+"Cyclomatic";"Cyclomatic Complexity";"McCabe Cyclomatic complexity as per the original NIST paper on the subject.
+Edges – Nodes + Connected Components
+McCabe also proved that the cyclomatic complexity of any structured program with only one entrance point and one exit point is equal to the number of decision points contained in that program plus one (refer to section V for the proof).
+Understand counts the keywords for decision points (FOR, WHILE, etc) and then adds 1. For a switch statement, each ‘case’ is counted as 1. For languages with Macros the expanded Macro text is also included in the calculation.";"complexity";"complexity";" McCabe Complexity (v(G))";1
+"CyclomaticModified";"Modified Cyclomatic Complexity";"Modified McCabe Cyclomatic complexity. The Cyclomatic Complexity except that each decision in a multi-decision structure (switch in C/Java, Case in Ada, computed Goto and arithmetic if in FORTRAN) statement is not counted and instead the entire multi-way decision structure counts as 1";"complexity";;" McCabe Complexity (v(G))";0
+"CyclomaticStrict";"Strict Cyclomatic Complexity";"Strict cyclomatic complexity. The Cyclomatic Complexity with logical conjunction and logical and in conditional expressions also adding 1 to the complexity for each of their occurrences.
+i.e. The statement if (a && b || c) would have a cyclomatic of 1 but a strict cycolmatic of 3";"complexity";;" McCabe Complexity (v(G))";0
+"Essential";"Essential Complexity";"Essential complexity is the Cyclomatic complexity after iteratively replacing all well structured control structures with a single statement. Structures such as if-then-else and while loops are considered well structured.
+Understand calculate the essential complexity by removing all the structured subgraphs from the control graph and then calculating the complexity. A graph that has only the regular single entry/single exit loops or branches will be reducible to a graph with complexity one. Any branches into or out of a loop or decision will make the graph non-reducible and will have essentialcomplexity > 2. (You never get 2 since a graph with complexity 2 is always reducible to a graph with complexity 1).";"complexity";;"ev(G)";0
+"Knots";"Knots - Measure of <br/> overlapping jumps";"Measure of overlapping jumps. If a piece of code has arrowed lines indicating where every jump in the flow of control occurs, a knot is defined as where two such lines cross each other. The number of knots is proportional to the complexity of the control flow.";"complexity";;;0
+"MaxEssentialKnots";"Max Knots (Measure of <br/>overlapping jumps)";"Maximum Knots after structured programming constructs have been removed";"complexity";;;0
+"MaxNesting";"Maximum nesting level";"Maximum nesting level of control constructs (if, while, for, switch, etc.) in the function.";"complexity";"complexity";;1
+"MinEssentialKnots";"Minimum Knots (Measure of <br/>overlapping jumps)";"Minimum Knots after structured programming constructs have been removed.";"complexity";;;0
+"RatioCommentToCode";"Comment to Code Ratio";"Ratio of number of comment lines to number of code lines. Note that because some lines are both code and comment, this could easily yield percentages higher than 100";"complexity";"complexity";;1
+"SumCyclomatic";"Sum Cyclomatic Complexity";"Sum of cyclomatic complexity of all nested functions or methods.";"complexity";;"Chidamber & Kemerer – Weighted Methods per Class (WCM)";0
+"SumCyclomaticModified";"Sum Modified Cyclomatic Complexity";"Sum of modified cyclomatic complexity of all nested functions or methods.";"complexity";;;0
+"SumCyclomaticStrict";"Sum Strict Cyclomatic Complexity";"Sum of strict cyclomatic complexity of all nested functions or methods.";"complexity";;;0
+"SumEssential";"Sum Essential Complexity";"Sum of essential complexity of all nested functions or methods.";"complexity";;;0
