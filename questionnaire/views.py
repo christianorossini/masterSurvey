@@ -75,6 +75,8 @@ def survey(request):
                 surveyManager.nextTask()
                 return HttpResponseRedirect(reverse('survey'))
             except IndexError:
+                # esgotou o número de atividades programadas para o participante, encerra o survey
+                surveyManager.finishSurvey()
                 return HttpResponseRedirect(reverse('finish'))             
     else:       
         answer = Answer()        
@@ -87,11 +89,4 @@ def survey(request):
                     'surveyProgress': surveyManager.getSurveyProgress()})
 
 def endSurvey(request):
-    surveyManager = SurveyManager(request)
-    
-    if(not surveyManager.isSurveyInitiated()):
-        return HttpResponseNotFound()  
-
-    surveyManager.finishSurvey()
-
     return render(request, 'masterquest/surveyFinish.html')
