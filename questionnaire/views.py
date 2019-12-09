@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden
 from django.template import loader
 from django.urls import reverse
+from django.db import IntegrityError
 
 from .forms import ParticipantForm, AnswerTaskCCForm, AnswerTaskIDForm
 from .models import DTModel, Task, Answer, Questionnaire, LatinSquare, Participant
@@ -44,7 +45,10 @@ def startSurvey(request):
 
         # TODO criar uma condição para evitar que se inicialize várias surveys para o mesmo participant        
         surveyManager = SurveyManager(request)
-        surveyManager.startSurvey(participant)
+        try:
+            surveyManager.startSurvey(participant)
+        except IntegrityError as error:             #verificação caso o mesmo usuário (mesmo identificador) tente iniciar o survey mais de 1 vez
+            return HttpResponseForbidden()
         
         return HttpResponseRedirect(reverse('survey'))    
 

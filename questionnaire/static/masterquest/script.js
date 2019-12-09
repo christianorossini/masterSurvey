@@ -14,8 +14,7 @@ $(document).ready(function() {
         $('#instructionsModal').modal('hide')
         startTime();
     });
-    
-    //resolve o problema dos compoenentes do form quando estão 'disbaled'
+        
     $('form').submit(function(e) {
         endTime();            
         //computar o tempo em segundos        

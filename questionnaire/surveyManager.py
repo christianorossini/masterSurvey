@@ -1,28 +1,29 @@
 from .models import LatinSquare, Questionnaire, Participant
 from django.db.models import Q
+from django.db import transaction
 
 class SurveyManager:
 
     def __init__(self, request):
         self.request = request
     
+    @transaction.atomic
     def startSurvey(self, participant):
+        #cria um novo questionário e vincula ao participant        
+        questionnaire = Questionnaire()            
+        questionnaire.participant = participant
+        questionnaire.save()        
+        
         # verifica se existe alguma instância de latin square com alguma row aberta à inserção de participante
         latinSquare = LatinSquare.objects.filter(Q(row1Participant__isnull=True) | Q(row2Participant__isnull=True)).first()
         if latinSquare == None:
             #inicializa uma nova Latin Square
             latinSquare = LatinSquare()
-            latinSquare.init(participant)
-            latinSquare.save()
+            latinSquare.init(participant)            
         else:
             #inicializa atualiza uma Latin Square que já existe
             latinSquare.setNewParticipant(participant)
-            latinSquare.save()
-        
-        #cria um novo questionário e vincula ao participant        
-        questionnaire = Questionnaire()            
-        questionnaire.participant = participant
-        questionnaire.save()
+        latinSquare.save()      
               
         # inicializa as variáveis de sessão que guardarão o estado do survey
         self.setLatinSquareId(latinSquare.id)        
