@@ -128,8 +128,21 @@ class Task(models.Model):
         return "Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType)
     
     def getForm(self, post=None, instance=None):        
-        from . import forms        
-        return forms.AnswerTaskIDForm(post, instance=instance)
+        from django.forms import ChoiceField
+        from . import forms  
+        form = forms.AnswerTaskIDForm(post, instance=instance)
+        if(self.codeSmellScope=='C'):
+            choices = (                                                    
+                        ('CDSBP','Class Data Should Be Private - Classe que faz assim, assim assado'),
+                        ('GC','God Class - Classe que faz assim, assim assado'),                                                    
+                        )
+        else:
+            choices = (                                                    
+                        ('LM','Long Method - Classe que faz assim, assim assado'),
+                        ('LPL','Long Parameter List - Classe que faz assim, assim assado'),                                                    
+                        )
+        form.fields['answer_cst'].choices = choices
+        return form
             
     class Meta:
         db_table="ms_task"      

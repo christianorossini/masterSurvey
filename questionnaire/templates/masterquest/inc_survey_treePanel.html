@@ -31,7 +31,7 @@
             <tbody>
                 {% for node in task.decisionTree.getNodesGlossary %}
                 <tr>
-                    <td class="w-25">{{node.name|striptags}}</td>
+                    <td class="w-25"><a href="#">{{node.name|striptags}}</a></td>
                     <td class="w-50">{{node.description}}</td>
                     <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
                     <td class="w-15">{{node.research|default:""}}</td>

@@ -22,15 +22,15 @@ class AnswerTaskIDForm(forms.ModelForm):
        model = AnswerTaskID
        fields = ['answer_cst', 'answer_cst_confidence', 'questionnaire', 'task', 'secondsToAnswer']
        widgets = {            
-           'answer_cst': Select(attrs={'class':"form-control"}),                       
+           'answer_cst': RadioSelect(),                       
            'answer_cst_confidence': RadioSelect(),           
            'questionnaire': HiddenInput(),           
            'task': HiddenInput(),  
            'secondsToAnswer': HiddenInput(),           
        }
        labels = {
-            'answer_cst': 'What code smell type do you infer from code snippet?',
-            'answer_cst_confidence': 'What\'s your confidence level about the chosen option above?',
+            'answer_cst': '1 - What code smell type do you infer from code snippet?',
+            'answer_cst_confidence': '2 - What\'s your confidence level about the chosen option above?',
         }
                 
 class AnswerTaskCCForm(forms.ModelForm):        
