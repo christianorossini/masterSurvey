@@ -148,3 +148,8 @@ h4.instructions{
 .modal-backdrop{
     opacity:0.5 !important;    
 }
+
+caption {
+    display: table-caption;
+    text-align: center;
+  }

@@ -1,10 +1,12 @@
-from django.db import models
-from datetime import datetime
-import secrets
-import random
 import logging
-import pandas as pd
 import os
+import random
+import secrets
+from datetime import datetime
+
+import pandas as pd
+from django.db import models
+
 
 class Participant(models.Model):        
     PART_ORIGIN = (
@@ -103,9 +105,11 @@ class DTModel(models.Model):
     def getNodesGlossary(self):
         pyPath = os.path.dirname(os.path.abspath(__file__))
         dfMetrics =  pd.read_csv(pyPath + '/software_class_level_metrics.csv', sep=';')        
-        dictMetrics = {'apiName':dfMetrics['apiname']}
-        dictMetrics = {'apiName':[1,2,3,4,5,6]}
-        return dictMetrics
+        # filtra apenas as métricas contidas no nó da árvore exibida
+        dfMetrics=dfMetrics[dfMetrics['apiname'].isin(self.dtNodes.split(','))]
+        # retira os NaNs e substitui por None
+        dfMetrics = dfMetrics.where(pd.notnull(dfMetrics), None)
+        return dfMetrics.to_dict('records')
 
 
 class Task(models.Model):            
@@ -208,4 +212,3 @@ class InviteControl(models.Model):
     activated = models.BooleanField(default=False)
     class Meta:
         db_table="ms_inviteControl"
-  
