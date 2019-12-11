@@ -101,10 +101,10 @@ class SurveyManager:
         return  "{0} of {1}".format(currentTaskPosition, totalTasks)
 
     def selectView(self):
+        latinSquare = LatinSquare()
         row = self.getCurrentRow()
-        column = self.getCurrentColumn()
-        cell = LatinSquare.cells[row][column]
-        if(cell==True):
+        column = self.getCurrentColumn()        
+        if(latinSquare.isDt(row, column)):
             return "masterquest/survey_task_dt.html"    #retorna visualização com decision tree
         else:
             return "masterquest/survey_task_noDt.html"  #retorna visualização sem decision tree

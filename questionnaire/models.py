@@ -86,6 +86,9 @@ class LatinSquare(models.Model):
         else:
             self.row2Participant = participant     
 
+    def isDt(self, row, column):
+        return self.cells[row][column]
+
     class Meta:
         db_table="ms_latinSquare" 
     
@@ -182,6 +185,7 @@ class Answer(models.Model):
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     secondsToAnswer = models.FloatField(null=True) 
+    isDt = models.BooleanField(default=False)
     class Meta:
         db_table="ms_answer"  
 

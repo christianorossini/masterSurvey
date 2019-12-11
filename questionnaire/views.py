@@ -70,7 +70,9 @@ def survey(request):
         answerForm = task.getForm(post=request.POST)
 
         if(answerForm.is_valid()):
-            answerForm.save()
+            answer = answerForm.save(commit=False)
+            answer.isDt = LatinSquare().isDt(surveyManager.getCurrentRow(),surveyManager.getCurrentColumn()) # atribui à resposta se a tarefa foi DT ou noDT
+            answer.save()
             try:
                 surveyManager.nextTask()
                 return HttpResponseRedirect(reverse('survey'))
