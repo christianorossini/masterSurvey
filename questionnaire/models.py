@@ -118,7 +118,7 @@ class DTModel(models.Model):
 class Task(models.Model):            
     OPTIONS_CS_SCOPE = (('C','Class'),('M','Method'))
     OPTIONS_TASK_GROUP = ((1,'Group 1'),(2,'Group 2')) 
-    taskGroup = models.IntegerField(choices=OPTIONS_TASK_GROUP)                                   # Grupo = coluna do LatinSquare
+    taskGroup = models.IntegerField(choices=OPTIONS_TASK_GROUP)  # Grupo = coluna do LatinSquare
     codeSmellScope = models.CharField(max_length=1, choices=OPTIONS_CS_SCOPE)
     codeSmellType = models.CharField(max_length=10)
     codeSnippetProject = models.CharField(max_length=100)
@@ -136,13 +136,21 @@ class Task(models.Model):
         form = forms.AnswerTaskIDForm(post, instance=instance)
         if(self.codeSmellScope=='C'):
             choices = (                                                    
-                        ('CDSBP','Class Data Should Be Private - Classe que faz assim, assim assado'),
-                        ('GC','God Class - Classe que faz assim, assim assado'),                                                    
+                        ('CDSBP','CLASS DATA SHOULD BE PRIVATE - A class exposing its fields, violating the principle of data hiding.'),
+                        ('CC','COMPLEX CLASS - A class having at least one method having a high cyclomatic complexity.'),
+                        ('GC','GOD CLASS - A large class implementing different responsibilities and centralizing most of the system processing.'),
+                        ('II','INAPPROPRIATE INTIMACY - Two classes exhibiting a very high coupling between them.'),
+                        ('LC','LAZY CLASS - A class having very small dimension, few methods and low complexity.'),
+                        ('MM','MIDDLE MAN - A class delegating to other classes most of the methods it implements.'),
+                        ('RB','REFUSED BEQUEST - A class redefining most of the inherited methods, thus signaling a wrong hierarchy.'),
+                        ('SC','SPAGHETTI CODE - A class implementing complex methods interacting between them, with no parameters, using global variables.'),
+                        ('SG','SPECULATIVE GENERALITY - A class declared as abstract having very few children classes using its methods.'),
                         )
         else:
             choices = (                                                    
-                        ('LM','Long Method - Classe que faz assim, assim assado'),
-                        ('LPL','Long Parameter List - Classe que faz assim, assim assado'),                                                    
+                        ('LM','LONG METHOD - A method that is unduly long in terms of lines of code.'),
+                        ('LPL','LONG PARAMETER LIST - A method having a long list of parameters, some of which avoidable.'),
+                        ('FE','FEATURE ENVY - Refers to methods that use much more data from other classes than from their own class. A Feature Envy tends to use more attributes from other classes than from its own class, and to use many attributes from few different classes.'),
                         )
         form.fields['answer_cst'].choices = choices
         return form
