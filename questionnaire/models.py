@@ -64,7 +64,7 @@ class LatinSquare(models.Model):
         self.column1Tasks = self.initColumn(1)
         self.column2Tasks = self.initColumn(2)
         # confere se há o mesmo número de tarefas por coluna: essencial para a execução so survey
-        if(len(self.column1Tasks)!=len(self.column2Tasks)):     
+        if(len(self.column1Tasks.split(','))!=len(self.column2Tasks.split(','))):     
             msg = 'Latin Square Columns with diferent number of tasks.'
             logging.warning(msg)
             raise Exception(msg)
@@ -125,7 +125,7 @@ class Task(models.Model):
     codeSnippetKind = models.CharField(max_length=30)
     codeSnippetURI = models.CharField(max_length=200)
     codeSnippetContent = models.TextField()     
-    decisionTree = models.OneToOneField(DTModel, on_delete=models.DO_NOTHING, unique=True)   
+    decisionTree = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)       
     
     def __str__(self):
         return "Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType)

@@ -3,32 +3,32 @@
 "AvgCyclomaticModified";"Average Modified <br/>Cyclomatic Complexity";"Average modified cyclomatic complexity for all nested functions or methods";"complexity";;;0;
 "AvgCyclomaticStrict";"Avg Strict Cyclomatic Complexity";"Average strict cyclomatic complexity for all nested functions or methods";"complexity";;;0;
 "AvgEssential";"Avg Essential <br/>Cyclomatic Complexity";"Average essential cyclomatic complexity for all nested functions or methods.";"complexity";;;0;
-"AvgLine";"Avg Number of Lines";"Average number of lines for all nested functions or methods.";"volume";;;0;
-"AvgLineBlank";"Avg Number of Blank Lines";"Average number of blank for all nested functions or methods.";"volume";;;0;
-"AvgLineCode";"Avg Number of Lines of Code";"Average number of lines containing source code for all nested functions or methods.";"volume";;"Lorenz & Kidd - Average Method Size (AMS)";0;
-"AvgLineComment";"Avg Number of<br/> Lines with Comments";"Average number of lines containing comment for all nested functions or methods.";"volume";;;0;
-"CountClassBase";"Base Classes";"Number of immediate base classes";"object oriented";;"IFANIN";0;
+"AvgLine";"Avg Number of Lines";"Average number of lines for all nested functions or methods.";"volume";;;1;
+"AvgLineBlank";"Avg Number of Blank Lines";"Average number of blank for all nested functions or methods.";"volume";;;1;
+"AvgLineCode";"Avg Number of Lines of Code";"Average number of lines containing source code for all nested functions or methods.";"volume";;"Lorenz & Kidd - Average Method Size (AMS)";1;
+"AvgLineComment";"Avg Number of<br/> Lines with Comments";"Average number of lines containing comment for all nested functions or methods.";"volume";;;1;
+"CountClassBase";"Base Classes";"Number of immediate base classes";"object oriented";;"IFANIN";1;
 "CountClassCoupled";"Coupling Between Objects";"The Coupling Between Object Classes (CBO) measure for a class is a count of the number of other classes to which it is coupled. Class A is coupled to class B if class A uses a type, data, or member from class B. This metric is also referred to as Efferent Coupling (Ce). Any number of couplings to a given class counts as 1 towards the metric total";"object oriented";"coupling";"Chidamber & Kemerer - Coupling Between Objects (CBO)";1;"https://scitools.com/documents/imagesMetrics/CountClassCoupledC.png"
 "CountClassDerived";"Number of Children";"Number of immediate subclasses. (i.e. the number of classes one level down the inheritance tree from this class).";"object oriented";"inheritance";"Chidamber & Kemerer - Number of Children (NOC)";1;"https://scitools.com/documents/imagesMetrics/CountClassDerivedC.png"
-"CountDeclClassMethod";"Class Methods";"Number of class methods";"object oriented";;;0;
+"CountDeclClassMethod";"Class Methods";"Number of class methods";"object oriented";;;1;
 "CountDeclClassVariable";"Class Variables";"Number of class variables";"object oriented";"complexity";"Lorenz & Kidd - Number of Variables (NV)";1;"https://scitools.com/documents/imagesMetrics/CountDeclClassVariableC.png"
 "CountDeclMethod";"Number of Local<br/> Methods (WMC)";"Number of local (not inherited) methods.";"object oriented";"complexity";"Chidamber & Kemerer - Weighted Methods per Class (WMC)";1;"https://scitools.com/documents/imagesMetrics/CountDeclMethodC.png"
 "CountDeclMethodAll";"Number of Methods";"Number of methods, including inherited ones.";"object oriented";"size";"Lorenz & Kidd - Number of Methods(NM)";1;"https://scitools.com/documents/imagesMetrics/CountDeclMethodAllC.png"
 "CountDeclInstanceMethod";"Instance methods";"Number of instance methods";"object oriented";"size";"NIM";1;"https://scitools.com/documents/imagesMetrics/CountDeclInstanceMethodC.png"
 "CountDeclInstanceVariable";"Instance Variables";"Number of instance variables - variables defined in a class that are only accessable through an object of that class";"object oriented";"size";"NIV";1;"https://scitools.com/documents/imagesMetrics/CountDeclInstanceVariableC.png"
-"CountDeclMethodDefault";"Local Default Visibility Methods";"Number of local default visibility methods";"object oriented";;;0;
+"CountDeclMethodDefault";"Local Default Visibility Methods";"Number of local default visibility methods";"object oriented";;;1;
 "CountDeclMethodPrivate";"Private Methods";"Number of local (not inherited) private methods.";"object oriented";"others";"Number Private Methods (NPRM)";1;"https://scitools.com/documents/imagesMetrics/CountDeclMethodPrivateC.png"
 "CountDeclMethodProtected";"Protected Methods";"Number of local protected methods.";"object oriented";"others";;1;"https://scitools.com/documents/imagesMetrics/CountDeclMethodProtectedC.png"
 "CountDeclMethodPublic";"Public Methods";"Number of public methods. Only counts local (not inherited) methods.";"object oriented";"others";"Lorenz & Kidd - Number of Public Methods (PM),NPM";1;"https://scitools.com/documents/imagesMetrics/CountDeclMethodPublicC.png"
-"CountLine";"Number of physical lines";"Number of physical lines";"volume";;"NL";0;
-"CountLineBlank";"Number of blank lines";"Number of blank lines";"volume";;"BLOC";0;
+"CountLine";"Number of physical lines";"Number of physical lines";"volume";;"NL";1;
+"CountLineBlank";"Number of blank lines";"Number of blank lines";"volume";;"BLOC";1;
 "CountLineCode";"Source Lines of Code";"The number of lines that contain source code. Note that a line can contain source and a comment and thus count towards multiple metrics. For Classes this is the sum of the CountLineCode for the member functions of the class";"volume";"size";"LOC, SLOC";1;"https://scitools.com/documents/imagesMetrics/CountLineCodeC.png"
-"CountLineCodeDecl";"Number of declarative <br/>Lines of Code";"Number of lines containing declarative source code. Note that a line can be declarative and executable - int i =0; for instance.";"volume";;;0;
-"CountLineCodeExe";"Executable Lines of Code";"Number of lines containing executable source code.";"volume";;;0;
-"CountLineComment";"Lines with Comments";"Number of lines containing comment. This can overlap with other code counting metrics. For instance int j = 1; // comment has a comment, is a source line, is an executable source line, and a declarative source line.";"volume";;"CLOC";0;
+"CountLineCodeDecl";"Number of declarative <br/>Lines of Code";"Number of lines containing declarative source code. Note that a line can be declarative and executable - int i =0; for instance.";"volume";;;1;
+"CountLineCodeExe";"Executable Lines of Code";"Number of lines containing executable source code.";"volume";;;1;
+"CountLineComment";"Lines with Comments";"Number of lines containing comment. This can overlap with other code counting metrics. For instance int j = 1; // comment has a comment, is a source line, is an executable source line, and a declarative source line.";"volume";;"CLOC";1;
 "CountSemicolon";"Number of semicolons";"Number of semicolons";"volume";;;0;
-"CountStmt";"Statements";"Number of declarative plus executable statements.";"volume";;;0;
-"CountStmtDecl";"Declarative Statements";"Number of declarative statements";"volume";;;0;
+"CountStmt";"Statements";"Number of declarative plus executable statements.";"volume";;;1;
+"CountStmtDecl";"Declarative Statements";"Number of declarative statements";"volume";;;1;
 "MaxCyclomatic";"Max Cyclomatic Complexity";"Maximum cyclomatic complexity of all nested functions or methods.";"complexity";"complexity";;1;"https://scitools.com/documents/imagesMetrics/MaxCyclomaticC.png"
 "MaxCyclomaticModified";"Max Modified Cyclomatic Complexity";"Maximum modified cyclomatic complexity of all nested functions or methods.";"complexity";;;0;
 "MaxCyclomaticStrict";"Max Strict Cyclomatic Complexity";"Maximum strict cyclomatic complexity of all nested functions or methods.";"complexity";;;0;
@@ -38,7 +38,7 @@
 "PercentLackOfCohesion";"Percent Lack of <br/>Cohesion in Methods";"100% minus average cohesion for class data members. Calculates what percentage of class methods use a given class instance variable. To calculate, average percentages for all of that class’es instance variables and subtract from 100%. A lower percentage means higher cohesion between class data and methods.";"object oriented";"cohesion";"Chidamber & Kemerer - Lack of Cohesion in Methods (LCOM/LOCM)";1;"https://scitools.com/documents/imagesMetrics/PercentLackOfCohesionC.png"
 "PercentLackOfCohesionModified";"Percent Modified Lack <br/>of Cohesion in Methods";"Same as PercentLackOfCohesion but does not penalize the use of accessor methods within a class to set/read variables.";"object oriented";;;0;
 "RatioCommentToCode";"Comment to Code Ratio";"Ratio of number of comment lines to number of code lines. Note that because some lines are both code and comment, this could easily yield percentages higher than 100";"complexity";;;1;"https://scitools.com/documents/imagesMetrics/RatioCommentToCodeC.png"
-"SumCyclomatic";"Sum of Cyclomatic Complexity";"Sum of cyclomatic complexity of all nested functions or methods.";"complexity";;"Chidamber & Kemerer - Weighted Methods per Class (WCM)";0;
+"SumCyclomatic";"Sum of Cyclomatic Complexity";"Sum of cyclomatic complexity of all nested functions or methods.";"complexity";;"Chidamber & Kemerer - Weighted Methods per Class (WCM)";1;
 "SumCyclomaticModified";"Sum of Modified <br/>Cyclomatic Complexity";"Sum of modified cyclomatic complexity of all nested functions or methods.";"complexity";;;0;
 "SumCyclomaticStrict";"Sum of Strict <br/>Cyclomatic Complexity";"Sum of strict cyclomatic complexity of all nested functions or methods.";"complexity";;;0;
 "SumEssential";"Sum of Essential Complexity";"Sum of essential complexity of all nested functions or methods.";"complexity";;;0;
