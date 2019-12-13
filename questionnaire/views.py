@@ -36,7 +36,9 @@ def newparticipant(request):
 def instructions(request, participant_id):    
     get_object_or_404(Participant, pk=participant_id)
 
-    return render(request, 'masterquest/instructions.html', context={'participant_id':participant_id})
+    numTasks = Task.objects.count()
+    
+    return render(request, 'masterquest/instructions.html', context={'participant_id':participant_id, 'numTasks':numTasks})
 
 
 def startSurvey(request):

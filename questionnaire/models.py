@@ -106,10 +106,14 @@ class DTModel(models.Model):
         db_table="ms_dtModel"    
 
     def getNodesGlossary(self):
-        pyPath = os.path.dirname(os.path.abspath(__file__))
-        dfMetrics =  pd.read_csv(pyPath + '/software_class_level_metrics.csv', sep=';')        
+        pyPath = os.path.dirname(os.path.abspath(__file__))        
+        dfMetricsClass =  pd.read_csv(pyPath + '/software_class_level_metrics.csv', sep=';')        
+        dfMetricsMethod =  pd.read_csv(pyPath + '/software_method_level_metrics.csv', sep=';')        
+        dfMetrics = dfMetricsClass.append(dfMetricsMethod)        
         # filtra apenas as métricas contidas no nó da árvore exibida
         dfMetrics=dfMetrics[dfMetrics['apiname'].isin(self.dtNodes.split(','))]
+        # retira possíveis repetições
+        dfMetrics = dfMetrics.drop_duplicates(subset=['apiname'])
         # retira os NaNs e substitui por None
         dfMetrics = dfMetrics.where(pd.notnull(dfMetrics), None)
         return dfMetrics.to_dict('records')
@@ -128,7 +132,7 @@ class Task(models.Model):
     decisionTree = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)       
     
     def __str__(self):
-        return "Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType)
+        return "Id: {3}, Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType, self.id)
     
     def getForm(self, post=None, instance=None):        
         from django.forms import ChoiceField

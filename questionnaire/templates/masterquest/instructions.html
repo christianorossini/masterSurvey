@@ -6,31 +6,13 @@
     <h1>2 - Start up instructions</h1>
 
     <p>
-        The main objective of this research is to expose a set of participants to 12 different code snippets and ask his
+        The main objective of this research is to expose a set of participants to {{numTasks}} different code snippets and ask his
         opinion about the ocurrence of a code smell type. The
-        participant must fulfill 12 different tasks, each one will have only a related code snippet. In others tasks
+        participant must accomplish {{numTasks}} different tasks, each one will have only a related code snippet. In others tasks
         there will be, besides the code, a decision tree that will serve as a decision aid, or suggestion, to decision
         making.
     </p>
-    <p>
-        The survey was designed in a Latin Square scheme. Each pair of participants will be exposed to the same code
-        snippets, but one will be aided by the decision tree from task 1 to 6, while the other not. The figure below
-        ilustrates it:
-    </p>
-
-    <div class="text-center">
-        <figure class="figure">
-            <img src="{% get_static_prefix %}masterquest/images/Latim_square_desing.png"
-                class="figure-img img-fluid center-block" alt="Latin square" />
-            <figcaption class="figure-caption  text-center">Latin square scheme</figcaption>
-        </figure>
-    </div>
-
-    <p>
-        Each column (or task group) has 6 tasks, each of them with a code snippet - class or method. The code snippet
-        has a design problem that must be detected and evaluated by participant.
-        Is up to the survey rules to choose what row of Latim Square the participant will stay, it's a decision made by random.        
-    </p>
+   
     <p>
         Masures:
         <ul>
