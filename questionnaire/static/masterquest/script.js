@@ -2,39 +2,26 @@ var taskStartTime;
 var taskEndTime;
     
 $(document).ready(function() {
-    $('.btnStartTask').click(function() {
-        $('.btnStartTask').attr("disabled","disabled");
-        $('#gridModelSnippets').css('visibility','visible');
-        $('.quest1Content').css('visibility','visible');
+    
+    $('#instructionsModal').modal({
+        keyboard: false,
+        backdrop: 'static',
+    });
+    $('#instructionsModal').modal('show'); 
+
+    $('#btnStartTask').click(function() {
+        $('.tab-content').css('visibility','visible');                
+        $('#instructionsModal').modal('hide')
         startTime();
     });
-
-    $('.btnStartQuest1').click(function() {             
-        $('.btnStartQuest1').attr("disabled","disabled");
-        $('.slcQuest1').attr("disabled",true);
-        $('.quest2Content').css('visibility','visible');  
-        endTime();            
-        //computar o tempo em segundos
-        //atribuir o tempo a uma variável hidden
-        timeDiff = (taskEndTime - taskStartTime)/1000;
-        timeDiff = timeDiff.toFixed(2);
-        $('#id_secondsToAnswer').val(timeDiff);
-    });      
-
-    $('.slcQuest1').change(function() {
-        if($('.slcQuest1').val()==''){
-            $('.btnStartQuest1').attr("disabled",true);
-        }else{             
-            $('.btnStartQuest1').attr("disabled",false);
-            $('.quest2Content').css('visibility','hidden'); 
-        }
-    });  
-
-    //resolve o problema dos compoenentes do form quando estão 'disbaled'
+        
     $('form').submit(function(e) {
-        $(':disabled').each(function(e) {
-            $(this).removeAttr('disabled');
-        })
+        endTime();            
+        //computar o tempo em segundos        
+        timeDiff = (taskEndTime - taskStartTime)/1000;
+        timeDiff = timeDiff.toFixed(2); //segundos com 2 casas decimais
+        //atribui o tempo a uma variável hidden
+        $('#id_secondsToAnswer').val(timeDiff);
     });
     
 });
@@ -48,3 +35,4 @@ function startTime(){
 function endTime(){
     taskEndTime = new Date().getTime();    
 }
+

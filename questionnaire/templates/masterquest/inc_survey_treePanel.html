@@ -3,8 +3,42 @@
 
 <div class="tab-pane" id="dtContent" role="tabpanel" aria-labelledby="dtContent-tab">
     <h3>Decision tree</h3>
-    
+
+    <p>
+       Scroll down to see 
+       <a href="#nodes-glossary">nodes glossary</a>
+    </p>
+
     <div class="container-fluid" id="gridModelSnippets">
-        <img src="{% get_static_prefix %}masterquest/images/dt/{{dtModel.dtImg}}" />
+        <figure class="figure">
+            <img src="{% get_static_prefix %}masterquest/images/dt/{{task.decisionTree}}" class="figure-img img-fluid rounded" alt="Decision tree"/>
+            <figcaption class="figure-caption">Decision tree</figcaption>
+        </figure>
     </div>
+
+    <h4>Nodes glossary <a id="nodes-glossary" aria-label="Anchor" data-anchorjs-icon="#"  class="anchorjs-link"></a></h4>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <caption>Nodes glossary</caption>
+            <thead>
+                <tr>
+                    <th>metric name</th>
+                    <th>metric description</th>
+                    <th>categorie</th>
+                    <th>research</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for node in task.decisionTree.getNodesGlossary %}
+                <tr>
+                    <td class="w-25"><a href="{{node.detailed_example}}" target="_blank">{{node.name|striptags}}</a></td>
+                    <td class="w-50">{{node.description}}</td>
+                    <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
+                    <td class="w-15">{{node.research|default:""}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </div>

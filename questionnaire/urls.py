@@ -7,7 +7,8 @@ urlpatterns = [
     path('', views.index, name='index'),    
     path('login/', views.login, name='login'),
     path('newparticipant/', views.newparticipant, name='newparticipant'),
-    path('instructions/', views.instructions, name='instructions'),
+    path('instructions/<str:participant_id>', views.instructions, name='instructions'),
+    path('startSurvey/', views.startSurvey, name='startSurvey'),    
     path('survey/', views.survey, name='survey'),    
     path('finish/', views.endSurvey, name='finish'),    
     # ex: /polls/5/results/

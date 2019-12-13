@@ -1,15 +1,38 @@
 {% extends "masterquest/base.html" %}
 
 {% block content %}
-
+{% load static %}
 <div class="container">
-    <h1>2 - Survey instructions</h1>
+    <h1>2 - Start up instructions</h1>
 
     <p>
-        {% lorem 3 p %}
+        The main objective of this research is to expose a set of participants to {{numTasks}} different code snippets and ask his
+        opinion about the ocurrence of a code smell type. The
+        participant must accomplish {{numTasks}} different tasks, each one will have only a related code snippet. In others tasks
+        there will be, besides the code, a decision tree that will serve as a decision aid, or suggestion, to decision
+        making.
+    </p>
+   
+    <p>
+        Masures:
+        <ul>
+            <li>The agreement among developers about detection of a code smell type, with or without a decisioin tree aid</li>
+            <li>The time required to solve the tasks, with or without a decisioin tree aid</li>
+            <li>The confidence of each choose made, with or without a decisioin tree aid</li>
+        </ul>        
     </p>
 
-    <a href="{% url 'survey' %}" class="btn btn-primary btn-lg" role="button">Start!</a>
+
+
+
+    <form action="{% url 'startSurvey' %}" method="POST">
+        {% csrf_token %}
+        <p class="text-center">
+            <input type="submit" class="btn btn-primary btn-lg" value="Start!">
+        </p>
+        <input type="hidden" value="{{participant_id}}" name="participant_id" />
+    </form>
+
 
 </div>
 

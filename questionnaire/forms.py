@@ -6,7 +6,7 @@ from django import forms
 class ParticipantForm(ModelForm):
     class Meta:
         model = Participant        
-        exclude = ['inviteId']
+        exclude = ['inviteId', 'nuGroup']
         widgets = {
             'name': TextInput(attrs={'class':"form-control"}),
             'experience': Select(attrs={'class':"form-control"}),
@@ -20,31 +20,30 @@ class ParticipantForm(ModelForm):
 class AnswerTaskIDForm(forms.ModelForm):        
     class Meta:               
        model = AnswerTaskID
-       fields = ['answer_cst', 'answer_cst_confidence', 'questionnaire', 'dtModel', 'task']
+       fields = ['answer_cst', 'answer_cst_confidence', 'questionnaire', 'task', 'secondsToAnswer']
        widgets = {            
-           'answer_cst': Select(attrs={'class':"form-control"}),                       
+           'answer_cst': RadioSelect(),                       
            'answer_cst_confidence': RadioSelect(),           
-           'questionnaire': HiddenInput(),
-           'dtModel': HiddenInput(),
-           'task': HiddenInput(),            
+           'questionnaire': HiddenInput(),           
+           'task': HiddenInput(),  
+           'secondsToAnswer': HiddenInput(),           
        }
        labels = {
-            'answer_cst': 'What code smell type do you infer from code snippet?',
-            'answer_cst_confidence': 'What\'s your confidence level about the chosen option above?',
+            'answer_cst': '1 - What code smell type do you infer from code snippet?',
+            'answer_cst_confidence': '2 - What\'s your confidence level about the chosen option above?',
         }
                 
 class AnswerTaskCCForm(forms.ModelForm):        
     class Meta:               
         model = AnswerTaskCC
-        fields = ['answer_cst', 'answer_cst_confidence','answer_cst_dm', 'answer_tr', 'answer_tr_complement','questionnaire', 'dtModel', 'task']
+        fields = ['answer_cst', 'answer_cst_confidence','answer_cst_dm', 'answer_tr', 'answer_tr_complement','questionnaire', 'task']
         widgets = {            
             'answer_cst': Select(attrs={'class':"form-control"}),                       
             'answer_cst_confidence': RadioSelect(),            
             'answer_cst_dm': RadioSelect(),        
             'answer_tr': RadioSelect(),  
             'answer_tr_complement': Textarea(attrs={'class':"form-control", 'rows':'5'}),      
-            'questionnaire': HiddenInput(),
-            'dtModel': HiddenInput(),
+            'questionnaire': HiddenInput(),            
             'task': HiddenInput(),        
         }
         labels = {
