@@ -8,25 +8,43 @@
 
     <h2 id="research-title">Research - Code smell detection aided by a decision tree classifier.</h2>
 
-    <div>
-        <p>Code anomaly, so-called "code smell", is an implementation choice that indicates a deign problem which
+    <div style="text-indent: 40px">
+        <p>Code anomaly, so-called "code smell", is an implementation choice that indicates a design problem that
             violates the well-known principles of cohesion, abstraction and separation of concerns on software
-            development.  </p> 
-
-        <p> Furthermore, there have been many studies proposing to automatically detect bad smells in code. Over the last years,
-            Machine learning has been introduced as an important approach to detect code smells. For instance, the
-            decision tree is a supervised classifier that has been addressed in many problems involving code smell
-            detections, obtaining good effectivity. </p>
+            development. </p>
 
         <p>
-            The goal of this survey is to aid an empirical research that aims to test the agreement among developers upon 
-            certain "smely code", when 
-            . It'll test the perception of a participant about a specific code smell type, merged in a java code, and test this
-            same perception after a feedback provided by a white box classifier - a decision tree classifier.
+            There is a commonplace about the threats on software quality caused by code smells, at the same time that
+            there is a conflicted sense about what is a "smelliness code" though. Code smells and its variants
+            are design flaws that stand only in the definition of what it could be, thus every initiative of tracking
+            smells on source code is under the influence of a developer's experiences and backgrounds.
         </p>
 
-        <p><!-- Answering the survey might take around XX minutes of your time. --> The results of the survey may be reported in
-            academic publications. If you have any questions or concerns, please contact me.</p>
+        <p>
+            The subjectiveness around code smells was addressed by recent studies to
+            empirically evaluate the opinion of developers about it. These empirical studies were aimed to expose
+            developers to software code snippets and gather their point of view about the occurrence of certain types of
+            code
+            smells, obtaining qualitative results of the agreements among developers.
+        </p>
+
+        <p>
+            This research is a step ahead to discover agreements among developers, i. e., we intend to expose developers
+            to different source code snippets, written in java, along with a decision tree classifier. As an
+            interpretable model, this classifier will give insights to developers aimed to serve as a support to
+            decision making.
+        </p>
+        <p>
+            So it's relevant to notice that, throughout the survey, part of it will offer
+            insights provided by the decision tree (a decision tree visualization) whereas the other part will not. It is expected that these
+            different code analysis approaches - with or without support - may influence the decision about the code smell type that affects the source code, 
+            changing the way that how similar 2 or more developers detects each type of code smell.
+        </p>
+
+        <p>
+            <!-- Answering the survey might take around XX minutes of your time. -->
+            The results of the survey may be reported in
+            academic publications. If you have any questions or concerns, please contact the authors.</p>
     </div>
 
     <div id="members">
