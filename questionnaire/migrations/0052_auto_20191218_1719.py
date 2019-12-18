@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='answertaskid',
             name='answer_csagreement',
-            field=models.IntegerField(choices=[(2, 'Strongly Agree'), (1, 'Agree'), (0, 'Undecided'), (-1, 'Disagree'), (-2, 'Strongly Disagree')], default=''),
+            field=models.IntegerField(choices=[(2, 'Strongly Agree'), (1, 'Agree'), (0, 'Undecided'), (-1, 'Disagree'), (-2, 'Strongly Disagree')]),
         ),
     ]

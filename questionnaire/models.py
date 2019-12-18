@@ -200,7 +200,7 @@ class Answer(models.Model):
 
 # Classe para respostas da task
 class AnswerTaskID(Answer):           
-    answer_csagreement = models.IntegerField(choices=Answer.OPTIONS_CODE_AGREEMENT, default='')
+    answer_csagreement = models.IntegerField(choices=Answer.OPTIONS_CODE_AGREEMENT, default=None)
     answer_description = models.TextField()
     class Meta:
         db_table="ms_answerTaskID"
