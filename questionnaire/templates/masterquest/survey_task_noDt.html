@@ -34,15 +34,7 @@
             </div>
             {% endif %}
 
-            <!--
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                To answer the questions below, you should visualize the corresponding tree and code snippet. Click on
-                the tabs to navigate.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            -->
+            {% include "masterquest/inc_survey_cs_definition.html" %}
 
             <form action="{% url 'survey' %}" method="POST" id="taskForm">
                 {% csrf_token %}
