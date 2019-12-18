@@ -4,7 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from django.db import IntegrityError
 
-from .forms import ParticipantForm, AnswerTaskCCForm, AnswerTaskIDForm
+from .forms import ParticipantForm, AnswerTaskIDForm
 from .models import DTModel, Task, Answer, Questionnaire, LatinSquare, Participant
 import random
 import datetime

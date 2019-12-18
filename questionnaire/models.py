@@ -137,28 +137,18 @@ class Task(models.Model):
     def getForm(self, post=None, instance=None):        
         from django.forms import ChoiceField
         from . import forms  
-        form = forms.AnswerTaskIDForm(post, instance=instance)
-        if(self.codeSmellScope=='C'):
-            choices = (                                                    
-                        ('CDSBP','CLASS DATA SHOULD BE PRIVATE - A class exposing its fields, violating the principle of data hiding.'),
-                        ('CC','COMPLEX CLASS - A class having at least one method having a high cyclomatic complexity.'),
-                        ('GC','GOD CLASS - A large class implementing different responsibilities and centralizing most of the system processing.'),
-                        ('II','INAPPROPRIATE INTIMACY - Two classes exhibiting a very high coupling between them.'),
-                        ('LC','LAZY CLASS - A class having very small dimension, few methods and low complexity.'),
-                        ('MM','MIDDLE MAN - A class delegating to other classes most of the methods it implements.'),
-                        ('RB','REFUSED BEQUEST - A class redefining most of the inherited methods, thus signaling a wrong hierarchy.'),
-                        ('SC','SPAGHETTI CODE - A class implementing complex methods interacting between them, with no parameters, using global variables.'),
-                        ('SG','SPECULATIVE GENERALITY - A class declared as abstract having very few children classes using its methods.'),
-                        )
-        else:
-            choices = (                                                    
-                        ('LM','LONG METHOD - A method that is unduly long in terms of lines of code.'),
-                        ('LPL','LONG PARAMETER LIST - A method having a long list of parameters, some of which avoidable.'),
-                        ('FE','FEATURE ENVY - Refers to methods that use much more data from other classes than from their own class. A Feature Envy tends to use more attributes from other classes than from its own class, and to use many attributes from few different classes.'),
-                        )
-        form.fields['answer_cst'].choices = choices
+        form = forms.AnswerTaskIDForm(post, instance=instance)        
         return form
-            
+
+    def getCsDescription(self):
+        csDescriptions = {'gc':'GOD CLASS;A large class implementing different responsibilities and centralizing most of the system processing.',
+                            'lpl':'LONG PARAMETER LIST;A method having a long list of parameters, some of which avoidable.',
+                            'lm':'LONG METHOD;A method that is unduly long in terms of lines of code.',
+                            'mm':'MIDDLE MAN;A class delegating to other classes most of the methods it implements.',
+                            'cdsbp':'CLASS DATA SHOULD BE PRIVATE;A class exposing its fields, violating the principle of data hiding.',
+                            }
+        return csDescriptions[self.codeSmellType].split(';')
+
     class Meta:
         db_table="ms_task"      
 
@@ -193,48 +183,27 @@ class Answer(models.Model):
             ("RB", "Refused Bequest"),
             ("SC", "Spaghetti Code"),
             ("SG", "Speculative Generality"),
-            )         
+            )
+    OPTIONS_CODE_AGREEMENT = (
+            (2, "Strongly Agree"),
+            (1, "Agree"),
+            (0, "Undecided"),            
+            (-1, "Disagree"),
+            (-2, "Strongly Disagree"),
+            )
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    secondsToAnswer = models.FloatField(null=True) 
+    secondsToAnswer = models.FloatField(default=0) 
     isDt = models.BooleanField(default=False)
     class Meta:
         db_table="ms_answer"  
 
-# Classe para respostas da task Identify
+# Classe para respostas da task
 class AnswerTaskID(Answer):           
-    answer_cst = models.CharField(max_length=5, choices=Answer.OPTIONS_CODE_SMELL)    
-    answer_cst_confidence = models.IntegerField(verbose_name='', choices=Answer.OPTIONS_CODE_CONFIDENCE, default=None)
+    answer_csagreement = models.IntegerField(choices=Answer.OPTIONS_CODE_AGREEMENT, default=None)
+    answer_description = models.TextField()
     class Meta:
         db_table="ms_answerTaskID"
-
-# Classe para respostas da task Code Correlations
-class AnswerTaskCC(Answer):                
-    OPTIONS_TREE_RATE = (            
-            (5, "Very easily comprehensible"),
-            (4, "Easily comprehensible"),
-            (3, "Comprehensible"),
-            (2, "Difficult to comprehend"),
-            (1, "Very difficult to comprehend"),
-            )
-    OPTIONS_TREE_INFLUENCED_DECISION = (                        
-            (3, "Very much"),
-            (2, "Not so much"),
-            (1, "None"),
-            )
-    # escolha da decision tree
-    answer_cst = models.CharField(max_length=5, verbose_name='', choices=Answer.OPTIONS_CODE_SMELL)    
-    # escolha da 'confidence' da opção anterior
-    answer_cst_confidence = models.IntegerField(verbose_name='', choices=Answer.OPTIONS_CODE_CONFIDENCE, default=None)
-    # escolha do quanto a DT influenciou na tomada de decisão
-    answer_cst_dm = models.IntegerField(verbose_name='', choices=OPTIONS_TREE_INFLUENCED_DECISION, default=None)
-    # escolha do quanto a DT é compreensível 
-    answer_tr = models.IntegerField(verbose_name='', choices=OPTIONS_TREE_RATE, default=None)    
-    # texto aberto sobre a opção feita anteriormente
-    answer_tr_complement = models.TextField(verbose_name='')    
-
-    class Meta:
-        db_table="ms_answerTaskCC"
 
 class InviteControl(models.Model):
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
