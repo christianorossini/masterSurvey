@@ -186,8 +186,7 @@ class Answer(models.Model):
             )
     OPTIONS_CODE_AGREEMENT = (
             (2, "Strongly Agree"),
-            (1, "Agree"),
-            (0, "Undecided"),            
+            (1, "Agree"),                  
             (-1, "Disagree"),
             (-2, "Strongly Disagree"),
             )
