@@ -1,69 +1,128 @@
-{% extends "masterquest/base.html" %}
 {% load static %}
+<html>
 
-{% block scripts %}
-<script src="{% static 'masterquest/script.js' %}"></script>
-{% endblock scripts %}
+<head>
+    <title>Experiment</title>
 
-{% block content %}
-<div class="container-fluid">
-    <h1>3 - Survey content - <strong>task {{surveyProgress}}</strong></h1>
+    <link type="text/css" rel="stylesheet" href="http://layout.jquery-dev.com/lib/css/layout-default-latest.css">
 
-    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-        {% comment %}
-        <li class="nav-item">
-            <a class="nav-link" id="intro-tab" data-toggle="tab" href="#introContent" role="tab"
-                aria-controls="introContent" aria-selected="true">Instructions</a>
-        </li>
-        {% endcomment %}
-        <li class="nav-item">
-            <a class="nav-link  active" id="codeSnippet-tab" data-toggle="tab" href="#codeSnippetContent" role="tab"
-                aria-controls="codeSnippetContent" aria-selected="false">Code view</a>
-        </li>
-        {% block tabTreeContent %}
+    <script type="text/javascript" src="http://layout.jquery-dev.net/lib/js/jquery-latest.js"></script>
+    <script type="text/javascript" src="http://layout.jquery-dev.net/lib/js/jquery-ui-latest.js"></script>
+    <script type="text/javascript" src="http://layout.jquery-dev.com/lib/js/jquery.layout-latest.js"></script>
+    <script type="text/javascript">
 
-        {% endblock tabTreeContent %}
-        <li class="nav-item">
-            <a class="nav-link" id="formContent-tab" data-toggle="tab" href="#formContent" role="tab"
-                aria-controls="formContent" aria-selected="false" style="font-weight: bold">Task submission</a>
-        </li>
-    </ul>
+        $(document).ready(function () {
+            $('body').layout({
+                west__size: .30,
+                east__size: .25
+            });
+        });
 
-    <div class="taskContent">
-        {% block surveyContent %}
+    </script>
 
-        {% endblock surveyContent %}
-    </div>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
-</div>
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'masterquest/styles/default.css' %}">
+    <script src="{% static 'masterquest/highlight.pack.js' %}"></script>
+    <script src="{% static 'masterquest/highlightjs-line-numbers.min.js' %}"></script>
+    <script>hljs.initHighlightingOnLoad(); hljs.initLineNumbersOnLoad(); </script> 
+    {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-<!-- Modal -->
-<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModal"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="instructionsModal">                        
-                    Task {{surveyProgress}} - {% block modalTitle %}code analysis{% endblock modalTitle %}    
-                </h5>                
+    <link rel="stylesheet" type="text/css" href="{% static 'masterquest/style.css' %}">
+    <script src="{% static 'masterquest/script.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://introjs.com/introjs.css">
+</head>
+
+<body>
+
+    <div class="ui-layout-west blue">
+        <h3 class="taskTittle">
+            {% block taskHeader %}    
+            Task {{surveyProgress}}
+            {% endblock taskHeader %}
+        </h3>
+
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{form.errors}}
+        </div>
+        {% endif %}
+
+        {% include "masterquest/inc_survey_cs_definition.html" %}
+
+        {% block taskForm %}    
+        <form action="{% url 'survey' %}" method="POST" id="taskForm">
+            {% csrf_token %}
+
+            {% for field in form.visible_fields %}
+            <div class="form-group questContent">
+                {{field.label_tag }}
+                {{field}}
             </div>
-            <div class="modal-body">         
-                <h4 class="instructions">Instructions</h4>                    
+            {% endfor %}
 
-                {% block modalContent %}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
 
-                {% endblock modalContent %}
+            <input type="submit" value="Submit task" class="btn btn-primary" />
+        </form>
+        {% endblock taskForm %}    
+    </div>
 
-                <p>
-                    <strong>Warning:</strong> This experiment is <strong>time-sensitive</strong>, thus it is only permitted to get distracted after submitting the task under evaluation.
-                </p>
+    <div class="ui-layout-center">        
+        {% include "masterquest/inc_survey_codeSnippet.html" %}
+    </div>
 
-            </div>
-            <div class="modal-footer">                
-                <button type="button" class="btn btn-primary" id="btnStartTask">Start task</button>
+    {% if showTree %}
+    <div class="ui-layout-east">
+        {% include "masterquest/inc_survey_treePanel.html" %}
+    </div>
+    {% endif %}
+
+
+    {% block modal %}    
+    <!-- Modal -->
+    <div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="instructionsModal">
+                        Task {{surveyProgress}} - {% block modalTitle %}code analysis{% endblock modalTitle %}
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <h4 class="instructions">Instructions</h4>
+
+                    {% block modalContent %}
+
+                    {% endblock modalContent %}
+
+                    <p>
+                        <strong>Warning:</strong> This experiment is <strong>time-sensitive</strong>, thus it is only
+                        permitted to get distracted after submitting the task under evaluation.
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnStartTask">Start task</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    {% endblock modal %}    
 
-{% endblock content %}
+</body>
+
+</html>

@@ -6,17 +6,113 @@
 
     <h1 class="stepTitle">1 - Participant Background</h1>
 
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{form.errors}}
+    </div>
+    {% endif %}
+
     <fieldset>
         <form action="{% url 'newparticipant' %}" method="POST">
 
             {% csrf_token %}
 
             {% for field in form.visible_fields %}
+            {% if forloop.counter < 4    %}
             <div class="form-group">
                 {{field.label_tag }}
                 {{field}}
             </div>
+            {% endif %}
             {% endfor %}
+
+            <fieldset>
+                <legend>4 - Based on your professional and academic experience, please let us know how you perceive your
+                    level
+                    of experience in</legend>
+                {% for field in form.visible_fields %}
+                {% if forloop.counter >= 4 and forloop.counter < 9   %}
+                <div class="form-group">
+                    {{field.label_tag }}
+                    {{field}}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </fieldset>
+
+            <fieldset class="experienceQuestion">
+                <legend>5 - Please, answer the following questions based on your
+                    professional experience, which may also include participation in academic projects. You should
+                    answer how many years of personal experience you have and how many projects you have done in each of
+                    the following contexts:</legend>
+                <div class="form-row">
+                    <div class="col-3">
+                        Software development
+                    </div>
+                    <div class="col">
+                        {{form.devExperience_qtdYears}} years and 
+                        {{form.devExperience_qtdProjects}} projects in total,                   
+                        {{form.devExperience_qtdProjectsIndustry}} projects in the industry.
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-3">
+                        Object oriented development
+                    </div>
+                    <div class="col">
+                        {{form.objOrientedExperience_qtdYears}} years and 
+                    
+                        {{form.objOrientedExperience_qtdProjects}} projects in total,
+                 
+                        {{form.objOrientedExperience_qtdProjectsIndustry}} projects in the industry.
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-3">
+                        Object oriented development
+                    </div>
+                    <div class="col">
+                        {{form.objOrientedExperience_qtdYears}} years and 
+                 
+                        {{form.objOrientedExperience_qtdProjects}} projects in total,
+                   
+                        {{form.objOrientedExperience_qtdProjectsIndustry}} projects in the industry.
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-3">
+                        Development with java
+                    </div>
+                    <div class="col">
+                        {{form.javaExperience_qtdYears}} years and 
+                  
+                        {{form.javaExperience_qtdProjects}} projects in total,
+                   
+                        {{form.javaExperience_qtdProjectsIndustry}} projects in the industry.
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-3">
+                        Code revision
+                    </div>
+                    <div class="col">
+                        {{form.codeRevision_qtdYears}} years and                   
+                        {{form.codeRevision_qtdProjects}} projects in total, {{form.codeRevision_qtdProjectsIndustry}} projects in the industry.
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-3">
+                        Code smells identification
+                    </div>
+                    <div class="col">
+                        {{form.codeSmellIdentification_qtdYears}} years and 
+                   
+                        {{form.codeSmellIdentification_qtdProjects}} projects in total, {{form.codeSmellIdentification_qtdProjectsIndustry}} projects in the industry.
+                    </div>
+                </div>
+
+
+            </fieldset>
 
             <p class="text-center">
                 <input type="submit" value="Ok. Now, show me instructions." class="btn btn-primary" />

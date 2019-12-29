@@ -2,30 +2,30 @@
 
 
 <div class="tab-pane" id="dtContent" role="tabpanel" aria-labelledby="dtContent-tab">
-    <h3>Decision tree</h3>
+    <h3 class="taskTittle">Decision tree</h3>
 
     <p>
-       Scroll down to see 
-       <a href="#nodes-glossary">nodes glossary</a>
+       Tip #1: Scroll down to see <a href="#nodes-glossary">nodes glossary</a> <br>
+       Tip #2: resize this panel (on the left) to expand the decision tree figure.
     </p>
 
     <div class="container-fluid" id="gridModelSnippets">
         <figure class="figure">
-            <img src="{% get_static_prefix %}masterquest/images/dt/{{task.decisionTree}}" class="figure-img img-fluid rounded" alt="Decision tree"/>
+            <img src="{% get_static_prefix %}masterquest/images/dt/{{task.decisionTree}}" class="figure-img img-fluid rounded" alt="Decision tree" id="imgDecisionTree"/>
             <figcaption class="figure-caption">Decision tree</figcaption>
         </figure>
     </div>
 
-    <h4>Nodes glossary <a id="nodes-glossary" aria-label="Anchor" data-anchorjs-icon="#"  class="anchorjs-link"></a></h4>
-    <div class="table-responsive">
+    <h4 class="taskTittle">Nodes glossary <a id="nodes-glossary" aria-label="Anchor" data-anchorjs-icon="#"  class="anchorjs-link"></a></h4>
+    <div class="table-responsive" id="nodesGlossary">
         <table class="table table-striped">
             <caption>Nodes glossary</caption>
             <thead>
                 <tr>
                     <th>metric name</th>
                     <th>metric description</th>
-                    <th>categorie</th>
-                    <th>research</th>
+                    <!-- <th>categorie</th>
+                    <th>research</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -33,8 +33,8 @@
                 <tr>
                     <td class="w-25"><a href="{{node.detailed_example}}" target="_blank">{{node.name|striptags}}</a></td>
                     <td class="w-50">{{node.description}}</td>
-                    <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
-                    <td class="w-15">{{node.research|default:""}}</td>
+                    <!-- <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
+                    <td class="w-15">{{node.research|default:""}}</td> -->
                 </tr>
                 {% endfor %}
             </tbody>

@@ -48,8 +48,8 @@ body{
     margin-bottom: 30px;     
 }
 
-#newParticipant{
-    /* width: 50%; */
+legend{
+    font-size: 1.1em;
 }
 
 h1{
@@ -113,6 +113,10 @@ pre {
     text-align: left;
 }
 
+pre.prettyprint {
+    border: none !important;
+}
+
 /* for block of numbers */
 .hljs-ln-numbers {
     -webkit-touch-callout: none;
@@ -145,11 +149,28 @@ h4.instructions{
     margin-top: 5px;
 }
 
+h3.taskTittle, h4{
+    font-size: 1.3em;
+    border-bottom: 1px dotted;
+}
+
 .modal-backdrop{
-    opacity:0.5 !important;    
+    opacity:0.9 !important;    
 }
 
 caption {
     display: table-caption;
     text-align: center;
   }
+
+.experienceQuestion input{
+    width: 55px;
+}
+.experienceQuestion .form-row{
+    margin: 3px 0;
+}
+
+li.L0, li.L1, li.L2, li.L3,
+li.L5, li.L6, li.L7, li.L8 {
+  list-style-type: decimal !important;
+}

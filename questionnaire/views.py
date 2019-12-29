@@ -4,7 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from django.db import IntegrityError
 
-from .forms import ParticipantForm, AnswerTaskIDForm
+from .forms import ParticipantForm, AnswerTaskForm, AnswerTaskDTForm
 from .models import DTModel, Task, Answer, Questionnaire, LatinSquare, Participant
 import random
 import datetime
@@ -21,7 +21,7 @@ def newparticipant(request):
     if(request.method=='POST'):
         form = ParticipantForm(request.POST)
         
-        if(form.is_valid):            
+        if form.is_valid():            
             participant = form.save(commit=False)  
             participant.save()                                         
 
@@ -35,11 +35,36 @@ def newparticipant(request):
 
 def instructions(request, participant_id):    
     get_object_or_404(Participant, pk=participant_id)
+    numTasks = Task.objects.count()    
+    return render(request, 'masterquest/instructions.html', context={'participant_id':participant_id, 'numTasks':numTasks, 'numTasksHalf':numTasks/2})
 
-    numTasks = Task.objects.count()
+
+def warmup(request, participant_id):     
+    get_object_or_404(Participant, pk=participant_id)
+        
+    surveyManager = SurveyManager(request)
+    task = surveyManager.getWarmupTask()   
     
-    return render(request, 'masterquest/instructions.html', context={'participant_id':participant_id, 'numTasks':numTasks})
+    if(request.path_info.find('warmup1')>0):
+        answerForm = AnswerTaskForm()
+        showTree = False
+        nextView = 'instructions2'
+    else:
+        answerForm = AnswerTaskDTForm()
+        showTree = True
+        nextView = 'instructions3'
 
+    return render(request, "masterquest/survey_warmup.html", 
+                context={'dtModel':task.decisionTree, 'task':task, 'form':answerForm, 'showTree': showTree, 'participant_id':participant_id, 'nextView':nextView})
+
+
+def instructions2(request, participant_id):
+    get_object_or_404(Participant, pk=participant_id)
+    return render(request, 'masterquest/instructions2.html', context={'participant_id':participant_id})
+
+def instructions3(request, participant_id):
+    get_object_or_404(Participant, pk=participant_id)
+    return render(request, 'masterquest/instructions3.html', context={'participant_id':participant_id})
 
 def startSurvey(request):
     if request.method=='POST':
@@ -69,7 +94,7 @@ def survey(request):
     
     if(request.method=='POST'):
         
-        answerForm = task.getForm(post=request.POST)
+        answerForm = surveyManager.getForm(post=request.POST)
 
         if(answerForm.is_valid()):
             answer = answerForm.save(commit=False)
@@ -86,10 +111,10 @@ def survey(request):
         answer = Answer()        
         answer.questionnaire = questionnaire
         answer.task = task        
-        answerForm = task.getForm(instance=answer)        
+        answerForm =  surveyManager.getForm(instance=answer)        
     
-    return render(request, surveyManager.selectView(), 
-                context={'dtModel':task.decisionTree, 'task':task, 'form':answerForm, 
+    return render(request, "masterquest/survey.html", 
+                context={'dtModel':task.decisionTree, 'task':task, 'form':answerForm, 'showTree': surveyManager.showTree(),
                     'surveyProgress': surveyManager.getSurveyProgress()})
 
 def endSurvey(request):

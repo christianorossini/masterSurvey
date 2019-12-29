@@ -1,0 +1,21 @@
+{% extends "masterquest/base.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <h1>2 - Start up instructions</h1>
+
+    <p>Warmup task concluded. 
+    </p>
+
+    <form action="{% url 'startSurvey' %}" method="POST">
+        {% csrf_token %}
+        <p class="text-center">
+            <input type="submit" class="btn btn-primary btn-lg" value="Start experiment.">
+        </p>
+        <input type="hidden" value="{{participant_id}}" name="participant_id" />
+    </form>
+
+</div>
+
+{% endblock content %}

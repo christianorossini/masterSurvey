@@ -9,41 +9,50 @@ from django.db import models
 
 
 class Participant(models.Model):        
-    PART_ORIGIN = (
-        ('I', 'Industry - Professional from industry'),
-        ('M', 'Academics - Professional from academy [student, master or PHD]'),        
+    DEGREES = (
+        ('G', 'Bachelor degree'),
+        ('M', 'Master degree'),        
+        ('P', 'PHD'),        
     )
-    YEARS_OF_EXP = (
-        ('0-2', '0 to 2 years of experience'),
-        ('3-5', '3 to 5 years of experience'),
-        ('6-8', '6 to 8 years of experience'),
-        ('MT9', 'More than 9 years of experience'),        
-    )
-    BG_CS = (
-        ('NK', 'Not knowledgeable (I do not know anything)'),
-        ('SK', 'Somewhat knowledgeable (I have a vague idea)'),
-        ('K', 'Knowledgeable (I am familiar with it)'),
-        ('VK', 'Very knowledgeable (I know all about it)'),        
-    )
-    BG_ML = (
-        ('NK', 'Not knowledgeable (I do not know anything)'),
-        ('SK', 'Somewhat knowledgeable (I have a vague idea)'),
-        ('K', 'Knowledgeable (I am familiar with it)'),
-        ('VK', 'Very knowledgeable (I know all about ir)'),
+    EXPERIENCE_LEVEL = (
+        (0, 'I do not have any experience'),
+        (1, 'Very low'),        
+        (2, 'Low'),        
+        (3, 'High'),        
+        (4, 'Very high'),        
     )    
+
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
-    name = models.CharField(max_length=100, blank=False, verbose_name="Name (or Nickname)")
-    origin = models.CharField(choices=PART_ORIGIN, max_length=1) 
-    experience = models.CharField(max_length=3, choices=YEARS_OF_EXP, verbose_name="Programming experience") # experience with code smell study or research 1 to 3 years, 4 to 6 years, 7 or more
-    csBackground = models.CharField(max_length=2, choices=BG_CS, verbose_name="Rate your background/knowledge about Code Smells")    
-    mlBackground = models.CharField(max_length=2, choices=BG_ML, verbose_name="Rate your background/knowledge about machine learning and decision tree")
+    degree = models.CharField(max_length=1, choices=DEGREES)
+    dsIndustryRole = models.TextField()
+    dsDevelopmentExperience = models.TextField()
+    devExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
+    objOrientedExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
+    javaExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
+    codeRevision = models.IntegerField(choices=EXPERIENCE_LEVEL)
+    codeSmellIdentification = models.IntegerField(choices=EXPERIENCE_LEVEL)
+    devExperience_qtdYears = models.PositiveIntegerField(default=0)
+    devExperience_qtdProjects = models.PositiveIntegerField(default=0)
+    devExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
+    objOrientedExperience_qtdYears = models.PositiveIntegerField(default=0)
+    objOrientedExperience_qtdProjects = models.PositiveIntegerField(default=0)
+    objOrientedExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
+    javaExperience_qtdYears = models.PositiveIntegerField(default=0)
+    javaExperience_qtdProjects = models.PositiveIntegerField(default=0)
+    javaExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
+    codeRevision_qtdYears = models.PositiveIntegerField(default=0)
+    codeRevision_qtdProjects = models.PositiveIntegerField(default=0)
+    codeRevision_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
+    codeSmellIdentification_qtdYears = models.PositiveIntegerField(default=0)
+    codeSmellIdentification_qtdProjects = models.PositiveIntegerField(default=0)
+    codeSmellIdentification_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
     
     def save(self):
         self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo        
         super().save()
     
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
     
     class Meta:
         db_table="ms_participant"
@@ -134,12 +143,6 @@ class Task(models.Model):
     def __str__(self):
         return "Id: {3}, Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType, self.id)
     
-    def getForm(self, post=None, instance=None):        
-        from django.forms import ChoiceField
-        from . import forms  
-        form = forms.AnswerTaskIDForm(post, instance=instance)        
-        return form
-
     def getCsDescription(self):
         csDescriptions = {'gc':'GOD CLASS;A large class implementing different responsibilities and centralizing most of the system processing.',
                             'lpl':'LONG PARAMETER LIST;A method having a long list of parameters, some of which avoidable.',
@@ -169,26 +172,14 @@ class Answer(models.Model):
             (3, "Confident"),
             (2, "A little bit confident"),
             (1,"Not confident at all"),            
-            ) 
-    OPTIONS_CODE_SMELL = (            
-            ("CDSBP", "Class Data Should Be Private"),
-            ("CC", "Complex Class"),
-            ("FE", "Feature Envy"),
-            ("GC", "God Class"),
-            ("II", "Inappropriate Intimacy"),
-            ("LC", "Lazy Class"),
-            ("LM", "Long Method"),
-            ("LPL", "Long Parameter List"),
-            ("MM", "Middle Man"),
-            ("RB", "Refused Bequest"),
-            ("SC", "Spaghetti Code"),
-            ("SG", "Speculative Generality"),
-            )
+            )     
     OPTIONS_CODE_AGREEMENT = (
-            (2, "Strongly Agree"),
-            (1, "Agree"),                  
-            (-1, "Disagree"),
-            (-2, "Strongly Disagree"),
+            (3, "Agree Strongly"),
+            (2, "Agree Moderately"),
+            (1, "Agree Slightly"),                  
+            (-1, "Disagree Slightly"),
+            (-2, "Disagree Moderately"),
+            (-3, "Disagree Strongly"),
             )
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
@@ -201,6 +192,7 @@ class Answer(models.Model):
 class AnswerTaskID(Answer):           
     answer_csagreement = models.IntegerField(choices=Answer.OPTIONS_CODE_AGREEMENT, default=None)
     answer_description = models.TextField()
+    answer_dtDescription = models.TextField(default='')
     class Meta:
         db_table="ms_answerTaskID"
 

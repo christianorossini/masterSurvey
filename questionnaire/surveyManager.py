@@ -1,4 +1,4 @@
-from .models import LatinSquare, Questionnaire, Participant
+from .models import LatinSquare, Questionnaire, Participant, Task, DTModel
 from django.db.models import Q
 from django.db import transaction
 
@@ -100,14 +100,20 @@ class SurveyManager:
         totalTasks = len(self.getTasksList())
         return  "{0} of {1}".format(currentTaskPosition, totalTasks)
 
-    def selectView(self):
+    def showTree(self):
         latinSquare = LatinSquare()
         row = self.getCurrentRow()
         column = self.getCurrentColumn()        
-        if(latinSquare.isDt(row, column)):
-            return "masterquest/survey_task_dt.html"    #retorna visualização com decision tree
-        else:
-            return "masterquest/survey_task_noDt.html"  #retorna visualização sem decision tree
+        return latinSquare.isDt(row, column)  
+        
+    def getForm(self, post=None, instance=None):        
+        from django.forms import ChoiceField
+        from . import forms  
+        if self.showTree():
+            form = forms.AnswerTaskDTForm(post, instance=instance)      
+        else:              
+            form = forms.AnswerTaskForm(post, instance=instance)        
+        return form          
 
     def finishSurvey(self):
         #encerra o questionário        
@@ -119,4 +125,16 @@ class SurveyManager:
         for sessionStr in ["participantId","latinSquareId",'currentTaskId','tasksList',"currentRow"]:
             del self.request.session[sessionStr]
 
+    def getWarmupTask(self):
+        task = Task()
+        task.codeSmellType = "lpl"
+        task.codeSnippetProject = "hive"
+        task.codeSnippetContent = """public FSDataOutputStream create(Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress) throws IOException {
+                                        return super.create(swizzleParamPath(f), permission,
+                                        overwrite, bufferSize, replication, blockSize, progress);
+                                    }"""
+        decisionTree = DTModel()
+        decisionTree.dtImg = "dt1.png"
+        task.decisionTree = decisionTree
+        return task
     

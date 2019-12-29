@@ -6,7 +6,22 @@
     <h1>2 - Start up instructions</h1>
 
     <p>
-        The participant must accomplish {{numTasks}} different tasks, each one with a related code snippet. The
+        The participant must accomplish {{numTasks}} different tasks, each one with a related code snippet. 
+        
+        The tasks are divided in 2 groups of {{numTasksHalf|floatformat}} tasks: 
+        <ul>
+            <li>Task group 1: evaluate a code snippet () <br>
+                
+                Objective: based on the sugestion given by the experimentyou need to give your agreement level about the presence or not of a code smell
+
+
+            </li>
+            <li>Task group 2: evaluate a code snippet aided by a decision tree classifier (as a suppport)</li>
+        </ul>
+        
+        
+
+        The
         accomplishment of a task will be done after answering 2 questions:
         <dl>
             <dt>What code smell type do you infer from code snippet?</dt>
@@ -25,10 +40,10 @@
 
 
 
-    <form action="{% url 'startSurvey' %}" method="POST">
+    <form action="{% url 'warmup1' participant_id=participant_id  %}" method="POST">
         {% csrf_token %}
         <p class="text-center">
-            <input type="submit" class="btn btn-primary btn-lg" value="Start!">
+            <input type="submit" class="btn btn-primary btn-lg" value="go to warmup task 1">
         </p>
         <input type="hidden" value="{{participant_id}}" name="participant_id" />
     </form>
