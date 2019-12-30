@@ -99,20 +99,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="instructionsModal">
-                        Task {{surveyProgress}} - {% block modalTitle %}code analysis{% endblock modalTitle %}
+                        Task {{surveyProgress}}
                     </h5>
                 </div>
-                <div class="modal-body">
-                    <h4 class="instructions">Instructions</h4>
+                <div class="modal-body">                    
 
                     {% block modalContent %}
 
-                    {% endblock modalContent %}
+                    {% if not showTree %}
+                        scenario: code analysis, no support
+                    {% else %}
+                        scenario: code analysis with decision tree support
+                    {% endif %}
 
-                    <p>
-                        <strong>Warning:</strong> This experiment is <strong>time-sensitive</strong>, thus it is only
-                        permitted to get distracted after submitting the task under evaluation.
-                    </p>
+                    {% endblock modalContent %}
 
                 </div>
                 <div class="modal-footer">

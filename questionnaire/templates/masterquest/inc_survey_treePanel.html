@@ -6,7 +6,7 @@
 
     <p>
        Tip #1: Scroll down to see <a href="#nodes-glossary">nodes glossary</a> <br>
-       Tip #2: resize this panel (on the left) to expand the decision tree figure.
+       Tip #2: resize this panel (dragging the bar on the left) to expand the decision tree figure.
     </p>
 
     <div class="container-fluid" id="gridModelSnippets">
@@ -31,7 +31,8 @@
             <tbody>
                 {% for node in task.decisionTree.getNodesGlossary %}
                 <tr>
-                    <td class="w-25"><a href="{{node.detailed_example}}" target="_blank">{{node.name|striptags}}</a></td>
+                    <!--<td class="w-25"><a href="{{node.detailed_example}}" target="_blank">{{node.name|striptags}}</a></td>-->
+                    <td class="w-25">{{node.name|striptags}}</td>
                     <td class="w-50">{{node.description}}</td>
                     <!-- <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
                     <td class="w-15">{{node.research|default:""}}</td> -->

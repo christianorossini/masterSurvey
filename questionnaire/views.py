@@ -64,7 +64,8 @@ def instructions2(request, participant_id):
 
 def instructions3(request, participant_id):
     get_object_or_404(Participant, pk=participant_id)
-    return render(request, 'masterquest/instructions3.html', context={'participant_id':participant_id})
+    numTasks = Task.objects.count()    
+    return render(request, 'masterquest/instructions3.html', context={'participant_id':participant_id, 'numTasks':numTasks, 'numTasksHalf':numTasks/2})
 
 def startSurvey(request):
     if request.method=='POST':

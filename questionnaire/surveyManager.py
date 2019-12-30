@@ -1,6 +1,7 @@
 from .models import LatinSquare, Questionnaire, Participant, Task, DTModel
 from django.db.models import Q
 from django.db import transaction
+import os
 
 class SurveyManager:
 
@@ -125,16 +126,18 @@ class SurveyManager:
         for sessionStr in ["participantId","latinSquareId",'currentTaskId','tasksList',"currentRow"]:
             del self.request.session[sessionStr]
 
+    
     def getWarmupTask(self):
         task = Task()
-        task.codeSmellType = "lpl"
+        task.codeSmellType = "cdsbp"
         task.codeSnippetProject = "hive"
-        task.codeSnippetContent = """public FSDataOutputStream create(Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress) throws IOException {
-                                        return super.create(swizzleParamPath(f), permission,
-                                        overwrite, bufferSize, replication, blockSize, progress);
-                                    }"""
+        pyPath = os.path.dirname(os.path.abspath(__file__))        
+        with open(pyPath+'/NumericUtils.java', 'r') as myfile:
+            data = myfile.read()
+        task.codeSnippetContent = data
         decisionTree = DTModel()
-        decisionTree.dtImg = "dt1.png"
+        decisionTree.dtImg = "warmup.png"
+        decisionTree.dtNodes = "CountDeclClassVariable,PercentLackOfCohesion"
         task.decisionTree = decisionTree
         return task
     

@@ -36,7 +36,7 @@
                 </h5>
             </div>
             <div class="modal-body">
-                This is a warmup task.
+                This is a warmup task. 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnStartWarmupTask">Start task</button>
@@ -58,12 +58,12 @@
             },
             {
                 element: document.querySelector('#javaCode'),
-                intro: "The java code has to be evaluated in order to find out the presence of a code smell described by the experiment."
+                intro: "The java code has to be evaluated by participant in order to locate the code smell described by the experiment."
             },            
             {% if showTree %}
             {
                 element: document.querySelector('#imgDecisionTree'),
-                intro: "The decision tree contains rules that, in theory, leads to the detected code smell in java code. It serves merely as a support for decision making."
+                intro: "The decision tree contains rules that, in theory, leads to the code smell type that affects the java code. It serves merely as a support for decision making."
             },
             {
                 element: document.querySelector('#nodesGlossary'),
@@ -72,7 +72,7 @@
             {% endif %}
             {
                 element: document.querySelector('#taskForm'),
-                intro: "Fill in the form, according to your agreement level about the presence of the suggested code smell type."
+                intro: "Fill in the form according to your agreement level about the presence of the suggested code smell type."
             },
             {
                 element: document.querySelector('#btnTaskSubmit'),

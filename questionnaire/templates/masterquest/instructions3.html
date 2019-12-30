@@ -5,8 +5,12 @@
 <div class="container">
     <h1>2 - Start up instructions</h1>
 
-    <p>Warmup task concluded. 
+    <p>Warmup task 2 concluded. 
     </p>
+
+    <p>There is {{numTasks}} tasks to accomplish in total. The system will automatically sort {{numTasksHalf|floatformat}} tasks for scenario 1 and {{numTasksHalf|floatformat}} tasks for scenario 2.</p>
+
+    <p>Click below to start experiment.</p>
 
     <form action="{% url 'startSurvey' %}" method="POST">
         {% csrf_token %}
