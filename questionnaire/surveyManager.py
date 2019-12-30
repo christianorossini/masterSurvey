@@ -1,6 +1,7 @@
-from .models import LatinSquare, Questionnaire, Participant
+from .models import LatinSquare, Questionnaire, Participant, Task, DTModel
 from django.db.models import Q
 from django.db import transaction
+import os
 
 class SurveyManager:
 
@@ -100,14 +101,20 @@ class SurveyManager:
         totalTasks = len(self.getTasksList())
         return  "{0} of {1}".format(currentTaskPosition, totalTasks)
 
-    def selectView(self):
+    def showTree(self):
         latinSquare = LatinSquare()
         row = self.getCurrentRow()
         column = self.getCurrentColumn()        
-        if(latinSquare.isDt(row, column)):
-            return "masterquest/survey_task_dt.html"    #retorna visualização com decision tree
-        else:
-            return "masterquest/survey_task_noDt.html"  #retorna visualização sem decision tree
+        return latinSquare.isDt(row, column)  
+        
+    def getForm(self, post=None, instance=None):        
+        from django.forms import ChoiceField
+        from . import forms  
+        if self.showTree():
+            form = forms.AnswerTaskDTForm(post, instance=instance)      
+        else:              
+            form = forms.AnswerTaskForm(post, instance=instance)        
+        return form          
 
     def finishSurvey(self):
         #encerra o questionário        
@@ -119,4 +126,18 @@ class SurveyManager:
         for sessionStr in ["participantId","latinSquareId",'currentTaskId','tasksList',"currentRow"]:
             del self.request.session[sessionStr]
 
+    
+    def getWarmupTask(self):
+        task = Task()
+        task.codeSmellType = "cdsbp"
+        task.codeSnippetProject = "hive"
+        pyPath = os.path.dirname(os.path.abspath(__file__))        
+        with open(pyPath+'/NumericUtils.java', 'r') as myfile:
+            data = myfile.read()
+        task.codeSnippetContent = data
+        decisionTree = DTModel()
+        decisionTree.dtImg = "warmup.png"
+        decisionTree.dtNodes = "CountDeclClassVariable,PercentLackOfCohesion"
+        task.decisionTree = decisionTree
+        return task
     

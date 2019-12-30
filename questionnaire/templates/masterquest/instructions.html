@@ -6,29 +6,33 @@
     <h1>2 - Start up instructions</h1>
 
     <p>
-        The participant must accomplish {{numTasks}} different tasks, each one with a related code snippet. The
-        accomplishment of a task will be done after answering 2 questions:
-        <dl>
-            <dt>What code smell type do you infer from code snippet?</dt>
-            <dd>
-                sdasdfds
-            </dd>
-            <dt>What's your confidence level about the chosen option above??</dt>
-            <dd>
-                
-            </dd>
-        </dl>
-        Half of the tasks will show a code snippet along with a desicion tree to .
+        The participant must accomplish {{numTasks}} different tasks, each one with a related code snippet - a Java
+        code. For each
+        task, the experiment will suggest the presence of a specific code smell type in the code.
+        After a code evaluation, you will be asked about your agreement related to the presence of the suggested code
+        smell type in the java code.
     </p>
 
+    <p>
+        Throughout the experiment, there will be 2 distinct scenarios during code evaluation:
+    </p>
+    <ul>
+        <li><strong>Scenario 1:</strong> java code evaluation without any support<br>
+            The evaluation is based only in Java code structure.
+        </li>
+        <li><strong>Scenario 2:</strong> java code evaluation along with a decision tree (an interpretable classifier) support<br>
+            The evaluation is based on Java code, but, additionally, the experiment will show a decision tree classifier.
+            The tree is composed by nodes based on software metrics thresholds that may help the developer to comprehend the rules that
+            led the experiment to suggest the presence of that code smell.
+        </li>
+    </ul>
 
+    <p>Warmup task for scenario 1: </p>
 
-
-
-    <form action="{% url 'startSurvey' %}" method="POST">
+    <form action="{% url 'warmup1' participant_id=participant_id  %}" method="POST">
         {% csrf_token %}
         <p class="text-center">
-            <input type="submit" class="btn btn-primary btn-lg" value="Start!">
+            <input type="submit" class="btn btn-primary btn-lg" value="go to warmup task 1">
         </p>
         <input type="hidden" value="{{participant_id}}" name="participant_id" />
     </form>

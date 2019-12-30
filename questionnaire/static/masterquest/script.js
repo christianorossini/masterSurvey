@@ -23,10 +23,19 @@ $(document).ready(function() {
         //atribui o tempo a uma variável hidden
         $('#id_secondsToAnswer').val(timeDiff);
     });
+
+    $('#warmupModal').modal({
+        keyboard: false,
+        backdrop: 'static',
+    });
+    $('#warmupModal').modal('show'); 
+
+    $('#btnStartWarmupTask').click(function() {                
+        $('#warmupModal').modal('hide');                
+        startIntro();
+    });
     
 });
-
-
 
 function startTime(){
     taskStartTime =  new Date().getTime();    
@@ -35,4 +44,3 @@ function startTime(){
 function endTime(){
     taskEndTime = new Date().getTime();    
 }
-

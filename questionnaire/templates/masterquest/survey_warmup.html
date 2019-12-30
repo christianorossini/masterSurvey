@@ -1,0 +1,89 @@
+{% extends "masterquest/survey.html" %}
+{% load static %}
+
+{% block taskHeader %}
+    {% if not showTree %}
+    Warmup task
+    {% else %}    
+    Warmup task with decision tree
+    {% endif %}
+{% endblock taskHeader %}
+
+{% block taskForm %}
+<form action="{% url nextView participant_id=participant_id %}" method="POST" id="taskForm">
+    {% csrf_token %}
+
+    {% for field in form.visible_fields %}
+    <div class="form-group questContent">
+        {{field.label_tag }}
+        {{field}}
+    </div>
+    {% endfor %}
+
+    <input type="submit" value="Submit task" class="btn btn-primary" id="btnTaskSubmit"/>
+</form>
+{% endblock taskForm %}
+
+{% block modal %}
+<!-- Modal -->
+<div class="modal fade" id="warmupModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Warmup
+                </h5>
+            </div>
+            <div class="modal-body">
+                This is a warmup task. 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnStartWarmupTask">Start task</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://introjs.com/intro.js"></script>
+
+<script type="text/javascript">
+   function startIntro() {
+    var intro = introJs();
+    intro.setOptions({
+        steps: [
+            {
+                element: document.querySelector('#csDefinition'),
+                intro: "The experiment will suggest the presence of a code smell type in the java code, located in the right panel. It brings the code smell type and its definition."
+            },
+            {
+                element: document.querySelector('#javaCode'),
+                intro: "The java code has to be evaluated by participant in order to locate the code smell described by the experiment."
+            },            
+            {% if showTree %}
+            {
+                element: document.querySelector('#imgDecisionTree'),
+                intro: "The decision tree contains rules that, in theory, leads to the code smell type that affects the java code. It serves merely as a support for decision making."
+            },
+            {
+                element: document.querySelector('#nodesGlossary'),
+                intro: "This table is a glossary that explains the meaning of each metric showed in each node."
+            },            
+            {% endif %}
+            {
+                element: document.querySelector('#taskForm'),
+                intro: "Fill in the form according to your agreement level about the presence of the suggested code smell type."
+            },
+            {
+                element: document.querySelector('#btnTaskSubmit'),
+                intro: "Submit the task."
+            },
+        ]
+    });
+
+    intro.start();
+}
+
+</script>
+
+{% endblock modal %}
