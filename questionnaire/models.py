@@ -146,11 +146,11 @@ class Task(models.Model):
     def getCsDescription(self):
         csDescriptions = {'gc':'GOD CLASS;A large class implementing different responsibilities and centralizing most of the system processing.',                            
                             'mm':'MIDDLE MAN;A class delegating to other classes most of the methods it implements. Middle Man instances arise when a class is delegating all its work to other classes.',
-                            'cdsbp':'CLASS DATA SHOULD BE PRIVATE;A class exposing its fields, violating the principle of data hiding.',
-                            'fe':'FEATURE ENVY;Refers to methods that use much more data from other classes than from their own class. A Feature Envy tends to use more attributes from other classes than from its own class, and to use many attributes from few different classes',
+                            'cdsbp':'CLASS DATA SHOULD BE PRIVATE;A class exposing its fields, violating the principle of data hiding.',                            
                             'lpl':'LONG PARAMETER LIST;A method having a long list of parameters, some of which avoidable.',
                             'lm':'LONG METHOD;A method that is unduly long in terms of lines of code. A method that is too long and tries to do too much',
                             }
+                            #'fe':'FEATURE ENVY;Refers to methods that use much more data from other classes than from their own class. A Feature Envy tends to use more attributes from other classes than from its own class, and to use many attributes from few different classes',
         return csDescriptions[self.codeSmellType].split(';')
 
     class Meta:
