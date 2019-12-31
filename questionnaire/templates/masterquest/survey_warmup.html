@@ -54,16 +54,16 @@
         steps: [
             {
                 element: document.querySelector('#csDefinition'),
-                intro: "The experiment will suggest the presence of a code smell type in the java code, located in the right panel. It brings the code smell type and its definition."
+                intro: "The experiment will suggest the presence of a code smell type in the java code, located in the middle panel. It brings the code smell type and its definition."
             },
             {
                 element: document.querySelector('#javaCode'),
-                intro: "The java code has to be evaluated by participant in order to locate the code smell described by the experiment."
+                intro: "The java code has to be evaluated by participant in order to locate the suspicious code smell described by the task."
             },            
             {% if showTree %}
             {
                 element: document.querySelector('#imgDecisionTree'),
-                intro: "The decision tree contains rules that, in theory, leads to the code smell type that affects the java code. It serves merely as a support for decision making."
+                intro: "The decision tree contains rules that leads to the code smell type that affects the java code. It serves merely as a support for decision making."
             },
             {
                 element: document.querySelector('#nodesGlossary'),
