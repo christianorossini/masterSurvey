@@ -139,6 +139,7 @@ class Task(models.Model):
     codeSnippetURI = models.CharField(max_length=200)
     codeSnippetContent = models.TextField()     
     decisionTree = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)       
+    isDummy = models.BooleanField(default=0)
     
     def __str__(self):
         return "Id: {3}, Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType, self.id)
