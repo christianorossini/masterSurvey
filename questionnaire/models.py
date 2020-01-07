@@ -9,10 +9,16 @@ from django.db import models
 
 
 class Participant(models.Model):        
-    DEGREES = (
-        ('G', 'Bachelor degree'),
+    PARTICIPANT_ORIGIN = (
+        ('I', 'Industry - Professional from industry.'),
+        ('A', 'Academy - Professional from academy [bacharelor, master or PHD].'),        
+        ('B', 'Both - Professional from academy and industry.'),                
+    )    
+    DEGREES = (        
+        ('B', 'Bachelor degree'),
         ('M', 'Master degree'),        
         ('P', 'PHD'),        
+        ('N', 'None of them'),
     )
     EXPERIENCE_LEVEL = (
         (0, 'I do not have any experience'),
@@ -21,32 +27,15 @@ class Participant(models.Model):
         (3, 'High'),        
         (4, 'Very high'),        
     )    
-
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
     degree = models.CharField(max_length=1, choices=DEGREES)
-    dsIndustryRole = models.TextField()
-    dsDevelopmentExperience = models.TextField()
+    origin = models.CharField(choices=PARTICIPANT_ORIGIN, max_length=1) 
+    yearsDevExperience = models.PositiveIntegerField()
     devExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
     objOrientedExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
     javaExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
     codeRevision = models.IntegerField(choices=EXPERIENCE_LEVEL)
-    codeSmellIdentification = models.IntegerField(choices=EXPERIENCE_LEVEL)
-    devExperience_qtdYears = models.PositiveIntegerField(default=0)
-    devExperience_qtdProjects = models.PositiveIntegerField(default=0)
-    devExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    objOrientedExperience_qtdYears = models.PositiveIntegerField(default=0)
-    objOrientedExperience_qtdProjects = models.PositiveIntegerField(default=0)
-    objOrientedExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    javaExperience_qtdYears = models.PositiveIntegerField(default=0)
-    javaExperience_qtdProjects = models.PositiveIntegerField(default=0)
-    javaExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    codeRevision_qtdYears = models.PositiveIntegerField(default=0)
-    codeRevision_qtdProjects = models.PositiveIntegerField(default=0)
-    codeRevision_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    codeSmellIdentification_qtdYears = models.PositiveIntegerField(default=0)
-    codeSmellIdentification_qtdProjects = models.PositiveIntegerField(default=0)
-    codeSmellIdentification_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    
+    codeSmellIdentification = models.IntegerField(choices=EXPERIENCE_LEVEL)        
     def save(self):
         self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo        
         super().save()
