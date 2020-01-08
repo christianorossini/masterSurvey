@@ -140,4 +140,20 @@ class SurveyManager:
         decisionTree.dtNodes = "CountDeclClassVariable,PercentLackOfCohesion"
         task.decisionTree = decisionTree
         return task
+        
+
+    # método que retorna True or False se a tarefa em execução for a primeira do conjunto de tarefas ou se for a primeira tarefa da segunda metade do experimento.
+    def showIntro(self):
+        currentTaskPosition = self.getTasksList().index(self.getCurrentTaskId()) + 1
+        totalTasks = len(self.getTasksList())
+        if currentTaskPosition==1:
+            return True
+        elif currentTaskPosition==(totalTasks/2)+1:
+            return True
+        else:
+            return False
+    
+
+            
+
     

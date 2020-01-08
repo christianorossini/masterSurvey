@@ -106,11 +106,13 @@
 
                     {% block modalContent %}
 
+                    Scenario: <strong>
                     {% if not showTree %}
-                        scenario: code analysis, no support
+                        code analysis only.
                     {% else %}
-                        scenario: code analysis with decision tree support
+                        code analysis with a visual representation of the decision tree classifier.
                     {% endif %}
+                    </strong>
 
                     {% endblock modalContent %}
 
@@ -123,6 +125,58 @@
     </div>
     {% endblock modal %}    
 
+
+    {% if showIntro %}    
+
+    <script type="text/javascript" src="https://introjs.com/intro.js"></script>
+
+    <script type="text/javascript">
+        function startIntro() {
+            var intro = introJs();
+            intro.setOptions({
+                steps: [
+                    {                
+                        {% if not showTree %}
+                        intro: "This part of the experiment shows only a java code."
+                        {% else %}
+                        intro: "This part of the experiment shows a java code and a visual representation of the classifier (decision tree)."
+                        {% endif %}
+                    },
+                    {
+                        element: document.querySelector('#csDefinition'),
+                        intro: "The experiment will suggest the presence of a code smell type in the java code, located in the middle panel. It brings the code smell type and its description."
+                    },
+                    {
+                        element: document.querySelector('#javaCode'),
+                        intro: "The java code has to be evaluated by participant in order to locate the suspicious code smell type described by the task."
+                    },            
+                    {% if showTree %}
+                    {
+                        element: document.querySelector('#decisionTreePanel'),
+                        intro: "The decision tree contains rules that lead to the code smell type that affects the current java code. It serves as a support for decision making."
+                    },
+                    {
+                        element: document.querySelector('#imgDecisionTree'),
+                        intro: "The highlighted path from the root node until leaf stands for the satisfied conditions within nodes that leads the predictor (classifier) to classfiy the current java code as \"smelly code\" (or {{task.getCsDescription.0}}). "
+                    },
+                    {
+                        element: document.querySelector('#nodesGlossary'),
+                        intro: "This table is a glossary that explains the meaning of each metric showed in each node."
+                    },            
+                    {% endif %}
+                    {
+                        element: document.querySelector('#taskForm'),
+                        intro: "Fill in the form according to your agreement level about the presence of the suggested code smell type. After that, submit the task."
+                    },
+                ]
+            });
+    
+            intro.start();
+        }    
+    </script>
+
+    {% endif %}
+    
 </body>
 
 </html>
