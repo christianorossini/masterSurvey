@@ -1,5 +1,5 @@
 from .models import *
-from django.forms import ModelForm, CharField, TextInput, Select, RadioSelect, HiddenInput, Textarea
+from django.forms import ModelForm, CharField, TextInput, Select, RadioSelect, HiddenInput, Textarea, NumberInput, IntegerField
 from django import forms
 
 
@@ -8,14 +8,11 @@ class ParticipantForm(ModelForm):
         model = Participant        
         exclude = ['inviteId']
         widgets = {            
-            'experience': Select(attrs={'class':"form-control"}),
-            'dsIndustryRole': Textarea(attrs={'class':"form-control", 'rows':'3'}),           
-            'dsDevelopmentExperience': Textarea(attrs={'class':"form-control", 'rows':'3'}),
         }
         labels = {
             'degree': '1 - What is your highest degree in computing or related fields?',            
-            'dsIndustryRole': '2 - Are you in the industry right now? If so, what is your current main role?',            
-            'dsDevelopmentExperience': '3 - In the text box below, make a briefly overview of your experience in software development.',            
+            'origin': '2 - Where do you come from?',            
+            'yearsDevExperience': '3 - Amount of experience in software development (years):',            
             'devExperience': '4.1 - Software development:',    
             'objOrientedExperience': '4.2 - Object oriented development:',            
             'javaExperience': '4.3 - Development with java:',
@@ -43,6 +40,7 @@ class AnswerTaskForm(forms.ModelForm):
 class AnswerTaskDTForm(AnswerTaskForm):        
     class Meta:            
         model = AnswerTaskID
+        exclude = ['devExperience_qtdYears','devExperience_qtdProjects','devExperience_qtdProjectsIndustry','objOrientedExperience_qtdYears','objOrientedExperience_qtdProjects','objOrientedExperience_qtdProjectsIndustry','javaExperience_qtdYears','javaExperience_qtdProjects','javaExperience_qtdProjectsIndustry','codeRevision_qtdYears','codeRevision_qtdProjects','codeRevision_qtdProjectsIndustry','codeSmellIdentification_qtdYears','codeSmellIdentification_qtdProjects','codeSmellIdentification_qtdProjectsIndustry']
         fields = ['answer_csagreement', 'answer_description', 'questionnaire', 'task', 'secondsToAnswer','answer_dtDescription']
         widgets = {            
            'answer_csagreement': RadioSelect(),                       

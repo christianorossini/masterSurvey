@@ -10,9 +10,16 @@ $(document).ready(function() {
     $('#instructionsModal').modal('show'); 
 
     $('#btnStartTask').click(function() {
-        $('.tab-content').css('visibility','visible');                
+        //$('.tab-content').css('visibility','visible');                
         $('#instructionsModal').modal('hide')
-        startTime();
+        try {
+            // a biblioteca de tutorial (introjs) será ativada pela próxima linha, mas caso ela não seja necessária na tarefa em avaliação, o catch contorna o erro de chamar uma função que não existe.
+            startIntro();
+            startTime();
+        }
+        catch(err) {
+            startTime();
+        }
     });
         
     $('form').submit(function(e) {
@@ -33,7 +40,7 @@ $(document).ready(function() {
     $('#btnStartWarmupTask').click(function() {                
         $('#warmupModal').modal('hide');                
         startIntro();
-    });
+    });   
     
 });
 

@@ -9,10 +9,16 @@ from django.db import models
 
 
 class Participant(models.Model):        
-    DEGREES = (
-        ('G', 'Bachelor degree'),
+    PARTICIPANT_ORIGIN = (
+        ('I', 'Industry - Professional from industry.'),
+        ('A', 'Academy - Professional from academy [bacharelor, master or PHD].'),        
+        ('B', 'Both - Professional from academy and industry.'),                
+    )    
+    DEGREES = (        
+        ('B', 'Bachelor degree'),
         ('M', 'Master degree'),        
         ('P', 'PHD'),        
+        ('N', 'None of them'),
     )
     EXPERIENCE_LEVEL = (
         (0, 'I do not have any experience'),
@@ -21,32 +27,15 @@ class Participant(models.Model):
         (3, 'High'),        
         (4, 'Very high'),        
     )    
-
     inviteId = models.CharField(primary_key=True,unique=True,max_length=10)
     degree = models.CharField(max_length=1, choices=DEGREES)
-    dsIndustryRole = models.TextField()
-    dsDevelopmentExperience = models.TextField()
+    origin = models.CharField(choices=PARTICIPANT_ORIGIN, max_length=1) 
+    yearsDevExperience = models.PositiveIntegerField()
     devExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
     objOrientedExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
     javaExperience = models.IntegerField(choices=EXPERIENCE_LEVEL)
     codeRevision = models.IntegerField(choices=EXPERIENCE_LEVEL)
-    codeSmellIdentification = models.IntegerField(choices=EXPERIENCE_LEVEL)
-    devExperience_qtdYears = models.PositiveIntegerField(default=0)
-    devExperience_qtdProjects = models.PositiveIntegerField(default=0)
-    devExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    objOrientedExperience_qtdYears = models.PositiveIntegerField(default=0)
-    objOrientedExperience_qtdProjects = models.PositiveIntegerField(default=0)
-    objOrientedExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    javaExperience_qtdYears = models.PositiveIntegerField(default=0)
-    javaExperience_qtdProjects = models.PositiveIntegerField(default=0)
-    javaExperience_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    codeRevision_qtdYears = models.PositiveIntegerField(default=0)
-    codeRevision_qtdProjects = models.PositiveIntegerField(default=0)
-    codeRevision_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    codeSmellIdentification_qtdYears = models.PositiveIntegerField(default=0)
-    codeSmellIdentification_qtdProjects = models.PositiveIntegerField(default=0)
-    codeSmellIdentification_qtdProjectsIndustry = models.PositiveIntegerField(default=0)
-    
+    codeSmellIdentification = models.IntegerField(choices=EXPERIENCE_LEVEL)        
     def save(self):
         self.inviteId = secrets.token_hex(5) #atribuição manual do inviteId, enquanto se estuda o uso do atributo        
         super().save()
@@ -145,11 +134,11 @@ class Task(models.Model):
         return "Id: {3}, Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType, self.id)
     
     def getCsDescription(self):
-        csDescriptions = {'gc':'GOD CLASS;A large class implementing different responsibilities and centralizing most of the system processing.',                            
-                            'mm':'MIDDLE MAN;A class delegating to other classes most of the methods it implements. Middle Man instances arise when a class is delegating all its work to other classes.',
-                            'cdsbp':'CLASS DATA SHOULD BE PRIVATE;1. A class exposing its fields, violating the principle of data hiding. 2. A class exposing its attributes.',                            
-                            'lpl':'LONG PARAMETER LIST;A method having a long list of parameters, some of which avoidable.',
-                            'lm':'LONG METHOD;A method that is unduly long in terms of lines of code. A method that is too long and tries to do too much',
+        csDescriptions = {'gc':'God Class;A large class implementing different responsibilities and centralizing most of the system processing.',                            
+                            'mm':'Middle Man;A class delegating to other classes most of the methods it implements. Middle Man instances arise when a class is delegating all its work to other classes.',
+                            'cdsbp':'Class Data Should be private;1. A class exposing its fields, violating the principle of data hiding. 2. A class exposing its attributes.',                            
+                            'lpl':'Long Parameter List;A method having a long list of parameters, some of which avoidable.',
+                            'lm':'Long Method;A method that is unduly long in terms of lines of code. A method that is too long and tries to do too much',
                             }
                             #'fe':'FEATURE ENVY;Refers to methods that use much more data from other classes than from their own class. A Feature Envy tends to use more attributes from other classes than from its own class, and to use many attributes from few different classes',
         return csDescriptions[self.codeSmellType].split(';')

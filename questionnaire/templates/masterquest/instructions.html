@@ -9,7 +9,7 @@
         The participant must accomplish {{numTasks}} different tasks, each one with a related code snippet - a Java
         code. For each
         task, the experiment will suggest the presence of a specific code smell type in the code.
-        After a code evaluation, you will be asked about your agreement related to the presence of the suggested code
+        After a code evaluation, you will be asked to confirm the presence of the suggested code
         smell type in the java code.
     </p>
 
@@ -17,22 +17,22 @@
         Throughout the experiment, there will be 2 distinct scenarios during code evaluation:
     </p>
     <ul>
-        <li><strong>Scenario 1:</strong> java code evaluation without any support<br>
+        <li><strong>Scenario #1:</strong> java code evaluation<br>
             The evaluation is based only in Java code structure.
         </li>
-        <li><strong>Scenario 2:</strong> java code evaluation along with a decision tree (an interpretable classifier) support<br>
-            The evaluation is based on Java code, but, additionally, the experiment will show a decision tree classifier.
-            The tree is composed by nodes based on software metrics thresholds that may help the developer to comprehend the rules that
-            led the experiment to suggest the presence of that code smell.
+        <li><strong>Scenario #2:</strong> java code evaluation along with a visual representation of a decision tree classifier<br>
+            The evaluation is based on a Java code, but, additionally, the experiment will show a decision tree model.
+            The tree is composed by nodes (conditional statements) that may help the developer to comprehend the rules that
+            led the experiment to suggest the presence of certain code smell type.
         </li>
     </ul>
 
-    <p>Warmup task for scenario 1: </p>
+    <p>During experiment execution, there will be a step by step tutorial that explains how to accomplish each part of the experiment.</p>
 
-    <form action="{% url 'warmup1' participant_id=participant_id  %}" method="POST">
+    <form action="{% url 'startSurvey' %}" method="POST">
         {% csrf_token %}
         <p class="text-center">
-            <input type="submit" class="btn btn-primary btn-lg" value="go to warmup task 1">
+            <input type="submit" class="btn btn-primary btn-lg" value="Start experiment">
         </p>
         <input type="hidden" value="{{participant_id}}" name="participant_id" />
     </form>

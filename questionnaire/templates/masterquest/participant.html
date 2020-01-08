@@ -20,26 +20,39 @@
             {% for field in form.visible_fields %}
             {% if forloop.counter < 4    %}
             <div class="form-group">
-                {{field.label_tag }}
-                {{field}}
+                <div class="row">
+                    <div class="col-md-5">
+                        {{field.label_tag }}
+                    </div>
+                    <div class="col">
+                        {{field}}
+                    </div>
+                </div>
             </div>
             {% endif %}
             {% endfor %}
 
             <fieldset>
-                <legend>4 - Based on your professional and academic experience, please let us know how you perceive your
+                <p>4 - Based on your professional and academic experience, please let us know how you perceive your
                     level
-                    of experience in</legend>
+                    of experience in:</p>
                 {% for field in form.visible_fields %}
                 {% if forloop.counter >= 4 and forloop.counter < 9   %}
                 <div class="form-group">
-                    {{field.label_tag }}
-                    {{field}}
+                    <div class="row">
+                        <div class="col-md-3">
+                            {{field.label_tag}}
+                        </div>
+                        <div class="col">
+                            {{field}}
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
                 {% endfor %}
             </fieldset>
 
+            {% comment %}
             <fieldset class="experienceQuestion">
                 <legend>5 - Please, answer the following questions based on your
                     professional experience, which may also include participation in academic projects. You should
@@ -110,6 +123,7 @@
                         {{form.codeSmellIdentification_qtdProjects}} projects in total, {{form.codeSmellIdentification_qtdProjectsIndustry}} projects in the industry.
                     </div>
                 </div>
+                {% endcomment %}
 
 
             </fieldset>

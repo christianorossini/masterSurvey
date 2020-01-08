@@ -116,7 +116,8 @@ def survey(request):
     
     return render(request, "masterquest/survey.html", 
                 context={'dtModel':task.decisionTree, 'task':task, 'form':answerForm, 'showTree': surveyManager.showTree(),
-                    'surveyProgress': surveyManager.getSurveyProgress()})
+                    'surveyProgress': surveyManager.getSurveyProgress(),
+                    'showIntro': surveyManager.showIntro()})
 
 def endSurvey(request):
     return render(request, 'masterquest/surveyFinish.html')

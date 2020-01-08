@@ -2,44 +2,49 @@
 
 
 <div class="tab-pane" id="dtContent" role="tabpanel" aria-labelledby="dtContent-tab">
-    <h3 class="taskTittle">Decision tree</h3>
+    <div id="decisionTreePanel">
+        <h3 class="taskTittle">Decision tree</h3>
 
-    <p>
-       Tip #1: Scroll down to see <a href="#nodes-glossary">nodes glossary</a> <br>
-       Tip #2: resize this panel (dragging the bar on the left) to expand the decision tree figure.
-    </p>
+        <p>
+            Tip #1: Scroll down to see nodes glossary.<br>
+            Tip #2: resize this panel (dragging the bar on the left) to expand the decision tree figure.
+        </p>
 
-    <div class="container-fluid" id="gridModelSnippets">
-        <figure class="figure">
-            <img src="{% get_static_prefix %}masterquest/images/dt/{{task.decisionTree}}" class="figure-img img-fluid rounded" alt="Decision tree" id="imgDecisionTree"/>
-            <figcaption class="figure-caption">Decision tree</figcaption>
-        </figure>
-    </div>
+        <div class="container-fluid" id="gridModelSnippets">
+            <figure class="figure">
+                <img src="{% get_static_prefix %}masterquest/images/dt/{{task.decisionTree}}"
+                    class="figure-img img-fluid rounded" alt="Decision tree" id="imgDecisionTree" />
+                <figcaption class="figure-caption">Decision tree</figcaption>
+            </figure>
+        </div>
+    </div>>
 
-    <h4 class="taskTittle">Nodes glossary <a id="nodes-glossary" aria-label="Anchor" data-anchorjs-icon="#"  class="anchorjs-link"></a></h4>
-    <div class="table-responsive" id="nodesGlossary">
-        <table class="table table-striped">
-            <caption>Nodes glossary</caption>
-            <thead>
-                <tr>
-                    <th>metric name</th>
-                    <th>metric description</th>
-                    <!-- <th>categorie</th>
+    <div id="nodesGlossary">
+        <h4 class="taskTittle">Nodes glossary</h4>
+        <div class="table-responsive" id="">
+            <table class="table table-striped">
+                <caption>Nodes glossary</caption>
+                <thead>
+                    <tr>
+                        <th>metric name</th>
+                        <th>metric description</th>
+                        <!-- <th>categorie</th>
                     <th>research</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for node in task.decisionTree.getNodesGlossary %}
-                <tr>
-                    <!--<td class="w-25"><a href="{{node.detailed_example}}" target="_blank">{{node.name|striptags}}</a></td>-->
-                    <td class="w-25">{{node.name|striptags}}</td>
-                    <td class="w-50">{{node.description}}</td>
-                    <!-- <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for node in task.decisionTree.getNodesGlossary %}
+                    <tr>
+                        <!--<td class="w-25"><a href="{{node.detailed_example}}" target="_blank">{{node.name|striptags}}</a></td>-->
+                        <td class="w-25">{{node.name|striptags}}</td>
+                        <td class="w-50">{{node.description}}</td>
+                        <!-- <td class="w-10">{{node.categorie_by_palomba|default:""}}</td>
                     <td class="w-15">{{node.research|default:""}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

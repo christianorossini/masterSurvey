@@ -9,8 +9,8 @@ admin.site.register(Participant)
 #admin.site.register(Task)
 #admin.site.register(DTModel)
 admin.site.register(Questionnaire)
-admin.site.register(AnswerTaskID)
-admin.site.register(Answer)
+#admin.site.register(AnswerTaskID)
+#admin.site.register(Answer)
 #admin.site.register(LatinSquare)
 
 
@@ -25,3 +25,11 @@ admin.site.register(DTModel, DTModelAdmin)
 class LatinSquareAdmin(admin.ModelAdmin):
     list_display =  [f.name for f in LatinSquare._meta.fields]    
 admin.site.register(LatinSquare, LatinSquareAdmin)
+
+class AnswerAdmin(admin.ModelAdmin):
+    list_display =  [f.name for f in Answer._meta.fields]    
+admin.site.register(Answer, AnswerAdmin)
+
+class AnswerTaskIDAdmin(admin.ModelAdmin):
+    list_display =  [f.name for f in AnswerTaskID._meta.fields]    
+admin.site.register(AnswerTaskID, AnswerTaskIDAdmin)
