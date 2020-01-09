@@ -15,7 +15,7 @@ admin.site.register(Questionnaire)
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display =  [f.name for f in Task._meta.fields if f.name != "codeSnippetContent"]    
+    list_display =  [f.name for f in Task._meta.fields if f.name != "codeSnippetContent" and f.name != "codeSnippet2Content"]    
 admin.site.register(Task, TaskAdmin)
 
 class DTModelAdmin(admin.ModelAdmin):
