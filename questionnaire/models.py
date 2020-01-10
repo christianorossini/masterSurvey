@@ -163,20 +163,12 @@ class Questionnaire(models.Model):
     def finish(self):
         self.dtEndTasks = datetime.now()
 
-class Answer(models.Model):            
-    OPTIONS_CODE_CONFIDENCE = (
-            (4, "Very confident"),
-            (3, "Confident"),
-            (2, "A little bit confident"),
-            (1,"Not confident at all"),            
-            )     
+class Answer(models.Model):    
     OPTIONS_CODE_AGREEMENT = (
-            (3, "Agree Strongly"),
-            (2, "Agree Moderately"),
+            (2, "Agree Strongly"),
             (1, "Agree Slightly"),                  
-            (-1, "Disagree Slightly"),
-            (-2, "Disagree Moderately"),
-            (-3, "Disagree Strongly"),
+            (-1, "Disagree Slightly"),            
+            (-2, "Disagree Strongly"),
             )
     questionnaire = models.ForeignKey(Questionnaire,on_delete=models.CASCADE)    
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
