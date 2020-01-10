@@ -127,8 +127,8 @@ class Task(models.Model):
     codeSnippetKind = models.CharField(max_length=30)
     codeSnippetURI = models.CharField(max_length=200)
     codeSnippetContent = models.TextField()     
-    codeSnippet2URI = models.CharField(max_length=200, null=True)
-    codeSnippet2Content = models.TextField(null=True)     
+    codeSnippet2URI = models.CharField(max_length=200, null=True, blank=True)
+    codeSnippet2Content = models.TextField(null=True, blank=True)     
     decisionTree = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)       
     isDummy = models.BooleanField(default=0)
     
