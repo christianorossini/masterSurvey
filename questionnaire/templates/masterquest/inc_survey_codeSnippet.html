@@ -1,8 +1,31 @@
 {% load static %}
 
-<div class="tab-pane show active" id="codeSnippetContent" role="tabpanel" aria-labelledby="codeSnippetContent-tab">
-    
-    <h3 class="taskTittle">Java code</h3>
-    
-    <pre class="prettyprint linenums" id="javaCode" style="padding-left: 5px;"><code class="language-java">{{task.codeSnippetContent}}</code></pre>
+<h3 class="taskTittle">Java code</h3>
+
+{% if task.codeSnippet2Content %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+            aria-selected="true">Child class</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+            aria-selected="false">Parent Class</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <pre class="prettyprint linenums" id="javaCode"
+            style="padding-left: 5px;"><code class="language-java">{{task.codeSnippetContent}}</code></pre>
+    </div>
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <pre class="prettyprint linenums" id="javaCode"
+            style="padding-left: 5px;"><code class="language-java">{{task.codeSnippet2Content}}</code></pre>
+    </div>
 </div>
+{% else %}
+
+<pre class="prettyprint linenums" id="javaCode"
+            style="padding-left: 5px;"><code class="language-java">{{task.codeSnippetContent}}</code></pre>
+
+{% endif %}

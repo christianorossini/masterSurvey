@@ -127,6 +127,8 @@ class Task(models.Model):
     codeSnippetKind = models.CharField(max_length=30)
     codeSnippetURI = models.CharField(max_length=200)
     codeSnippetContent = models.TextField()     
+    codeSnippet2URI = models.CharField(max_length=200, null=True, blank=True)
+    codeSnippet2Content = models.TextField(null=True, blank=True)     
     decisionTree = models.ForeignKey(DTModel, on_delete=models.DO_NOTHING)       
     isDummy = models.BooleanField(default=0)
     
@@ -134,13 +136,17 @@ class Task(models.Model):
         return "Id: {3}, Task Group: {0}, CS scope: {1}, CS Type: {2}".format(self.taskGroup, self.codeSmellScope, self.codeSmellType, self.id)
     
     def getCsDescription(self):
-        csDescriptions = {'gc':'God Class;A large class implementing different responsibilities and centralizing most of the system processing.',                            
-                            'mm':'Middle Man;A class delegating to other classes most of the methods it implements. Middle Man instances arise when a class is delegating all its work to other classes.',
-                            'cdsbp':'Class Data Should be private;1. A class exposing its fields, violating the principle of data hiding. 2. A class exposing its attributes.',                            
+        csDescriptions = {'gc':'''God Class;1 - A God Class implements several different responsibilities and centralize most of the system processing. 
+                                    2 - tends to be complex, to have too much code and many instance variables.''',
+                            'rb':'Refused Bequest;1 - A class redefining most of the inherited methods, thus signaling a wrong hierarchy. 2 - Subclasses get to inherit the methods and data of their parents, but they just use a few of them.',
                             'lpl':'Long Parameter List;A method having a long list of parameters, some of which avoidable.',
-                            'lm':'Long Method;A method that is unduly long in terms of lines of code. A method that is too long and tries to do too much',
+                            'lm':'Long Method;1 - A method that is unduly long in terms of lines of code. 2 - A method that is too long and tries to do too much.',                            
                             }
                             #'fe':'FEATURE ENVY;Refers to methods that use much more data from other classes than from their own class. A Feature Envy tends to use more attributes from other classes than from its own class, and to use many attributes from few different classes',
+                            #'cdsbp':'Class Data Should be private;1. A class exposing its fields, violating the principle of data hiding. 2. A class exposing its attributes.',
+                            #'mm':'Middle Man;A class delegating to other classes most of the methods it implements. Middle Man instances arise when a class is delegating all its work to other classes.',                            
+
+                            
         return csDescriptions[self.codeSmellType].split(';')
 
     class Meta:

@@ -20,14 +20,40 @@
         <li><strong>Scenario #1:</strong> java code evaluation<br>
             The evaluation is based only in Java code structure.
         </li>
-        <li><strong>Scenario #2:</strong> java code evaluation along with a visual representation of a decision tree classifier<br>
+        <li><strong>Scenario #2:</strong> java code evaluation along with a visual representation of a decision tree
+            classifier<br>
             The evaluation is based on a Java code, but, additionally, the experiment will show a decision tree model.
-            The tree is composed by nodes (conditional statements) that may help the developer to comprehend the rules that
+            The tree is composed by nodes (conditional statements) that may help the developer to comprehend the rules
+            that
             led the experiment to suggest the presence of certain code smell type.
         </li>
     </ul>
 
-    <p>During experiment execution, there will be a step by step tutorial that explains how to accomplish each part of the experiment.</p>
+    <p>About Decision Tree:</p>
+
+    <p>A decision tree is an interpretable machine learning technique that provides a fully understandable way to
+        explain
+        its predictions (inputs and outputs). In the context of this experiment, the decision tree is built with
+        metric-based rules that indicate whether a certain java code is "Smelly code" or "not smelly code". Each node
+        has a
+        conditional statement that includes a software metric threshold. Take a look at the
+        following figure:</p>
+
+    <div class="container-fluid" id="gridModelSnippets" style="width: 40%">
+        <figure class="figure">
+            <img src="{% get_static_prefix %}masterquest/images/dt/dtExample.png" class="figure-img img-fluid rounded"
+                alt="Decision tree" id="imgDecisionTree" />
+        </figure>
+    </div>
+
+    <p>As shown in the above example, a method is considered "smelly code" if it satisfies the following conditions:</p>
+
+    <p class="text-center" style="font-style: italic">(Public Methods &le; 4)=FALSE AND (Max Cyclomatic Complexity &le;
+        4)=TRUE AND (Maximum nesting level &le; 1)=FALSE</p>
+
+    <p>During experiment execution, there will be a step by step tutorial that explains how to accomplish each part
+        of
+        the experiment.</p>
 
     <form action="{% url 'startSurvey' %}" method="POST">
         {% csrf_token %}
